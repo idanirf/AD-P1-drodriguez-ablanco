@@ -58,5 +58,3 @@ fun getElection(args: Array<String>):Int{
     }
     return 1
 }
-
-}
