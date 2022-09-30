@@ -2,7 +2,8 @@ import chekData.CheckData
 
 fun main(args: Array<String>) {
 
-    val args = args     //aqui el args lo cambias por 3 string o 4 para probar
+    val args : Array<String> = arrayOf("parser","a","a","a")
+
     println("Hello World!")
     val election : Int  = getElection(args)
     //poner log
@@ -25,7 +26,9 @@ del directorio origen y trasformalos en JSON y XML en el directorio destino. En 
 directorio destino deberán estar las tres versiones: CSV, JSON y XML.
  */
 fun beginingParser(args: Array<String>) {
+    //comprobamos datos
     val isCorrectData = CheckData().parser(args)
+    //si es correctos llamamos  intercange para hacerlo en los 3 formatos con hilos
 
     //para comprobar
     println(isCorrectData)
@@ -39,6 +42,8 @@ generando en directorio_destino un resumen.html, aplicándoles los estilos
  */
 fun  beginingSumaryAll(args: Array<String>) {
     val isCorrectData = CheckData().sumaryAll(args)
+    //si es correctos llamamos  resume para hacer html
+    
     //para comprobar
     println(isCorrectData)
 }
@@ -51,6 +56,8 @@ existe, si no deberá mostrar error), aplicándoles los estilos que creas oportu
  */
 fun  beginingSumaryDistrict(args: Array<String>) {
     val isCorrectData = CheckData().sumaryDistrict(args)
+    //si es correctos llamamos  resume para hacer html
+
     //para comprobar
     println(isCorrectData)
     val isCorrctDistrict = CheckData().district()
@@ -65,10 +72,9 @@ por la persona que ha pasado los parametros
 fun getElection(args: Array<String>):Int{
     if(args.size == 4){
         return 3
-    }
-    if(args[1]=="resumen"){
+    }else if(args[0]=="resumen"){
         return 2
-    }
-    return 1
+    }else{return 1}
+
 }
 

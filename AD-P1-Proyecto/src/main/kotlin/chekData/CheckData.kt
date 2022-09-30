@@ -102,7 +102,7 @@ class CheckData {
             if (areFileJson(args)) return true
             if (areFilesXml(args)) return true
         }
-        return true
+        return false
     }
 
     /**
