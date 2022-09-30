@@ -26,8 +26,10 @@ del directorio origen y trasformalos en JSON y XML en el directorio destino. En 
 directorio destino deberán estar las tres versiones: CSV, JSON y XML.
  */
 fun beginingParser(args: Array<String>) {
+    //TODO añadir log de que ha entrado en esa elecion
     //comprobamos datos
     val isCorrectData = CheckData().parser(args)
+    //TODO añadir log de si la elecion es correcta o no
     //si es correctos llamamos  intercange para hacerlo en los 3 formatos con hilos
 
     //para comprobar
@@ -41,7 +43,9 @@ corresponde a la extensión o al formato deberá indicar error) y deberá proces
 generando en directorio_destino un resumen.html, aplicándoles los estilos
  */
 fun  beginingSumaryAll(args: Array<String>) {
+    //TODO añadir log de que ha entrado en esa elecion
     val isCorrectData = CheckData().sumaryAll(args)
+    //TODO añadir log de si la elecion es correcta o no
     //si es correctos llamamos  resume para hacer html
     
     //para comprobar
@@ -55,11 +59,14 @@ procesarla generando en directorio_destino un resumen_distrito.html (solo si el 
 existe, si no deberá mostrar error), aplicándoles los estilos que creas oportunos
  */
 fun  beginingSumaryDistrict(args: Array<String>) {
+    //TODO añadir log de que ha entrado en esa elecion
     val isCorrectData = CheckData().sumaryDistrict(args)
+    //TODO añadir log de si la elecion es correcta o no
     //si es correctos llamamos  resume para hacer html
 
     //para comprobar
     println(isCorrectData)
+    //TODO añadir log de si la elecion es correcta o no
     val isCorrctDistrict = CheckData().district()
 }
 /*
@@ -70,6 +77,7 @@ por la persona que ha pasado los parametros
 1- parser
  */
 fun getElection(args: Array<String>):Int{
+    //TODO añadir log de que ha entrado selecionar
     if(args.size == 4){
         return 3
     }else if(args[0]=="resumen"){
