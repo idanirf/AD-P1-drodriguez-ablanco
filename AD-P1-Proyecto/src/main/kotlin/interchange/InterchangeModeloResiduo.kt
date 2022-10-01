@@ -2,15 +2,16 @@ package interchange
 
 import enums.Meses
 import enums.TipoResiduo
-import models.loadContenedoresVariosCSV
+import models.ModeloResiduo
 import java.io.BufferedReader
+import java.io.BufferedWriter
 import java.io.File
 import java.io.FileReader
+import java.io.FileWriter
 import java.nio.file.Files
 import java.nio.file.Path
-import java.util.Collections
-import java.util.stream.Collector
 import java.util.stream.Collectors
+
 
 class InterchangeModeloResiduo<ModeloResiduo> {
 
@@ -19,20 +20,42 @@ class InterchangeModeloResiduo<ModeloResiduo> {
     /**
      * funcion que pasandole una linea de un scv te debuelve un ModeloResiduo
      */
-    private fun getModelRediduo(linea : String):ModeloResiduo {
+    private fun getModelRediduo(linea : String): models.ModeloResiduo {
         println("log de que entra a  getModel resituo")
 
         val campos  = linea.split(";")
 
         //todo no se por que no funciona crear un modelo rsiduo, pero olo dejo ahoi y miramos
-       return ModeloResiduo(año = campos[0].toIntOrNull(),
-            mes = campos[1].toIntOrNull(),
+
+       return ModeloResiduo(
+           año = campos[0].toIntOrNull(),
+            mes = getMes(campos[1]),
             lote = campos[2].toIntOrNull() ,
             residuo = getTipoResiduo(campos[3]),
-            distrito = campos[2],
-            nombreDistrito = campos[2],
-            toneladas = campos[2].toIntOrNull()
+            distrito = campos[4],
+            nombreDistrito = campos[5],
+            toneladas = campos[6].toIntOrNull()
         )
+    }
+
+    private fun getMes(s: String): Meses? {
+        println("log de que entra a  get mes")
+        when(s){
+            "ENERO" -> return Meses.ENERO
+            "FEBRERO"->return Meses.FEBRERO
+            "MARZO"-> return  Meses.MARZO
+            "ABRIL"-> return  Meses.ABRIL
+            "MAYO" -> return  Meses.MAYO
+            "JUNIO" -> return  Meses.JUNIO
+            "JULIO" -> return  Meses.JULIO
+            "AGOSTO" -> return  Meses.AGOSTO
+            "SEPTIEMBRE"-> return  Meses.SEPTIEMBRE
+            "OCTUBRE"-> return  Meses.OCTUBRE
+            "NOVIEMBRE" ->return  Meses.NOVIEMBRE
+            "DICIEMBRE" ->return  Meses.DICIEMBRE
+
+        }
+        return null
     }
 
     /**
@@ -61,35 +84,69 @@ class InterchangeModeloResiduo<ModeloResiduo> {
     /**
     entra una path y extrae un alista de ModeloResiduo
      */
-    fun csvToObject(p : Path): ArrayList<ModeloResiduo>{
+    fun csvToObject(p : Path): ArrayList<models.ModeloResiduo>{
             println(" todo log para decir que memos entrado a csvToObjecto")
         val br =BufferedReader(FileReader(p.toFile()))
+        var lista = ArrayList<models.ModeloResiduo>()
 
-         var modeloResiduos = ArrayList<ModeloResiduo>()
-        try {
+             try {
                 if(Files.exists(p)){
 
                     var lineas = br.readText()
-                    var modelosResiduosList = Files.lines(p)
+                    var modelosResiduosCollection= Files.lines(p)
                         .skip(1)
                         .map(this::getModelRediduo)
                         .collect(Collectors.toList());
-
-                        modeloResiduos.addAll(modelosResiduosList)
+                    modelosResiduosCollection.forEach { m -> lista.add(m) }
 
                 }
             }catch (e : Exception) {
                 println(" entro en la excepcion por csvtoobject")
+
             }finally {
                 br.close()
             }
 
 
-        return modeloResiduos
+
+        return lista
         }
-        //fun jsonToObject(f : File) Sequence<T>{}
+
+    /**
+     * funcion que combiente una lista de ModelResituo en lista de strings tipo csv
+     */
+    fun objectToCsv(a : ArrayList<models.ModeloResiduo>, p : Path ):File{
+        println("loh entro en objectToCsv")
+
+        var listaString = StringBuilder().append("año;mes;Meses;lote;Int;residuo;TipoResiduo;distrito;nombreDistrito;toneladas\n")
+        a.forEach { m -> listaString.append(getStringToModeloResiduo(m)) }
+
+
+          var f :File
+           if(Files.notExists(p)){f = File(p.toString())
+           }else{
+               f = p.toFile()
+           }
+        val bw = BufferedWriter(FileWriter(f))
+        try {
+            bw.write(listaString.toString())
+
+        }catch (e:Exception){
+            println("log de eror al convertir objeto a csv")
+        }finally{
+            bw.close()
+        }
+        return f
+    }
+
+    private fun getStringToModeloResiduo(m : models.ModeloResiduo): String {
+        return m.getStringScv()
+    }
+
+
+    //fun jsonToObject(f : File) Sequence<T>{}
         // fun xmlToObject(f : File) Sequence<T>{}
-        // fun objectToCsv(Sequence<T>):File{ }
+
         // fun objectToJson(Sequence<T>){}
         // fun objectToXml(Sequence<T>){}
 

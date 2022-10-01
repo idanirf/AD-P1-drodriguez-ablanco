@@ -5,16 +5,23 @@ import enums.TipoResiduo
 import java.io.Serializable
 import java.time.LocalDate
 
- class ModeloResiduo (año:Int, mes: Meses, lote: Int, residuo: TipoResiduo, distrito : String
-                     , nombreD: String, toneladas: Int): Serializable {
+ class ModeloResiduo (año:Int?, mes: Meses?, lote: Int?, residuo: TipoResiduo?, distrito : String?
+                     , nombreDistrito: String?, toneladas: Int?): Serializable {
     val año : Int?=año
     val mes : Meses? = mes
     val lote : Int? = lote
     val residuo : TipoResiduo? = residuo
     val distrito : String? = distrito
-    val nombreDistrito : String? = nombreD
+    val nombreDistrito : String? = nombreDistrito
     val toneladas : Int? = toneladas
 
+     /**
+      * devuelve una strig de este objeto en csv
+      */
+     fun getStringScv():String{
+         return "${this.año.toString()};${this.mes.toString()};${this.lote.toString()}" +
+                 ";${this.residuo?.name};${this.nombreDistrito},${this.toneladas.toString()}"
+     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
