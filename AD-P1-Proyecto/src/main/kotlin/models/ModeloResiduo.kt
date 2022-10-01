@@ -5,20 +5,16 @@ import enums.TipoResiduo
 import java.io.Serializable
 import java.time.LocalDate
 
-class ModeloResiduo (
+ class ModeloResiduo (año:Int, mes: Meses, lote: Int, residuo: TipoResiduo, distrito : String
+                     , nombreD: String, toneladas: Int): Serializable {
+    val año : Int?=año
+    val mes : Meses? = mes
+    val lote : Int? = lote
+    val residuo : TipoResiduo? = residuo
+    val distrito : String? = distrito
+    val nombreDistrito : String? = nombreD
+    val toneladas : Int? = toneladas
 
-    val año : Int,
-    val mes : Meses,
-    val lote : Int,
-    val residuo : TipoResiduo,
-    val distrito : String,
-    val nombreDistrito : String,
-    val toneladas : Int,
-
-    //hay un numero final que no se
-
-//imprementamos para que sea un objeto seriablizable
-): Serializable {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -38,13 +34,15 @@ class ModeloResiduo (
     }
 
     override fun hashCode(): Int {
-        var result = año
-        result = 31 * result + mes.hashCode()
-        result = 31 * result + lote
-        result = 31 * result + residuo.hashCode()
-        result = 31 * result + distrito.hashCode()
-        result = 31 * result + nombreDistrito.hashCode()
-        result = 31 * result + toneladas
+        var result = año ?: 0
+        result = 31 * result + (mes?.hashCode() ?: 0)
+        result = 31 * result + (lote ?: 0)
+        result = 31 * result + (residuo?.hashCode() ?: 0)
+        result = 31 * result + (distrito?.hashCode() ?: 0)
+        result = 31 * result + (nombreDistrito?.hashCode() ?: 0)
+        result = 31 * result + (toneladas ?: 0)
         return result
     }
+
+
 }
