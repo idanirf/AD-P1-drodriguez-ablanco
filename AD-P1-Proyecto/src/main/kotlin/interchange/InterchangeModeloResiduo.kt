@@ -3,11 +3,7 @@ package interchange
 import enums.Meses
 import enums.TipoResiduo
 import models.ModeloResiduo
-import java.io.BufferedReader
-import java.io.BufferedWriter
-import java.io.File
-import java.io.FileReader
-import java.io.FileWriter
+import java.io.*
 import java.nio.file.Files
 import java.nio.file.Path
 import java.util.stream.Collectors
@@ -122,18 +118,29 @@ class InterchangeModeloResiduo<ModeloResiduo> {
         a.forEach { m -> listaString.append(getStringToModeloResiduo(m)) }
 
 
-          var f :File
-           if(Files.notExists(p)){f = File(p.toString())
-           }else{
-               f = p.toFile()
-           }
+        var f: File = writeInFile(p, listaString)
+
+        return f
+    }
+
+    /**
+     * en la path mira si hay fichero y si no lo crea y la string que la pasas
+     * se la añade al ficehero
+     */
+    private fun writeInFile(p: Path, listaString: java.lang.StringBuilder): File {
+        var f: File
+        if (Files.notExists(p)) {
+            f = File(p.toString())
+        } else {
+            f = p.toFile()
+        }
         val bw = BufferedWriter(FileWriter(f))
         try {
             bw.write(listaString.toString())
 
-        }catch (e:Exception){
+        } catch (e: Exception) {
             println("log de eror al convertir objeto a csv")
-        }finally{
+        } finally {
             bw.close()
         }
         return f
@@ -143,12 +150,47 @@ class InterchangeModeloResiduo<ModeloResiduo> {
         return m.getStringScv()
     }
 
+    /**
+    funcion que pasa de un json a una lista de objetos
+     */
+    fun jsonToObject(p : Path): ArrayList<models.ModeloResiduo>{
 
-    //fun jsonToObject(f : File) Sequence<T>{}
-        // fun xmlToObject(f : File) Sequence<T>{}
+        println(" todo log para decir que memos entrado a csvToObjecto")
+        val resultList= ArrayList<models.ModeloResiduo>()
+        /**
+        try {
+        val gson: Unit = GsonBuilder().setPrettyPrinting().create()
+        resultList = gson.fromJson(json, ArrayList.class)
+        }catch (e:Exception){
+        println("log de excepcion en pasr de json a objeto")
+        }
 
-        // fun objectToJson(Sequence<T>){}
-        // fun objectToXml(Sequence<T>){}
+         */
+        return  resultList
+    }
+
+
+    /**
+     * funcion que le pasas un path y una lista de objetos y te ecrive un fihero j son con la lista
+     */
+    fun objectToJson(modelosR: ArrayList<models.ModeloResiduo>, p: Path):File{
+
+        /**
+        funcionará cuando tengamos el gson correcto
+        var gson = GsonBuilder().setPrettyPrinting().create()
+        var json = gson.toJson(modelosR)
+         return = writeInFile(p, json)
+
+         */
+        return p.toFile()
+
+    }
+
+
+    
+//fun xmlToObject(f : File) Sequence<T>{}
+
+// fun objectToXml(Sequence<T>){}
 
 
 }
