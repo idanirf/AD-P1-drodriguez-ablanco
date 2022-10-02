@@ -132,6 +132,7 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
      * se la añade al ficehero
      */
     private fun writeInFile(p: Path, listaString: java.lang.StringBuilder): File {
+        logger.info(" entrado en writeInFile")
         var f: File
         if (Files.notExists(p)) {
             f = File(p.toString())
@@ -158,8 +159,9 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
     funcion que pasa de un json a una lista de objetos
      */
     fun jsonToObject(p : Path): ArrayList<models.ModeloResiduo>{
+        logger.info(" entrado en funcion  jsonto object")
 
-        println(" todo log para decir que memos entrado a csvToObjecto")
+
         val resultList= ArrayList<models.ModeloResiduo>()
         /**
         try {
@@ -180,6 +182,7 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
      */
     fun objectToJson(modelosR: ArrayList<models.ModeloResiduo>, p: Path):File{
 
+        logger.info(" entrado en funcion  objectToJson")
         /**
         funcionará cuando tengamos el gson correcto
         var gson = GsonBuilder().setPrettyPrinting().create()
@@ -191,11 +194,13 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
 
     }
 
+    fun objectToXml(arrayListOfModeloResiduo: ArrayList<ModeloResiduo>, of: Path) {
 
-    
-//fun xmlToObject(f : File) Sequence<T>{}
+        logger.info(" entrado en funcion  objectToXml")
+        //todo hacer esta funcion con xml
+    }
 
-// fun objectToXml(Sequence<T>){}
+
 
 
 }
