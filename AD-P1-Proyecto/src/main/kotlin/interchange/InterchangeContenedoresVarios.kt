@@ -44,6 +44,10 @@ funcion que pasa de un json a una lista de objetos
         return p.toFile()
 
     }
-   // fun objectToXml(Sequence<T>){}
+
+    fun csvToObject(of: Path): ArrayList<ContenedoresVarios> {
+        return  ArrayList()
+    }
+    // fun objectToXml(Sequence<T>){}
 
 }

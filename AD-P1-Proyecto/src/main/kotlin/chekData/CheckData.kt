@@ -1,5 +1,7 @@
 package chekData
 
+import models.ContenedoresVarios
+import models.ModeloResiduo
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -109,7 +111,9 @@ class CheckData {
      * comprueva que el distrito elegido "parametro2"
      * este en la bbdd del csv o otro formato para poder sacar sus datos
      */
-    fun district(): Boolean {
+    fun district(district : String,
+                 arrayListOfModeloResiduo : ArrayList<ModeloResiduo>,
+                 arrayListOfContenedoreVarios: ArrayList<ContenedoresVarios>): Boolean {
         //todo log information por entrando a funcion district de checkdata
         //para hacerlo necesitamos saver si el distrito está entre los que hay en el archivo
         //por ahora no puedo hacerlo
