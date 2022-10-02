@@ -9,7 +9,10 @@ group = "es.danizados"
 version = "1.0-SNAPSHOT"
 
 repositories {
+    google()
     mavenCentral()
+    maven("https://mvnrepository.com/artifact/xml-apis/xml-apis/1.4.01")
+
 
 
 }
@@ -17,8 +20,15 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
 
-//grandle
-   // implementation 'com.google.code.gson:gson:2.8.6'
+    //grandle
+    //implementation 'com.google.code.gson:gson:2.8.6'
+
+    //logger
+    //implementation 'com.orhanobut:logger:2.2.0'
+
+    //probando libreria de xml
+    // https://mvnrepository.com/artifact/xml-apis/xml-apis
+    //implementation 'xml-apis:xml-apis:1.4.01'
 
 
 

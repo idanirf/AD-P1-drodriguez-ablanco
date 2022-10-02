@@ -1,6 +1,17 @@
 import chekData.CheckData
+import interchange.InterchangeModeloResiduo
+import models.ContenedoresVarios
+import models.ModeloResiduo
+import java.nio.file.Path
+import java.util.logging.Logger
+import kotlin.concurrent.thread
 
+//todo no se si esto esta bien aqui jejej comprobar
+private val logger: Logger = Logger.getLogger("Azahara y Dani Log")
 fun main(args: Array<String>) {
+
+    logger.info(" Iniciando Programa")
+
 
     val args : Array<String> = arrayOf("parser","a","a","a")
 
@@ -26,16 +37,38 @@ del directorio origen y trasformalos en JSON y XML en el directorio destino. En 
 directorio destino deberán estar las tres versiones: CSV, JSON y XML.
  */
 fun beginingParser(args: Array<String>) {
-    //TODO añadir log de que ha entrado en esa elecion
+    logger.info(" Entrado en begininParser ")
+
     //comprobamos datos
     val isCorrectData = CheckData().parser(args)
-    //TODO añadir log de si la elecion es correcta o no
+    logger.info(" los datos son corrctos = $isCorrectData")
     //si es correctos llamamos  intercange para hacerlo en los 3 formatos con hilos
 
-    //para comprobar
-    println(isCorrectData)
+    //Todo hacer con distintos hilos
+    logger.info(" cogiendo datos de archivo Modelo residuo ")
+    var arrayListOfModeloResiduo = InterchangeModeloResiduo<ModeloResiduo>().csvToObject(Path.of(args[1]))
+    logger.info(" cogiendo datos de contenedores Varios")
+    var arrayListOfContenedoreVarios = InterchangeModeloResiduo<ContenedoresVarios>().csvToObject(Path.of(args[1]))
 
+
+    //todo Una vez que tengamos cargado los dtos de arraylistModeoResidio con un join o un wait hacer por hilos
+    logger.info(" mandando por hilos las creaciones de ficheros Modelo residuo ")
+    InterchangeModeloResiduo<ModeloResiduo>().objectToCsv( arrayListOfModeloResiduo , Path.of(args[2]))
+    InterchangeModeloResiduo<ModeloResiduo>().objectToJson(arrayListOfModeloResiduo ,Path.of(args[2]))
+    InterchangeModeloResiduo<ModeloResiduo>().objectToJson(arrayListOfModeloResiduo ,Path.of(args[2]))
+
+    //todo Una vez que tengamos cargado los dtos de arraylistContenedores vvarios con un join o un wait hacer por hilos
+    logger.info(" mandando por hilos las creaciones de ficheros Contenedores varios ")
+    InterchangeModeloResiduo<ModeloResiduo>().objectToCsv( arrayListOfModeloResiduo , Path.of(args[2]))
+    InterchangeModeloResiduo<ModeloResiduo>().objectToJson(arrayListOfModeloResiduo ,Path.of(args[2]))
+    InterchangeModeloResiduo<ModeloResiduo>().objectToJson(arrayListOfModeloResiduo ,Path.of(args[2]))
+
+    //todo con hilos esperamos a que esten todos los hilos terminados con join o con whait
+    logger.info("fin de tarea ")
+
+    //aqui ahy que poner en el archivo de guardar area lo que hemos hecho
 }
+
 /*
 funcion que comprueva los args y si son ciestos debe tomar la información
 de los contenedores y de la recogida, independientemente de la extensión que tenga (si no
@@ -77,7 +110,8 @@ por la persona que ha pasado los parametros
 1- parser
  */
 fun getElection(args: Array<String>):Int{
-    //TODO añadir log de que ha entrado selecionar
+    logger.info(" Entrado en get Elecion ")
+
     if(args.size == 4){
         return 3
     }else if(args[0]=="resumen"){
