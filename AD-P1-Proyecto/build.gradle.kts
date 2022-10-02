@@ -10,10 +10,19 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+
+
 }
 
 dependencies {
     testImplementation(kotlin("test"))
+
+//grandle
+   // implementation 'com.google.code.gson:gson:2.8.6'
+
+
+
+
 }
 
 tasks.test {
