@@ -67,6 +67,7 @@ fun beginingParser(args: Array<String>) {
     logger.info("fin de tarea ")
 
     //aqui ahy que poner en el archivo de guardar area lo que hemos hecho
+
 }
 
 /*

@@ -106,9 +106,6 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
             }finally {
                 br.close()
             }
-
-
-
         return lista
         }
 
@@ -133,21 +130,29 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
      */
     private fun writeInFile(p: Path, listaString: java.lang.StringBuilder): File {
         logger.info(" entrado en writeInFile")
+
         var f: File
         if (Files.notExists(p)) {
+            logger.info("el fichero no existe")
             f = File(p.toString())
+            logger.info("creado")
         } else {
+            logger.info("el fichero existe")
             f = p.toFile()
         }
         val bw = BufferedWriter(FileWriter(f))
         try {
+            logger.info("escribiendo en el fichero")
             bw.write(listaString.toString())
 
         } catch (e: Exception) {
-            println("log de eror al convertir objeto a csv")
+            //todo cambiar lo a error
+            logger.info("el fichero existe")
         } finally {
             bw.close()
+            logger.info("cerrando el escritor del fichero")
         }
+        logger.info("cerrando el escritor del fichero")
         return f
     }
 
