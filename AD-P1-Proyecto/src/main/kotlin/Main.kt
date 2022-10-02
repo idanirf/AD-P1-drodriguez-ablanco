@@ -7,15 +7,17 @@ import models.ContenedoresVarios
 import models.ModeloResiduo
 import java.nio.file.Path
 import java.util.logging.Logger
-import kotlin.concurrent.thread
+
 
 //todo no se si esto esta bien aqui jejej comprobar
 private val logger: Logger = Logger.getLogger("Azahara y Dani Log")
+
 fun main(args: Array<String>) {
 
     logger.info(" Iniciando Programa")
 
 
+    //para falsear los datos ponemos aqui los comando
     val args : Array<String> = arrayOf("parser","a","a","a")
 
     println("Hello World!")
@@ -135,13 +137,9 @@ fun  beginingSumaryDistrict(args: Array<String>) {
     //TODO añadir log de si la elecion es correcta o no
     //si es correctos llamamos  resume para hacer html
 
-    //para comprobar
-    println(isCorrectData)
-    //TODO añadir log de si la elecion es correcta o no
-    val isCorrctData = CheckData().sumaryAll(args)
 
     //cojemos datos
-    if (isCorrctData){
+    if (isCorrectData){
         logger.info("los datos de la path son correctos")
 
         //si es correctos llamamos
