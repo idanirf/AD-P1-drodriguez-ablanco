@@ -25,8 +25,6 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
 
         val campos  = linea.split(";")
 
-        //todo no se por que no funciona crear un modelo rsiduo, pero olo dejo ahoi y miramos
-
        return ModeloResiduo(
            año = campos[0].toIntOrNull(),
             mes = getMes(campos[1]),
@@ -39,7 +37,7 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
     }
 
     private fun getMes(s: String): Meses? {
-        println("log de que entra a  get mes")
+        logger.info(" entrado en get mes")
         when(s){
             "ENERO" -> return Meses.ENERO
             "FEBRERO"->return Meses.FEBRERO
@@ -62,7 +60,8 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
      * PASADA UNA STRING NOS DEVIELVE EL PIDO DE RESIDU QUE ES, Y SI NO ESTÁ EN LA LISTA PONE DESCONOCIDO
      */
     private fun getTipoResiduo(s: String): TipoResiduo {
-        println("log de que entra a  get tipo residuo")
+        logger.info(" entrado en get tipo residuo")
+
         when(s){
             "RESTO" -> return TipoResiduo.RESTO
             "ENVASES"-> return TipoResiduo.ENVASES
@@ -85,7 +84,8 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
     entra una path y extrae un alista de ModeloResiduo
      */
     fun csvToObject(p : Path): ArrayList<models.ModeloResiduo>{
-            println(" todo log para decir que memos entrado a csvToObjecto")
+        logger.info(" entrado en csvToObjecto")
+
         val br =BufferedReader(FileReader(p.toFile()))
         var lista = ArrayList<models.ModeloResiduo>()
 
@@ -116,7 +116,7 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
      * funcion que combiente una lista de ModelResituo en lista de strings tipo csv
      */
     fun objectToCsv(a : ArrayList<models.ModeloResiduo>, p : Path ):File{
-        println("loh entro en objectToCsv")
+        logger.info(" entrado en bjectToCsv")
 
         var listaString = StringBuilder().append("año;mes;Meses;lote;Int;residuo;TipoResiduo;distrito;nombreDistrito;toneladas\n")
         a.forEach { m -> listaString.append(getStringToModeloResiduo(m)) }
