@@ -24,14 +24,14 @@ XML un listado de las ejecuciones con la siguiente información:
 - Éxito: si tuvo éxito o no su procesamiento.
 - Tiempo de ejecución: tiempo de ejecución si tuvo éxito en milisegundos.
  */
-class DataofUse(tipoOpcion : String, exito: Boolean, tiempoEjecucion : Int) {
+class DataofUse(tipoOpcion : String, exito: Boolean, tiempoEjecucion : Long) {
 
     val id = UUID.randomUUID()
     //todo poner en dormato iso 8601
     val instante = LocalDateTime.now()
     val tipoOpcion : String =  tipoOpcion
     var exito : Boolean = exito
-    val tiempoDeEjecucion : Int = tiempoEjecucion
+    val tiempoDeEjecucion : Long = tiempoEjecucion
 
     init {
         logger.info("cerrando el escritor del fichero")

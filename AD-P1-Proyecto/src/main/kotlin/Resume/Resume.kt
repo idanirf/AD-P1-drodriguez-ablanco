@@ -9,11 +9,11 @@ class Resume {
     /*
     funcion que devuelve un resumen en html de el distrito selecionado
      */
-    fun resumeDistrict(district : String, sM : Sequence<ModeloResiduo>, sCV : Sequence<ContenedoresVarios>){}
+    fun resumeDistrict(district : String, sM : ArrayList<ModeloResiduo>, sCV : ArrayList<ContenedoresVarios>){}
 
     /*
     funcion que devuelve un resumen en html del contenido de la secuencia
      */
-    fun resumeAll(sM : Sequence<ModeloResiduo>, sCV : Sequence<ContenedoresVarios>){}
+    fun resumeAll(sM : ArrayList<ModeloResiduo>, sCV : ArrayList<ContenedoresVarios>){}
 
 }
