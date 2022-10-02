@@ -6,18 +6,22 @@ import models.ModeloResiduo
 import java.io.*
 import java.nio.file.Files
 import java.nio.file.Path
+import java.util.logging.LogManager
+import java.util.logging.Logger
 import java.util.stream.Collectors
 
 
-class InterchangeModeloResiduo<ModeloResiduo> {
+class InterchangeModeloResiduo<ModeloResiduo> (){
 
+    var logger: Logger = Logger.getLogger("Azahara y Dani Log")
+    //logger.info(" entra a Interchange de Modelo residuo")
 
         //funciones que pasan de un tipo a otro
     /**
      * funcion que pasandole una linea de un scv te debuelve un ModeloResiduo
      */
     private fun getModelRediduo(linea : String): models.ModeloResiduo {
-        println("log de que entra a  getModel resituo")
+        logger.info(" entra a  getModel resituo")
 
         val campos  = linea.split(";")
 
@@ -166,6 +170,7 @@ class InterchangeModeloResiduo<ModeloResiduo> {
         }
 
          */
+
         return  resultList
     }
 
