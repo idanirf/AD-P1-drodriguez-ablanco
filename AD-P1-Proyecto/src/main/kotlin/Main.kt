@@ -55,13 +55,13 @@ fun beginingParser(args: Array<String>) {
     logger.info(" mandando por hilos las creaciones de ficheros Modelo residuo ")
     InterchangeModeloResiduo<ModeloResiduo>().objectToCsv( arrayListOfModeloResiduo , Path.of(args[2]))
     InterchangeModeloResiduo<ModeloResiduo>().objectToJson(arrayListOfModeloResiduo ,Path.of(args[2]))
-    InterchangeModeloResiduo<ModeloResiduo>().objectToJson(arrayListOfModeloResiduo ,Path.of(args[2]))
+    InterchangeModeloResiduo<ModeloResiduo>().objectToXml(arrayListOfModeloResiduo ,Path.of(args[2]))
 
     //todo Una vez que tengamos cargado los dtos de arraylistContenedores vvarios con un join o un wait hacer por hilos
     logger.info(" mandando por hilos las creaciones de ficheros Contenedores varios ")
     InterchangeModeloResiduo<ModeloResiduo>().objectToCsv( arrayListOfModeloResiduo , Path.of(args[2]))
     InterchangeModeloResiduo<ModeloResiduo>().objectToJson(arrayListOfModeloResiduo ,Path.of(args[2]))
-    InterchangeModeloResiduo<ModeloResiduo>().objectToJson(arrayListOfModeloResiduo ,Path.of(args[2]))
+    InterchangeModeloResiduo<ModeloResiduo>().objectToXml(arrayListOfModeloResiduo ,Path.of(args[2]))
 
     //todo con hilos esperamos a que esten todos los hilos terminados con join o con whait
     logger.info("fin de tarea ")
