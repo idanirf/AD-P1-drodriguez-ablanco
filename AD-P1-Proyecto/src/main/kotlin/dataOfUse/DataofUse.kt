@@ -6,9 +6,13 @@ import java.io.FileWriter
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
+import java.text.DateFormat
 import java.time.LocalDateTime
-import java.util.UUID
+import java.time.chrono.IsoChronology
+import java.time.format.DateTimeFormatter
+import java.util.*
 import java.util.logging.Logger
+import javax.print.attribute.standard.MediaSize.ISO
 
 
 //todo no se si esto esta bien aqui jejej comprobar porque no me van los logs aqui
@@ -27,8 +31,11 @@ XML un listado de las ejecuciones con la siguiente información:
 class DataofUse(tipoOpcion : String, exito: Boolean, tiempoEjecucion : Long) {
 
     val id = UUID.randomUUID()
-    //todo poner en dormato iso 8601
-    val instante = LocalDateTime.now()
+
+    //SO 8601: la porción de la fecha sigue el formato YYYY-MM-DD ejemplo: 2016-06-01T14:41:36-08:00.
+    val instanteTemporal = LocalDateTime.now()
+    val instante  = instanteTemporal.format(DateTimeFormatter.ISO_DATE_TIME)
+
     val tipoOpcion : String =  tipoOpcion
     var exito : Boolean = exito
     val tiempoDeEjecucion : Long = tiempoEjecucion
@@ -51,7 +58,7 @@ class DataofUse(tipoOpcion : String, exito: Boolean, tiempoEjecucion : Long) {
         var file : File = Path.of(path).toFile()
 
         //crear una string de xml de este objeto
-        //todo
+        //todo crear xml con los datos
         var string : String = ""
 
         //añadir datos
