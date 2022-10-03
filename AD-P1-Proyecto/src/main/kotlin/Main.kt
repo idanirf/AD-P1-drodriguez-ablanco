@@ -12,6 +12,8 @@ import java.util.logging.Logger
 //todo no se si esto esta bien aqui jejej comprobar
 private val logger: Logger = Logger.getLogger("Azahara y Dani Log")
 
+private val strings = arrayOf("parser", "a", "a", "a")
+
 fun main(args: Array<String>) {
 
     logger.info(" Iniciando Programa")
@@ -34,6 +36,7 @@ fun main(args: Array<String>) {
 
 }
 /**
+ * solo lee de csv
 funcion que comprueva los args y si son ciestos debe tomar los ficheros csv
 del directorio origen y trasformalos en JSON y XML en el directorio destino. En dicho
 directorio destino deberán estar las tres versiones: CSV, JSON y XML.
@@ -46,11 +49,18 @@ fun beginingParser(args: Array<String>) {
 
 
     //comprobamos datos
-    val isCorrectData = CheckData().parser(args)
-    logger.info(" los datos son corrctos = $isCorrectData")
+    val thereAreFiles = CheckData().parser(args)
+    logger.info(" los datos son corrctos = $thereAreFiles")
     //si es correctos llamamos  intercange para hacerlo en los 3 formatos con hilos
 
-    if(isCorrectData){
+    var areCorrectDataInFiles : Boolean = false
+    if(thereAreFiles){
+        //comprobar si los csv son tienen los datos correctos
+        areCorrectDataInFiles = CheckData().checkDataIntoCsv(args)
+        logger.info(" los datos son corrctos = $thereAreFiles")
+    }
+
+    if(areCorrectDataInFiles){
         //Todo hacer con distintos hilos
         logger.info(" cogiendo datos de archivo Modelo residuo ")
         var arrayListOfModeloResiduo = InterchangeModeloResiduo<ModeloResiduo>().csvToObject(Path.of(args[1]))
@@ -80,11 +90,13 @@ fun beginingParser(args: Array<String>) {
     var tFinal = System.currentTimeMillis();
     var tDiference= tFinal - tInit;
     //aqui ahy que poner en el archivo de guardar area lo que hemos hecho
-     DataofUse(tipoOpcion = "Parser", exito = isCorrectData , tiempoEjecucion = tDiference)
+     DataofUse(tipoOpcion = "Parser", exito = areCorrectDataInFiles , tiempoEjecucion = tDiference)
 
 }
 
 /**
+ * puede leer de csv json o xml, pero tiene que tener todos los datos
+ *
 funcion que comprueva los args y si son ciestos debe tomar la información
 de los contenedores y de la recogida, independientemente de la extensión que tenga (si no
 corresponde a la extensión o al formato deberá indicar error) y deberá procesarla

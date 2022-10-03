@@ -20,15 +20,17 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
 
-    //grandle
-    //implementation 'com.google.code.gson:gson:2.8.6'
+    //  Jackson  para Json y Xml
+    //  https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    implementation ("com.fasterxml.jackson.core:jackson-databind:2.13.3")
+
 
     //logger
-    //implementation 'com.orhanobut:logger:2.2.0'
+    implementation ("com.orhanobut:logger:2.2.0")
 
-    //probando libreria de xml
-    // https://mvnrepository.com/artifact/xml-apis/xml-apis
-    //implementation 'xml-apis:xml-apis:1.4.01'
+    //mockito para test
+    // https://mvnrepository.com/artifact/org.mockito/mockito-core
+    testImplementation ("org.mockito:mockito-core:4.6.1")
 
 
 
