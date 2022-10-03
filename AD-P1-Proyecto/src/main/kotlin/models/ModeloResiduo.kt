@@ -18,10 +18,7 @@ import java.time.LocalDate
      /**
       * devuelve una strig de este objeto en csv
       */
-     fun getStringScv():String{
-         return "${this.año.toString()};${this.mes.toString()};${this.lote.toString()}" +
-                 ";${this.residuo?.name};${this.nombreDistrito},${this.toneladas.toString()}"
-     }
+
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
