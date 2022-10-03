@@ -6,22 +6,24 @@ import models.ModeloResiduo
 import java.io.*
 import java.nio.file.Files
 import java.nio.file.Path
+import java.util.logging.LogManager
+import java.util.logging.Logger
 import java.util.stream.Collectors
 
 
-class InterchangeModeloResiduo<ModeloResiduo> {
+class InterchangeModeloResiduo<ModeloResiduo> (){
 
+    var logger: Logger = Logger.getLogger("Azahara y Dani Log")
+    //logger.info(" entra a Interchange de Modelo residuo")
 
         //funciones que pasan de un tipo a otro
     /**
      * funcion que pasandole una linea de un scv te debuelve un ModeloResiduo
      */
     private fun getModelRediduo(linea : String): models.ModeloResiduo {
-        println("log de que entra a  getModel resituo")
+        logger.info(" entra a  getModel resituo")
 
         val campos  = linea.split(";")
-
-        //todo no se por que no funciona crear un modelo rsiduo, pero olo dejo ahoi y miramos
 
        return ModeloResiduo(
            año = campos[0].toIntOrNull(),
@@ -35,7 +37,7 @@ class InterchangeModeloResiduo<ModeloResiduo> {
     }
 
     private fun getMes(s: String): Meses? {
-        println("log de que entra a  get mes")
+        logger.info(" entrado en get mes")
         when(s){
             "ENERO" -> return Meses.ENERO
             "FEBRERO"->return Meses.FEBRERO
@@ -58,7 +60,8 @@ class InterchangeModeloResiduo<ModeloResiduo> {
      * PASADA UNA STRING NOS DEVIELVE EL PIDO DE RESIDU QUE ES, Y SI NO ESTÁ EN LA LISTA PONE DESCONOCIDO
      */
     private fun getTipoResiduo(s: String): TipoResiduo {
-        println("log de que entra a  get tipo residuo")
+        logger.info(" entrado en get tipo residuo")
+
         when(s){
             "RESTO" -> return TipoResiduo.RESTO
             "ENVASES"-> return TipoResiduo.ENVASES
@@ -81,7 +84,8 @@ class InterchangeModeloResiduo<ModeloResiduo> {
     entra una path y extrae un alista de ModeloResiduo
      */
     fun csvToObject(p : Path): ArrayList<models.ModeloResiduo>{
-            println(" todo log para decir que memos entrado a csvToObjecto")
+        logger.info(" entrado en csvToObjecto")
+
         val br =BufferedReader(FileReader(p.toFile()))
         var lista = ArrayList<models.ModeloResiduo>()
 
@@ -102,9 +106,6 @@ class InterchangeModeloResiduo<ModeloResiduo> {
             }finally {
                 br.close()
             }
-
-
-
         return lista
         }
 
@@ -112,7 +113,7 @@ class InterchangeModeloResiduo<ModeloResiduo> {
      * funcion que combiente una lista de ModelResituo en lista de strings tipo csv
      */
     fun objectToCsv(a : ArrayList<models.ModeloResiduo>, p : Path ):File{
-        println("loh entro en objectToCsv")
+        logger.info(" entrado en bjectToCsv")
 
         var listaString = StringBuilder().append("año;mes;Meses;lote;Int;residuo;TipoResiduo;distrito;nombreDistrito;toneladas\n")
         a.forEach { m -> listaString.append(getStringToModeloResiduo(m)) }
@@ -128,21 +129,30 @@ class InterchangeModeloResiduo<ModeloResiduo> {
      * se la añade al ficehero
      */
     private fun writeInFile(p: Path, listaString: java.lang.StringBuilder): File {
+        logger.info(" entrado en writeInFile")
+
         var f: File
         if (Files.notExists(p)) {
+            logger.info("el fichero no existe")
             f = File(p.toString())
+            logger.info("creado")
         } else {
+            logger.info("el fichero existe")
             f = p.toFile()
         }
         val bw = BufferedWriter(FileWriter(f))
         try {
+            logger.info("escribiendo en el fichero")
             bw.write(listaString.toString())
 
         } catch (e: Exception) {
-            println("log de eror al convertir objeto a csv")
+            //todo cambiar lo a error
+            logger.info("el fichero existe")
         } finally {
             bw.close()
+            logger.info("cerrando el escritor del fichero")
         }
+        logger.info("cerrando el escritor del fichero")
         return f
     }
 
@@ -154,8 +164,9 @@ class InterchangeModeloResiduo<ModeloResiduo> {
     funcion que pasa de un json a una lista de objetos
      */
     fun jsonToObject(p : Path): ArrayList<models.ModeloResiduo>{
+        logger.info(" entrado en funcion  jsonto object")
 
-        println(" todo log para decir que memos entrado a csvToObjecto")
+
         val resultList= ArrayList<models.ModeloResiduo>()
         /**
         try {
@@ -166,6 +177,7 @@ class InterchangeModeloResiduo<ModeloResiduo> {
         }
 
          */
+
         return  resultList
     }
 
@@ -175,6 +187,7 @@ class InterchangeModeloResiduo<ModeloResiduo> {
      */
     fun objectToJson(modelosR: ArrayList<models.ModeloResiduo>, p: Path):File{
 
+        logger.info(" entrado en funcion  objectToJson")
         /**
         funcionará cuando tengamos el gson correcto
         var gson = GsonBuilder().setPrettyPrinting().create()
@@ -186,11 +199,13 @@ class InterchangeModeloResiduo<ModeloResiduo> {
 
     }
 
+    fun objectToXml(arrayListOfModeloResiduo: ArrayList<ModeloResiduo>, of: Path) {
 
-    
-//fun xmlToObject(f : File) Sequence<T>{}
+        logger.info(" entrado en funcion  objectToXml")
+        //todo hacer esta funcion con xml
+    }
 
-// fun objectToXml(Sequence<T>){}
+
 
 
 }
