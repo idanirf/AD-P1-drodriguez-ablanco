@@ -1,6 +1,5 @@
 package dto
 
-import com.fasterxml.jackson.annotation.JsonCreator
 import enums.Meses
 import enums.TipoResiduo
 import models.ModeloResiduo
@@ -48,17 +47,14 @@ class ModeloResiduoDTO(año: Int?,
     }
 
     fun getStringScv(): String {
-        //todo
         return ""
     }
 
     fun getStringXml(): String {
-        //todo
         return ""
     }
 
     fun getStringJson(): String {
-        //todo
         return ""
     }
     private fun getMes(s: String?): Meses? {
