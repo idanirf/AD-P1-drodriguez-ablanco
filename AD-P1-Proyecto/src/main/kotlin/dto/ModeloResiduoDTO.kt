@@ -14,7 +14,8 @@ class ModeloResiduoDTO(año: Int?,
                        residuo: String?,
                        distrito: String?,
                        nombreDistrito: String?,
-                       toneladas: Int?) : Serializable {
+                       toneladas: Int?
+) : Serializable {
     var año: Int? = año
     var mes: String? = mes
     var lote: Int? = lote
@@ -46,8 +47,7 @@ class ModeloResiduoDTO(año: Int?,
     }
 
     fun getStringScv(): String {
-        return "${this.año.toString()};${this.mes.toString()};${this.lote.toString()}" +
-                ";${this.residuo?.toString()};${this.nombreDistrito},${this.toneladas.toString()}"
+        return ""
     }
 
     fun getStringXml(): String {
@@ -79,7 +79,7 @@ class ModeloResiduoDTO(año: Int?,
     }
     private fun getTipoResiduo(s: String?): TipoResiduo? {
         logger.info(" entrado en get tipo residuo")
-        if (s==null) return null
+        if (s==null) return TipoResiduo.DESCONOCIDO
 
         when(s){
             "RESTO" -> return TipoResiduo.RESTO
@@ -95,9 +95,9 @@ class ModeloResiduoDTO(año: Int?,
             "RCD"-> return TipoResiduo.RCD
             "CONTENEDORES DE ROPA USADA"-> return TipoResiduo.CONTENEDORES_DE_ROPA_USADA
             "REIDUOS DEPOSITADOS EN MIGAS CALIENTES"-> return TipoResiduo.RESIDUOS_DEPOSITADOS_EN_MIGAS_CALIENTES
-            else -> return null
+            else -> return TipoResiduo.DESCONOCIDO
         }
         return TipoResiduo.DESCONOCIDO
     }
-}
+
 
