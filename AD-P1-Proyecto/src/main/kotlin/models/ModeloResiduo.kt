@@ -10,7 +10,7 @@ import java.time.LocalDate
     val año : Int?=año
     val mes : Meses? = mes
     val lote : Int? = lote
-    val residuo : TipoResiduo? = residuo
+    var residuo : TipoResiduo? = residuo
     val distrito : String? = distrito
     val nombreDistrito : String? = nombreDistrito
     val toneladas : Int? = toneladas
