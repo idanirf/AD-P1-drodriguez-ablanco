@@ -16,18 +16,14 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
 
     var logger: Logger = Logger.getLogger("Azahara y Dani Log")
     //logger.info(" entra a Interchange de Modelo residuo")
-
-        //funciones que pasan de un tipo a otro
-    /**
-     * funcion que pasandole una linea de un scv te debuelve un ModeloResiduo
-     */
-    private fun getModelRediduo(linea : String): ModeloResiduoDTO {
-        logger.info(" entra a  getModel resituo")
-
-        val campos  = linea.split(";")
-
-       return ModeloResiduoDTO().modeloRediduoToDTO(
-           año = campos[0].toIntOrNull(),
+    
+    //remodelando solo lo necesario
+    fun dtoToString(m : ModeloResiduoDTO):String {
+        return "${m.año};${m.mes};${m.lote};${m.residuo};${m.distrito};${m.nombreDistrito};${m.toneladas};"
+    }
+    fun stringToDto(campos : ArrayList<String> ): ModeloResiduoDTO{
+        return ModeloResiduoDTO(
+            año =campos[0].toIntOrNull(),
             mes = campos[1],
             lote = campos[2].toIntOrNull() ,
             residuo = campos[3],
@@ -36,8 +32,32 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
             toneladas = campos[6].toIntOrNull()
         )
     }
+    fun objectToDto(m : models.ModeloResiduo):ModeloResiduoDTO{
+        return ModeloResiduoDTO(
+            año =m.año,
+            mes = m.mes.toString(),
+            lote = m.lote,
+            residuo = m.residuo.toString(),
+            distrito = m.distrito,
+            nombreDistrito = m.nombreDistrito,
+            toneladas = m.toneladas
+        )
+    }
+    fun dtoToObject(m: ModeloResiduoDTO): models.ModeloResiduo{
+        return ModeloResiduo(
+            año =m.año,
+            mes = getMes(m.mes),
+            lote = m.lote,
+            residuo = getTipoResiduo(m.residuo),
+            distrito = m.distrito,
+            nombreDistrito = m.nombreDistrito,
+            toneladas = m.toneladas
+        )
+    }
 
-    private fun getMes(s: String): Meses? {
+
+
+    private fun getMes(s: String?): Meses? {
         logger.info(" entrado en get mes")
         when(s){
             "ENERO" -> return Meses.ENERO
@@ -60,7 +80,7 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
     /**
      * PASADA UNA STRING NOS DEVIELVE EL PIDO DE RESIDU QUE ES, Y SI NO ESTÁ EN LA LISTA PONE DESCONOCIDO
      */
-    private fun getTipoResiduo(s: String): TipoResiduo {
+    private fun getTipoResiduo(s: String?): TipoResiduo? {
         logger.info(" entrado en get tipo residuo")
 
         when(s){
@@ -81,130 +101,8 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
         return TipoResiduo.DESCONOCIDO
     }
 
-    /**
-    entra una path y extrae un alista de ModeloResiduo
-     */
-    fun csvToObject(p : Path): ArrayList<models.ModeloResiduo>{
-        logger.info(" entrado en csvToObjecto")
-
-        val br =BufferedReader(FileReader(p.toFile()))
-        var lista = ArrayList<models.ModeloResiduo>()
-
-             try {
-                if(Files.exists(p)){
-
-                    var lineas = br.readText()
-                    var modelosResiduosCollection= Files.lines(p)
-                        .skip(1)
-                        .map(this::getModelRediduo)
-                        .collect(Collectors.toList());
-                    modelosResiduosCollection.forEach { m -> lista.add(m) }
-
-                }
-            }catch (e : Exception) {
-                println(" entro en la excepcion por csvtoobject")
-
-            }finally {
-                br.close()
-            }
-        return lista
-        }
-
-    /**
-     * funcion que combiente una lista de ModelResituo en lista de strings tipo csv
-     */
-    fun objectToCsv(a : ArrayList<models.ModeloResiduo>, p : Path ):File{
-        logger.info(" entrado en bjectToCsv")
-
-        var listaString = StringBuilder().append("año;mes;Meses;lote;Int;residuo;TipoResiduo;distrito;nombreDistrito;toneladas\n")
-        a.forEach { m -> listaString.append(getStringToModeloResiduo(m)) }
 
 
-        var f: File = writeInFile(p, listaString)
-
-        return f
-    }
-
-    /**
-     * en la path mira si hay fichero y si no lo crea y la string que la pasas
-     * se la añade al ficehero
-     */
-    private fun writeInFile(p: Path, listaString: java.lang.StringBuilder): File {
-        logger.info(" entrado en writeInFile")
-
-        var f: File
-        if (Files.notExists(p)) {
-            logger.info("el fichero no existe")
-            f = File(p.toString())
-            logger.info("creado")
-        } else {
-            logger.info("el fichero existe")
-            f = p.toFile()
-        }
-        val bw = BufferedWriter(FileWriter(f))
-        try {
-            logger.info("escribiendo en el fichero")
-            bw.write(listaString.toString())
-
-        } catch (e: Exception) {
-            //todo cambiar lo a error
-            logger.info("el fichero existe")
-        } finally {
-            bw.close()
-            logger.info("cerrando el escritor del fichero")
-        }
-        logger.info("cerrando el escritor del fichero")
-        return f
-    }
-
-    private fun getStringToModeloResiduo(m : models.ModeloResiduo): String {
-        return m.getStringScv()
-    }
-
-    /**
-    funcion que pasa de un json a una lista de objetos
-     */
-    fun jsonToObject(p : Path): ArrayList<models.ModeloResiduo>{
-        logger.info(" entrado en funcion  jsonto object")
-
-
-        val resultList= ArrayList<models.ModeloResiduo>()
-        /**
-        try {
-        val gson: Unit = GsonBuilder().setPrettyPrinting().create()
-        resultList = gson.fromJson(json, ArrayList.class)
-        }catch (e:Exception){
-        println("log de excepcion en pasr de json a objeto")
-        }
-
-         */
-
-        return  resultList
-    }
-
-
-    /**
-     * funcion que le pasas un path y una lista de objetos y te ecrive un fihero j son con la lista
-     */
-    fun objectToJson(modelosR: ArrayList<models.ModeloResiduo>, p: Path):File{
-
-        logger.info(" entrado en funcion  objectToJson")
-        /**
-        funcionará cuando tengamos el gson correcto
-        var gson = GsonBuilder().setPrettyPrinting().create()
-        var json = gson.toJson(modelosR)
-         return = writeInFile(p, json)
-
-         */
-        return p.toFile()
-
-    }
-
-    fun objectToXml(arrayListOfModeloResiduo: ArrayList<ModeloResiduo>, of: Path) {
-
-        logger.info(" entrado en funcion  objectToXml")
-        //todo hacer esta funcion con xml
-    }
 
 
 
