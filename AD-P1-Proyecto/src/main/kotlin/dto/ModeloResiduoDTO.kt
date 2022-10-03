@@ -8,34 +8,23 @@ import java.util.logging.Logger
 
 var logger: Logger = Logger.getLogger("Azahara y Dani Log")
 
-class ModeloResiduoDTO (): Serializable {
-    var año: Int? = null
-    var mes: String? = null
-    var lote: Int? = null
-    var residuo: String? = null
-    var distrito: String? = null
-    var nombreDistrito: String? = null
-    var toneladas: Int? = null
+class ModeloResiduoDTO(año: Int?,
+                       mes: String?,
+                       lote: Int?,
+                       residuo: String?,
+                       distrito: String?,
+                       nombreDistrito: String?,
+                       toneladas: Int?) : Serializable {
+    var año: Int? = año
+    var mes: String? = mes
+    var lote: Int? = lote
+    var residuo: String? = residuo
+    var distrito: String? = distrito
+    var nombreDistrito: String? = nombreDistrito
+    var toneladas: Int? = toneladas
 
-    fun modeloRediduoToDTO(
-        año: Int?,
-        mes: String?,
-        lote: Int?,
-        residuo: String?,
-        distrito: String?,
-        nombreDistrito: String?,
-        toneladas: Int?
-    ) {
-        this.año = año
-        this.mes = mes
-        this.lote = lote
-        this.residuo = residuo
-        this.distrito = distrito
-        this.nombreDistrito = nombreDistrito
-        this.toneladas = toneladas
-    }
 
-    fun DtoTomodeloRediduo() {
+    fun DtoToMdeloRediduo() {
         ModeloResiduo(
             this.año,
             getMes(this.mes),
@@ -45,6 +34,15 @@ class ModeloResiduoDTO (): Serializable {
             this.nombreDistrito,
             this.toneladas,
         )
+    }
+    constructor(m : ModeloResiduo):this(
+             m.año,
+            m.mes.toString(),
+             m.lote,
+             m.residuo.toString(),
+             m.distrito,
+             m.nombreDistrito,
+             m.toneladas)
     }
 
     fun getStringScv(): String {

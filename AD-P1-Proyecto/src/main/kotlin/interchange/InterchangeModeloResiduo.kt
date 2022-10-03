@@ -1,5 +1,6 @@
 package interchange
 
+import dto.ModeloResiduoDTO
 import enums.Meses
 import enums.TipoResiduo
 import models.ModeloResiduo
@@ -20,16 +21,16 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
     /**
      * funcion que pasandole una linea de un scv te debuelve un ModeloResiduo
      */
-    private fun getModelRediduo(linea : String): models.ModeloResiduo {
+    private fun getModelRediduo(linea : String): ModeloResiduoDTO {
         logger.info(" entra a  getModel resituo")
 
         val campos  = linea.split(";")
 
-       return ModeloResiduo(
+       return ModeloResiduoDTO().modeloRediduoToDTO(
            año = campos[0].toIntOrNull(),
-            mes = getMes(campos[1]),
+            mes = campos[1],
             lote = campos[2].toIntOrNull() ,
-            residuo = getTipoResiduo(campos[3]),
+            residuo = campos[3],
             distrito = campos[4],
             nombreDistrito = campos[5],
             toneladas = campos[6].toIntOrNull()
