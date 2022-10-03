@@ -19,7 +19,52 @@ data class ContenedoresVarios(
     val coordenadaY: String?,
     val TAG: String?
 
-) {
+)  {
+    fun getStringCSV(): String {
+        return "${this.codigoInternoSituado};${this.tipoContenedor.toString()};${this.modelo};${this.descripcionModelo};" +
+                "${this.cantidad};${this.lote};${this.distrito};${this.barrio};${this.tipoVia};${this.nombre};${this.numero};" +
+                "${this.coordenadaX};${this.coordenadaY};${this.TAG}"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is ContenedoresVarios) return false
+
+        if (codigoInternoSituado != other.codigoInternoSituado) return false
+        if (tipoContenedor != other.tipoContenedor) return false
+        if (modelo != other.modelo) return false
+        if (descripcionModelo != other.descripcionModelo) return false
+        if (cantidad != other.cantidad) return false
+        if (lote != other.lote) return false
+        if (distrito != other.distrito) return false
+        if (barrio != other.barrio) return false
+        if (tipoVia != other.tipoVia) return false
+        if (nombre != other.nombre) return false
+        if (numero != other.numero) return false
+        if (coordenadaX != other.coordenadaX) return false
+        if (coordenadaY != other.coordenadaY) return false
+        if (TAG != other.TAG) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = codigoInternoSituado?.hashCode() ?: 0
+        result = 31 * result + (tipoContenedor?.hashCode() ?: 0)
+        result = 31 * result + (modelo?.hashCode() ?: 0)
+        result = 31 * result + (descripcionModelo?.hashCode() ?: 0)
+        result = 31 * result + (cantidad?.hashCode() ?: 0)
+        result = 31 * result + (lote?.hashCode() ?: 0)
+        result = 31 * result + (distrito?.hashCode() ?: 0)
+        result = 31 * result + (barrio?.hashCode() ?: 0)
+        result = 31 * result + (tipoVia?.hashCode() ?: 0)
+        result = 31 * result + (nombre?.hashCode() ?: 0)
+        result = 31 * result + (numero?.hashCode() ?: 0)
+        result = 31 * result + (coordenadaX?.hashCode() ?: 0)
+        result = 31 * result + (coordenadaY?.hashCode() ?: 0)
+        result = 31 * result + (TAG?.hashCode() ?: 0)
+        return result
+    }
 
 }
 
@@ -59,5 +104,7 @@ fun getEnumTipoContenedor(s: String): TipoContenedor {
     }
     return TipoContenedor.DESCONOCIDO
 }
+
+
 
 

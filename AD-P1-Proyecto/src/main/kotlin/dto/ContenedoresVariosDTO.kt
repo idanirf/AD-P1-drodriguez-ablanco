@@ -1,8 +1,8 @@
 package dto
 
-import java.awt.DisplayMode
+import java.io.Serializable
 
-@Serializable
+// @Serializable
 data class ContenedoresVariosDTO(
     val codigoInternoSituado: String,
     val tipoContenedor: String,
@@ -18,4 +18,4 @@ data class ContenedoresVariosDTO(
     val coordenadaX: String,
     val coordenadaY: String,
     val TAG: String
-)
+): Serializable {} //todo preguntar a Jose sí es lo mismo que @Serializable y sí es diferente en que se diferencia
