@@ -10,7 +10,7 @@ import java.time.LocalDate
     val año : Int?=año
     val mes : Meses? = mes
     val lote : Int? = lote
-    val residuo : TipoResiduo? = residuo
+    var residuo : TipoResiduo? = residuo
     val distrito : String? = distrito
     val nombreDistrito : String? = nombreDistrito
     val toneladas : Int? = toneladas
@@ -18,10 +18,7 @@ import java.time.LocalDate
      /**
       * devuelve una strig de este objeto en csv
       */
-     fun getStringScv():String{
-         return "${this.año.toString()};${this.mes.toString()};${this.lote.toString()}" +
-                 ";${this.residuo?.name};${this.nombreDistrito},${this.toneladas.toString()}"
-     }
+
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

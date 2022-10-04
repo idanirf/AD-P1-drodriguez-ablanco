@@ -1,64 +1,69 @@
-package interchange
+package dto
 
-import dto.ModeloResiduoDTO
+import com.fasterxml.jackson.annotation.JsonCreator
 import enums.Meses
 import enums.TipoResiduo
 import models.ModeloResiduo
-import java.io.*
-import java.nio.file.Files
-import java.nio.file.Path
-import java.util.logging.LogManager
+import java.io.Serializable
 import java.util.logging.Logger
-import java.util.stream.Collectors
+
+var logger: Logger = Logger.getLogger("Azahara y Dani Log")
+
+class ModeloResiduoDTO(año: Int?,
+                       mes: String?,
+                       lote: Int?,
+                       residuo: String?,
+                       distrito: String?,
+                       nombreDistrito: String?,
+                       toneladas: Int?
+) : Serializable {
+    var año: Int? = año
+    var mes: String? = mes
+    var lote: Int? = lote
+    var residuo: String? = residuo
+    var distrito: String? = distrito
+    var nombreDistrito: String? = nombreDistrito
+    var toneladas: Int? = toneladas
 
 
-class InterchangeModeloResiduo<ModeloResiduo> (){
-
-    var logger: Logger = Logger.getLogger("Azahara y Dani Log")
-    //logger.info(" entra a Interchange de Modelo residuo")
-    
-    //remodelando solo lo necesario
-    fun dtoToString(m : ModeloResiduoDTO):String {
-        return "${m.año};${m.mes};${m.lote};${m.residuo};${m.distrito};${m.nombreDistrito};${m.toneladas};"
-    }
-    fun stringToDto(campos : ArrayList<String> ): ModeloResiduoDTO{
-        return ModeloResiduoDTO(
-            año =campos[0].toIntOrNull(),
-            mes = campos[1],
-            lote = campos[2].toIntOrNull() ,
-            residuo = campos[3],
-            distrito = campos[4],
-            nombreDistrito = campos[5],
-            toneladas = campos[6].toIntOrNull()
+    fun DtoToMdeloRediduo() {
+        ModeloResiduo(
+            this.año,
+            getMes(this.mes),
+            this.lote,
+            getTipoResiduo(this.residuo),
+            this.distrito,
+            this.nombreDistrito,
+            this.toneladas,
         )
     }
-    fun objectToDto(m : models.ModeloResiduo):ModeloResiduoDTO{
-        return ModeloResiduoDTO(
-            año =m.año,
-            mes = m.mes.toString(),
-            lote = m.lote,
-            residuo = m.residuo.toString(),
-            distrito = m.distrito,
-            nombreDistrito = m.nombreDistrito,
-            toneladas = m.toneladas
-        )
-    }
-    fun dtoToObject(m: ModeloResiduoDTO): models.ModeloResiduo{
-        return ModeloResiduo(
-            año =m.año,
-            mes = getMes(m.mes),
-            lote = m.lote,
-            residuo = getTipoResiduo(m.residuo),
-            distrito = m.distrito,
-            nombreDistrito = m.nombreDistrito,
-            toneladas = m.toneladas
-        )
+    constructor(m : ModeloResiduo):this(
+             m.año,
+            m.mes.toString(),
+             m.lote,
+             m.residuo.toString(),
+             m.distrito,
+             m.nombreDistrito,
+             m.toneladas)
     }
 
+    fun getStringScv(): String {
+        //todo
+        return ""
+    }
 
+    fun getStringXml(): String {
+        //todo
+        return ""
+    }
 
+    fun getStringJson(): String {
+        //todo
+        return ""
+    }
     private fun getMes(s: String?): Meses? {
         logger.info(" entrado en get mes")
+       if (s==null) return null
         when(s){
             "ENERO" -> return Meses.ENERO
             "FEBRERO"->return Meses.FEBRERO
@@ -72,16 +77,13 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
             "OCTUBRE"-> return  Meses.OCTUBRE
             "NOVIEMBRE" ->return  Meses.NOVIEMBRE
             "DICIEMBRE" ->return  Meses.DICIEMBRE
-
+             else -> return null
         }
         return null
     }
-
-    /**
-     * PASADA UNA STRING NOS DEVIELVE EL PIDO DE RESIDU QUE ES, Y SI NO ESTÁ EN LA LISTA PONE DESCONOCIDO
-     */
     private fun getTipoResiduo(s: String?): TipoResiduo? {
         logger.info(" entrado en get tipo residuo")
+        if (s==null) return TipoResiduo.DESCONOCIDO
 
         when(s){
             "RESTO" -> return TipoResiduo.RESTO
@@ -97,14 +99,9 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
             "RCD"-> return TipoResiduo.RCD
             "CONTENEDORES DE ROPA USADA"-> return TipoResiduo.CONTENEDORES_DE_ROPA_USADA
             "REIDUOS DEPOSITADOS EN MIGAS CALIENTES"-> return TipoResiduo.RESIDUOS_DEPOSITADOS_EN_MIGAS_CALIENTES
+            else -> return TipoResiduo.DESCONOCIDO
         }
         return TipoResiduo.DESCONOCIDO
     }
 
 
-
-
-
-
-
-}
