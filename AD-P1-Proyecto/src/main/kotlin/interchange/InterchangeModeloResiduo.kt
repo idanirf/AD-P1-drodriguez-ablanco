@@ -26,7 +26,7 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
 
         val campos  = linea.split(";")
 
-       return ModeloResiduoDTO().modeloRediduoToDTO(
+       return ModeloResiduoDTO(
            año = campos[0].toIntOrNull(),
             mes = campos[1],
             lote = campos[2].toIntOrNull() ,
@@ -98,7 +98,7 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
                         .skip(1)
                         .map(this::getModelRediduo)
                         .collect(Collectors.toList());
-                    modelosResiduosCollection.forEach { m -> lista.add(m) }
+                    modelosResiduosCollection.forEach { m -> lista.add(m.DtoToMdeloRediduo()) }
 
                 }
             }catch (e : Exception) {
@@ -117,7 +117,7 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
         logger.info(" entrado en bjectToCsv")
 
         var listaString = StringBuilder().append("año;mes;Meses;lote;Int;residuo;TipoResiduo;distrito;nombreDistrito;toneladas\n")
-        a.forEach { m -> listaString.append(getStringToModeloResiduo(m)) }
+        a.forEach { m -> listaString.append(getStringToModeloResiduoCSV(m)) }
 
 
         var f: File = writeInFile(p, listaString)
@@ -157,7 +157,7 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
         return f
     }
 
-    private fun getStringToModeloResiduo(m : models.ModeloResiduo): String {
+    private fun getStringToModeloResiduoCSV(m : models.ModeloResiduo): String {
         return m.getStringScv()
     }
 
