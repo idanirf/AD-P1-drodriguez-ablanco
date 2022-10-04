@@ -48,5 +48,11 @@ import java.time.LocalDate
         return result
     }
 
+     fun getStringScv(): String {
+         //todo hacer csv string
+         return ""
 
-}
+     }
+
+
+ }

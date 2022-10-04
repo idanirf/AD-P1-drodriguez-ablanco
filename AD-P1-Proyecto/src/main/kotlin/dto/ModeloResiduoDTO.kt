@@ -24,8 +24,8 @@ class ModeloResiduoDTO(año: Int?,
     var toneladas: Int? = toneladas
 
 
-    fun DtoToMdeloRediduo() {
-        ModeloResiduo(
+    fun DtoToMdeloRediduo(): ModeloResiduo {
+        return ModeloResiduo(
             this.año,
             getMes(this.mes),
             this.lote,
@@ -43,14 +43,12 @@ class ModeloResiduoDTO(año: Int?,
              m.distrito,
              m.nombreDistrito,
              m.toneladas)
-    }
+
+
+}
 
     fun getStringScv(): String {
         return ""
-=======
-        return "${this.año.toString()};${this.mes.toString()};${this.lote.toString()}" +
-                ";${this.residuo?.toString()};${this.nombreDistrito},${this.toneladas.toString()}"
->>>>>>> parent of b997d54... cambiado alguna cosa del dto
     }
 
     fun getStringXml(): String {
@@ -102,5 +100,5 @@ class ModeloResiduoDTO(año: Int?,
         }
         return TipoResiduo.DESCONOCIDO
     }
-}
+
 
