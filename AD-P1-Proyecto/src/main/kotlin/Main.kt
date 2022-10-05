@@ -5,14 +5,19 @@ import interchange.InterchangeContenedoresVarios
 import interchange.InterchangeModeloResiduo
 import models.ContenedoresVarios
 import models.ModeloResiduo
+import java.io.File
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.logging.Logger
 
 
-//todo no se si esto esta bien aqui jejej comprobar
+
 private val logger: Logger = Logger.getLogger("Azahara y Dani Log")
 
-private val strings = arrayOf("parser", "a", "a", "a")
+val path : String= Paths.get("").toString()+ File.separator +
+        "data"
+
+private val strings = arrayOf("parser", path, path+File.separator + "copia")
 
 fun main(args: Array<String>) {
 
@@ -65,7 +70,7 @@ fun beginingParser(args: Array<String>) {
         logger.info(" cogiendo datos de archivo Modelo residuo ")
         var arrayListOfModeloResiduo = InterchangeModeloResiduo<ModeloResiduo>().csvToObject(Path.of(args[1]))
         logger.info(" cogiendo datos de contenedores Varios")
-        var arrayListOfContenedoreVarios = InterchangeModeloResiduo<ContenedoresVarios>().csvToObject(Path.of(args[1]))
+       var arrayListOfContenedoreVarios = InterchangeModeloResiduo<ContenedoresVarios>().csvToObject(Path.of(args[1]))
 
 
         //todo Una vez que tengamos cargado los dtos de arraylistModeoResidio con un join o un wait hacer por hilos
@@ -103,11 +108,10 @@ corresponde a la extensión o al formato deberá indicar error) y deberá proces
 generando en directorio_destino un resumen.html, aplicándoles los estilos
  */
 fun  beginingSumaryAll(args: Array<String>) {
-
+    logger.info("entramos en beginingSumaryAll")
     //para ver el tiempo que tarda
     var tInit = System.currentTimeMillis();
 
-    //TODO añadir log de que ha entrado en esa elecion
     val isCorrectData = CheckData().sumaryAll(args)
     if (isCorrectData){
         logger.info("los datos de la path son correctos")
@@ -140,13 +144,14 @@ procesarla generando en directorio_destino un resumen_distrito.html (solo si el 
 existe, si no deberá mostrar error), aplicándoles los estilos que creas oportunos
  */
 fun  beginingSumaryDistrict(args: Array<String>) {
+    logger.info("ha entrado en beginingSumaryDistrict")
 
     //para ver el tiempo que tarda
     var tInit = System.currentTimeMillis();
 
-    //TODO añadir log de que ha entrado en esa elecion
+
     val isCorrectData = CheckData().sumaryDistrict(args)
-    //TODO añadir log de si la elecion es correcta o no
+    logger.info("los datos correctos es : " + isCorrectData)
     //si es correctos llamamos  resume para hacer html
 
 

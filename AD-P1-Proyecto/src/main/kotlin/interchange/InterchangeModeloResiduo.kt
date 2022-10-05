@@ -173,7 +173,6 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
             bw.write(listaString.toString())
 
         } catch (e: Exception) {
-            //todo cambiar lo a error
             logger.info("el fichero existe")
         } finally {
             bw.close()
