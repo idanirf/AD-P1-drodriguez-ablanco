@@ -3,7 +3,7 @@ package models
 import enums.TipoContenedor
 import java.io.File
 
-data class ContenedoresVarios(
+ class ContenedoresVarios(
     val codigoInternoSituado: String?,
     val tipoContenedor: TipoContenedor?,
     val modelo: String?,
@@ -20,7 +20,11 @@ data class ContenedoresVarios(
     val TAG: String?
 
 )  {
-    fun getStringCSV(): String {
+    //creo que para que fucnione tienes que sacar las val del constructor ,
+     // no estoy segura pero fijate en e mio
+
+
+     fun getStringCSV(): String {
         return "${this.codigoInternoSituado};${this.tipoContenedor.toString()};${this.modelo};${this.descripcionModelo};" +
                 "${this.cantidad};${this.lote};${this.distrito};${this.barrio};${this.tipoVia};${this.nombre};${this.numero};" +
                 "${this.coordenadaX};${this.coordenadaY};${this.TAG}"

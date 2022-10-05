@@ -12,7 +12,6 @@ import java.util.logging.Logger
 //Clase finalizada para comprobar
 
 
-//todo no se si esto esta bien aqui jejej comprobar
 private val logger: Logger = Logger.getLogger("Azahara y Dani Log")
 
 
@@ -157,9 +156,10 @@ class CheckData {
     chekea que en la path esten los ficheros con los nombres correctos y en xml
      */
     private fun areFilesXml(args: Array<String>): Boolean {
+        logger.info("entrando en areFilesXml")
         if (Files.exists(Path.of(args[2] + File.separator + "modelo_residuos_2021.xml"))) {
             if (Files.exists(Path.of(args[2] + File.separator + "contenedores_varios.xml"))) {
-                //todo log einformation por datos correctos
+                logger.info("formato de fichero correcto")
                 return true
             }
         }

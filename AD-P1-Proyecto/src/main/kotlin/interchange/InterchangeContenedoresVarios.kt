@@ -71,7 +71,7 @@ funcion que pasa de un json a una lista de objetos
         return  lista
     }
 
-    fun getContenedoresVarios(line: String): ContenedoresVarios{
+    private  fun getContenedoresVarios(line: String): ContenedoresVarios{
         val campos = line.split(";")
 
         return ContenedoresVarios(
@@ -89,7 +89,7 @@ funcion que pasa de un json a una lista de objetos
             coordenadaX = campos[11],
             coordenadaY = campos[12],
             TAG = campos[13]
-        )
+       )
     }
 
     fun getEnumTipoContenedor(s: String): TipoContenedor {

@@ -5,14 +5,19 @@ import interchange.InterchangeContenedoresVarios
 import interchange.InterchangeModeloResiduo
 import models.ContenedoresVarios
 import models.ModeloResiduo
+import java.io.File
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.logging.Logger
 
 
 
 private val logger: Logger = Logger.getLogger("Azahara y Dani Log")
 
-private val strings = arrayOf("parser", "a", "a", "a")
+val path : String= Paths.get("").toString()+ File.separator +
+        "data"
+
+private val strings = arrayOf("parser", path, path+File.separator + "copia")
 
 fun main(args: Array<String>) {
 
@@ -65,7 +70,7 @@ fun beginingParser(args: Array<String>) {
         logger.info(" cogiendo datos de archivo Modelo residuo ")
         var arrayListOfModeloResiduo = InterchangeModeloResiduo<ModeloResiduo>().csvToObject(Path.of(args[1]))
         logger.info(" cogiendo datos de contenedores Varios")
-        var arrayListOfContenedoreVarios = InterchangeModeloResiduo<ContenedoresVarios>().csvToObject(Path.of(args[1]))
+       var arrayListOfContenedoreVarios = InterchangeModeloResiduo<ContenedoresVarios>().csvToObject(Path.of(args[1]))
 
 
         //todo Una vez que tengamos cargado los dtos de arraylistModeoResidio con un join o un wait hacer por hilos
