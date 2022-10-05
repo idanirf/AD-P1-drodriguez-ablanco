@@ -49,9 +49,7 @@ import java.time.LocalDate
     }
 
      fun getStringScv(): String {
-         //todo hacer csv string
-         return ""
-
+         return "$año";"$mes";"$lote";"$residuo";"$distrito";"$nombreDistrito";"$toneladas"
      }
 
 

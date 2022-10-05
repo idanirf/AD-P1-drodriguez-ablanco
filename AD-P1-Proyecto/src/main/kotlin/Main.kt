@@ -9,7 +9,7 @@ import java.nio.file.Path
 import java.util.logging.Logger
 
 
-//todo no se si esto esta bien aqui jejej comprobar
+
 private val logger: Logger = Logger.getLogger("Azahara y Dani Log")
 
 private val strings = arrayOf("parser", "a", "a", "a")
@@ -103,11 +103,10 @@ corresponde a la extensión o al formato deberá indicar error) y deberá proces
 generando en directorio_destino un resumen.html, aplicándoles los estilos
  */
 fun  beginingSumaryAll(args: Array<String>) {
-
+    logger.info("entramos en beginingSumaryAll")
     //para ver el tiempo que tarda
     var tInit = System.currentTimeMillis();
 
-    //TODO añadir log de que ha entrado en esa elecion
     val isCorrectData = CheckData().sumaryAll(args)
     if (isCorrectData){
         logger.info("los datos de la path son correctos")
@@ -140,13 +139,14 @@ procesarla generando en directorio_destino un resumen_distrito.html (solo si el 
 existe, si no deberá mostrar error), aplicándoles los estilos que creas oportunos
  */
 fun  beginingSumaryDistrict(args: Array<String>) {
+    logger.info("ha entrado en beginingSumaryDistrict")
 
     //para ver el tiempo que tarda
     var tInit = System.currentTimeMillis();
 
-    //TODO añadir log de que ha entrado en esa elecion
+
     val isCorrectData = CheckData().sumaryDistrict(args)
-    //TODO añadir log de si la elecion es correcta o no
+    logger.info("los datos correctos es : " + isCorrectData)
     //si es correctos llamamos  resume para hacer html
 
 
