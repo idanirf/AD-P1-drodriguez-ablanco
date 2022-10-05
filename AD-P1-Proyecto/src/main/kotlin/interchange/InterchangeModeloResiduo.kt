@@ -1,6 +1,7 @@
 package interchange
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import dto.ModeloResiduoDTO
 import enums.Meses
 import enums.TipoResiduo
@@ -113,9 +114,10 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
 
     fun xmlToObject (p : Path): ArrayList<models.ModeloResiduo> {
         logger.info(" entrado en funcion  xmlToObject")
-        
+
+
         var fichero = p.toFile()
-        var mapper = ObjectMapper();
+        var mapper = XmlMapper();
         var modelosResiduos = ArrayList<models.ModeloResiduo>()
         try {
 
@@ -126,15 +128,24 @@ class InterchangeModeloResiduo<ModeloResiduo> (){
             )
 
         } catch (e : IOException ) {
-            logger.info("error al leer el json")
+            logger.info("error al leer el Xml")
         }
 
         return  modelosResiduos
     }
 
-    fun objectToXml(arrayListOfModeloResiduo: ArrayList<ModeloResiduo>, of: Path) {
+    fun objectToXml(arrayListOfModeloResiduo: ArrayList<ModeloResiduo>, p: Path): File {
         logger.info(" entrado en funcion  objectToXml")
-        //todo hacer esta funcion con xml
+
+        var fichero = p.toFile()
+        var mapper = XmlMapper();
+        try {
+            mapper.writeValue(fichero, arrayListOfModeloResiduo);
+        } catch (e : IOException ) {
+            logger.info("error al crear xml")
+        }
+
+        return fichero
     }
 
 

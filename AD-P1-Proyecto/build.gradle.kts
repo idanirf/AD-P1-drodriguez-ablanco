@@ -20,7 +20,7 @@ repositories {
 dependencies {
     testImplementation(kotlin("test"))
 
-    //  Jackson  para Json y Xml
+    //  Jackson  para Json
     //  https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
     implementation ("com.fasterxml.jackson.core:jackson-databind:2.13.3")
 
@@ -32,6 +32,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.mockito/mockito-core
     testImplementation ("org.mockito:mockito-core:4.6.1")
 
+// https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml
+    implementation ("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.4")
 
 
 
