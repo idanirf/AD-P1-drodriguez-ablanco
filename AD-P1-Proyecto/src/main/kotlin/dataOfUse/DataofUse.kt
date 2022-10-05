@@ -1,21 +1,19 @@
 package dataOfUse
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
+import java.io.StringWriter
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.text.DateFormat
 import java.time.LocalDateTime
-import java.time.chrono.IsoChronology
 import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.logging.Logger
-import javax.print.attribute.standard.MediaSize.ISO
 
 
-//todo no se si esto esta bien aqui jejej comprobar porque no me van los logs aqui
 private val logger: Logger = Logger.getLogger("Azahara y Dani Log")
 
 /**
@@ -56,15 +54,12 @@ class DataofUse(tipoOpcion : String, exito: Boolean, tiempoEjecucion : Long) {
         logger.info("comprobando que es fichero exixte")
         if(Files.notExists(Path.of(path))){Files.createFile(Path.of(path))}
         var file : File = Path.of(path).toFile()
-
-        //crear una string de xml de este objeto
-        //todo crear xml con los datos
-        var string : String = ""
+        val mapper = XmlMapper()
+        val string: String = mapper.writeValueAsString(this)
 
         //añadir datos
         var bw = BufferedWriter(FileWriter(file))
         try {
-            //Todo comprobar que escrive sin sobreescribir lo anterior
             bw.write(string)
             logger.info("escrito ")
         }catch (e:Exception){
