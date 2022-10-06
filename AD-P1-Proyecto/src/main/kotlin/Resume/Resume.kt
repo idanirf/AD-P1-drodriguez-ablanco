@@ -1,5 +1,7 @@
 package Resume
 
+import dto.ContenedoresVariosDTO
+import dto.ModeloResiduoDTO
 import models.ContenedoresVarios
 import models.ModeloResiduo
 
