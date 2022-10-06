@@ -1,0 +1,4 @@
+package interchange
+
+class Xml {
+}
