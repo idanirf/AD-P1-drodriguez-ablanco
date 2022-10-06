@@ -3,26 +3,37 @@ package models
 import enums.TipoContenedor
 import java.io.File
 
- class ContenedoresVarios(
-    val codigoInternoSituado: String?,
-    val tipoContenedor: TipoContenedor?,
-    val modelo: String?,
-    val descripcionModelo: String?,
-    val cantidad: String?,
-    val lote: String?,
-    val distrito: String?,
-    val barrio: String?,
-    val tipoVia: String?,
-    val nombre: String?,
-    val numero: String?,
-    val coordenadaX: String?,
-    val coordenadaY: String?,
-    val TAG: String?
+ class ContenedoresVarios(codigoInternoSituado: String?,
+                          tipoContenedor: TipoContenedor?,
+                          modelo: String?,
+                          descripcionModelo: String?,
+                          cantidad: String?,
+                          lote: String?,
+                          distrito: String?,
+                          barrio: String?,
+                          tipoVia: String?,
+                          nombre: String?,
+                          numero: String?,
+                          coordenadaX: String?,
+                          coordenadaY: String?,
+                          TAG: String?
+
 
 )  {
-    //creo que para que fucnione tienes que sacar las val del constructor ,
-     // no estoy segura pero fijate en e mio
-
+     val codigoInternoSituado: String?= codigoInternoSituado
+     val tipoContenedor: TipoContenedor?=tipoContenedor
+     val modelo: String?=modelo
+     val descripcionModelo: String?= descripcionModelo
+     val cantidad: String?= cantidad
+     val lote: String?= lote
+     val distrito: String?= distrito
+     val barrio: String? = barrio
+     val tipoVia: String?= tipoVia
+     val nombre: String?= nombre
+     val numero: String?= numero
+     val coordenadaX: String?= coordenadaX
+     val coordenadaY: String?=coordenadaY
+     val TAG: String? = TAG
 
      fun getStringCSV(): String {
         return "${this.codigoInternoSituado};${this.tipoContenedor.toString()};${this.modelo};${this.descripcionModelo};" +

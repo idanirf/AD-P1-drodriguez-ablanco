@@ -1,8 +1,11 @@
 import Resume.Resume
 import chekData.CheckData
 import dataOfUse.DataofUse
-import interchange.InterchangeContenedoresVarios
-import interchange.InterchangeModeloResiduo
+import dto.ContenedoresVariosDTO
+import dto.ModeloResiduoDTO
+import interchange.Csv
+import interchange.Json
+import interchange.Xml
 import models.ContenedoresVarios
 import models.ModeloResiduo
 import java.io.File
@@ -68,22 +71,24 @@ fun beginingParser(args: Array<String>) {
     if(areCorrectDataInFiles){
         //Todo hacer con distintos hilos
         logger.info(" cogiendo datos de archivo Modelo residuo ")
-        var arrayListOfModeloResiduo = InterchangeModeloResiduo<ModeloResiduo>().csvToObject(Path.of(args[1]))
+        var arrayListOfModeloResiduo = Csv().csvToMoeloResiduo(Path.of(args[1]))
         logger.info(" cogiendo datos de contenedores Varios")
-       var arrayListOfContenedoreVarios = InterchangeModeloResiduo<ContenedoresVarios>().csvToObject(Path.of(args[1]))
+       var arrayListOfContenedoreVarios = Csv().csvToContenedoresVarios(Path.of(args[1]))
 
 
         //todo Una vez que tengamos cargado los dtos de arraylistModeoResidio con un join o un wait hacer por hilos
         logger.info(" mandando por hilos las creaciones de ficheros Modelo residuo ")
-        InterchangeModeloResiduo<ModeloResiduo>().objectToCsv( arrayListOfModeloResiduo , Path.of(args[2]))
-        InterchangeModeloResiduo<ModeloResiduo>().objectToJson(arrayListOfModeloResiduo ,Path.of(args[2]))
-        InterchangeModeloResiduo<ModeloResiduo>().objectToXml(arrayListOfModeloResiduo ,Path.of(args[2]))
+        Csv().ModeloRosiduoToCsv(arrayListOfModeloResiduo , Path.of(args[2]))
+        Json<ModeloResiduoDTO>().objectToJson(arrayListOfModeloResiduo , Path.of(args[2]))
+        Xml<ModeloResiduoDTO>().objectToXml(arrayListOfModeloResiduo,Path.of(args[2]))
+
 
         //todo Una vez que tengamos cargado los dtos de arraylistContenedores vvarios con un join o un wait hacer por hilos
         logger.info(" mandando por hilos las creaciones de ficheros Contenedores varios ")
-        InterchangeModeloResiduo<ModeloResiduo>().objectToCsv( arrayListOfModeloResiduo , Path.of(args[2]))
-        InterchangeModeloResiduo<ModeloResiduo>().objectToJson(arrayListOfModeloResiduo ,Path.of(args[2]))
-        InterchangeModeloResiduo<ModeloResiduo>().objectToXml(arrayListOfModeloResiduo ,Path.of(args[2]))
+        //todo falta por hacer
+       // Csv().contenedoresVariosToCsv(arrayListOfContenedoreVarios , Path.of(args[2]))
+        Json<ContenedoresVariosDTO>().objectToJson(arrayListOfContenedoreVarios , Path.of(args[2]))
+        Xml<ContenedoresVariosDTO>().objectToXml(arrayListOfContenedoreVarios,Path.of(args[2]))
 
         //todo con hilos esperamos a que esten todos los hilos terminados con join o con whait
 
@@ -120,10 +125,11 @@ fun  beginingSumaryAll(args: Array<String>) {
 
         //Todo hacer con distintos hilos
         logger.info(" cogiendo datos de archivo Modelo residuo ")
-        var arrayListOfModeloResiduo = InterchangeModeloResiduo<ModeloResiduo>().csvToObject(Path.of(args[1]))
-        logger.info(" cogiendo datos de contenedores Varios")
-        var arrayListOfContenedoreVarios = InterchangeContenedoresVarios<ContenedoresVarios>().csvToObject(Path.of(args[1]))
-
+        var arrayListOfModeloResiduoDTO = Csv().csvToMoeloResiduo(Path.of(args[1]))
+        var arrayListOfModeloResiduo =//todo modelo a tdo
+            logger.info(" cogiendo datos de contenedores Varios")
+        var arrayListOfContenedoreVariosDTO = Csv().csvToContenedoresVarios(Path.of(args[1]))
+        var arrayListOfContenedoreVarios//todo modelo a tdo
         //todo esperara con un oin o un wait a que los procesos terminen
         Resume().resumeAll(arrayListOfModeloResiduo ,arrayListOfContenedoreVarios)
 
