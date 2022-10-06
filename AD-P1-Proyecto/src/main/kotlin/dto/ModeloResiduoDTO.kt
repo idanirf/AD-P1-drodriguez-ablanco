@@ -15,6 +15,10 @@ class ModeloResiduoDTO(año: Int?,
                        distrito: String?,
                        nombreDistrito: String?,
                        toneladas: Int?) : Serializable {
+    fun getStringScv(): String {
+        return "$año";"$mes";"$lote";"$residuo";"$distrito";"$nombreDistrito";"$toneladas"
+    }
+
     var año: Int? = año
     var mes: String? = mes
     var lote: Int? = lote
