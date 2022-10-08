@@ -59,8 +59,14 @@ class Json<T> {
         }
 
 
-        Files.createFile(Path.of(p.toString()+File.separator+nombreFile+".json"))
-        logger.info("creando el fichero json ")
+        if (Files.notExists(Path.of(p.toString()+File.separator+nombreFile+".json"))){
+            Files.createFile(Path.of(p.toString()+File.separator+nombreFile+".json"))
+            logger.info("creando el fichero json ya que no exixte")
+        }else{
+            logger.info("cel fichero json ya exixte")
+        }
+
+
 
 
         var fichero : File = File(p.toString()+File.separator+nombreFile+".json")

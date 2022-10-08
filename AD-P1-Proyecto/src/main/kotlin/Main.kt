@@ -32,14 +32,25 @@ fun main(args: Array<String>) {
 
     //para falsear los datos ponemos aqui los comando
     val args : Array<String> = strings
+    //donde vamos a guardar los datos
+    val stringOfData = Paths.get("").toAbsolutePath().toString()+ File.separator +
+            "scr" + File.separator +
+            "main" + File.separator +
+            "kotlin" +File.separator +
+            "dataOfUse" +File.separator +
+            "DataRunnin.xml"
+    if (Files.notExists(Path.of(stringOfData))){
+        //todo no funcionan estos dos comandos ni el if ni el otro
+       // Files.createFile(Path.of(stringOfData))
+    }
 
-    println("Hello World!")
+
     val election : Int  = getElection(args)
     //poner log
     when (election){
-        1 -> beginingParser(args)
-        2 -> beginingSumaryAll(args)
-        3 -> beginingSumaryDistrict(args)
+        1 -> beginingParser(args,stringOfData)
+        2 -> beginingSumaryAll(args,stringOfData)
+        3 -> beginingSumaryDistrict(args,stringOfData)
     }
 
     //para comprobar
@@ -52,7 +63,7 @@ funcion que comprueva los args y si son ciestos debe tomar los ficheros csv
 del directorio origen y trasformalos en JSON y XML en el directorio destino. En dicho
 directorio destino deberán estar las tres versiones: CSV, JSON y XML.
  */
-fun beginingParser(args: Array<String>) {
+fun beginingParser(args: Array<String>, stringOfData : String) {
     logger.info(" Entrado en begininParser ")
 
     //para ver el tiempo que tarda
@@ -111,7 +122,12 @@ fun beginingParser(args: Array<String>) {
     var tFinal = System.currentTimeMillis();
     var tDiference= tFinal - tInit;
     //aqui ahy que poner en el archivo de guardar area lo que hemos hecho
-     DataofUse(tipoOpcion = "Parser", exito = areCorrectDataInFiles , tiempoEjecucion = tDiference)
+     var data = DataofUse(tipoOpcion = "Parser", exito = areCorrectDataInFiles , tiempoEjecucion = tDiference)
+   //Todo no funciona el Data od use 
+    // var dataList = ArrayList<DataofUse>()
+   // dataList.add(data)
+   // Xml<DataofUse>().objectToXml(dataList, Path.of(stringOfData))
+    logger.info("escrito datos")
 
 }
 
@@ -123,7 +139,7 @@ de los contenedores y de la recogida, independientemente de la extensión que te
 corresponde a la extensión o al formato deberá indicar error) y deberá procesarla
 generando en directorio_destino un resumen.html, aplicándoles los estilos
  */
-fun  beginingSumaryAll(args: Array<String>) {
+fun  beginingSumaryAll(args: Array<String>, stringOfData: String) {
     logger.info("entramos en beginingSumaryAll")
     //para ver el tiempo que tarda
     var tInit = System.currentTimeMillis();
@@ -160,7 +176,7 @@ tenga (si no corresponde a la extensión o al formato deberá indicar error) y d
 procesarla generando en directorio_destino un resumen_distrito.html (solo si el distrito
 existe, si no deberá mostrar error), aplicándoles los estilos que creas oportunos
  */
-fun  beginingSumaryDistrict(args: Array<String>) {
+fun  beginingSumaryDistrict(args: Array<String>, stringOfData: String) {
     logger.info("ha entrado en beginingSumaryDistrict")
 
     //para ver el tiempo que tarda

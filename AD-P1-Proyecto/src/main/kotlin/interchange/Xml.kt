@@ -2,9 +2,11 @@ package interchange
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import dataOfUse.DataofUse
 import java.io.File
 import java.io.IOException
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.logging.Logger
 
 class Xml<T> {
@@ -53,6 +55,24 @@ class Xml<T> {
         }
 
         return p.toFile()
+
+    }
+
+    fun writeData(p: String, data : DataofUse) {
+        logger.info(" entrado en funcion  write xml data")
+
+        // todo aqui falla
+        var fichero = Path.of(Paths.get("").toAbsolutePath().toString()+"datos").toFile()
+        var mapper = XmlMapper();
+        try {
+            logger.info(data.toString())
+            mapper.writeValue(fichero,data);
+        } catch (e : IOException) {
+            e.printStackTrace()
+            logger.info("error al crear Xml")
+        }
+
+
 
     }
 }
