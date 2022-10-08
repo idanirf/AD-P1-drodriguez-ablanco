@@ -9,6 +9,7 @@ import interchange.Xml
 import models.ContenedoresVarios
 import models.ModeloResiduo
 import java.io.File
+import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.logging.Logger
@@ -17,7 +18,9 @@ import java.util.logging.Logger
 
 private val logger: Logger = Logger.getLogger("Azahara y Dani Log")
 
-val path : String= Paths.get("").toString()+ File.separator +
+
+//con esto lo probamos
+val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator +
         "data"
 
 private val strings = arrayOf("parser", path, path+File.separator + "copia")
@@ -28,7 +31,7 @@ fun main(args: Array<String>) {
 
 
     //para falsear los datos ponemos aqui los comando
-    val args : Array<String> = arrayOf("parser","a","a","a")
+    val args : Array<String> = strings
 
     println("Hello World!")
     val election : Int  = getElection(args)
@@ -71,9 +74,9 @@ fun beginingParser(args: Array<String>) {
     if(areCorrectDataInFiles){
         //Todo hacer con distintos hilos
         logger.info(" cogiendo datos de archivo Modelo residuo ")
-        var arrayListOfModeloResiduo = Csv().csvToMoeloResiduo(Path.of(args[1]))
+        var arrayListOfModeloResiduo = Csv().csvToMoeloResiduo(Path.of(args[1]+File.separator+"modelo_residuos_2021.csv"))
         logger.info(" cogiendo datos de contenedores Varios")
-       var arrayListOfContenedoreVarios = Csv().csvToContenedoresVarios(Path.of(args[1]))
+       var arrayListOfContenedoreVarios = Csv().csvToContenedoresVarios(Path.of(args[1]+File.separator+"contenedores_varios.csv"))
 
 
         //todo Una vez que tengamos cargado los dtos de arraylistModeoResidio con un join o un wait hacer por hilos
@@ -129,9 +132,9 @@ fun  beginingSumaryAll(args: Array<String>) {
         var arrayListOfModeloResiduo =//todo modelo a tdo
             logger.info(" cogiendo datos de contenedores Varios")
         var arrayListOfContenedoreVariosDTO = Csv().csvToContenedoresVarios(Path.of(args[1]))
-        var arrayListOfContenedoreVarios//todo modelo a tdo
+        var arrayListOfContenedoreVarios = Csv().csvToContenedoresVarios(Path.of(args[1]))
         //todo esperara con un oin o un wait a que los procesos terminen
-        Resume().resumeAll(arrayListOfModeloResiduo ,arrayListOfContenedoreVarios)
+        //hacer el resume
 
     }
 
@@ -169,17 +172,17 @@ fun  beginingSumaryDistrict(args: Array<String>) {
 
         //Todo hacer con distintos hilos
         logger.info(" cogiendo datos de archivo Modelo residuo ")
-        var arrayListOfModeloResiduo = InterchangeModeloResiduo<ModeloResiduo>().csvToObject(Path.of(args[1]))
+        //    var arrayListOfModeloResiduo = InterchangeModeloResiduo<ModeloResiduo>().csvToObject(Path.of(args[1]))
         logger.info(" cogiendo datos de contenedores Varios")
-        var arrayListOfContenedoreVarios = InterchangeContenedoresVarios<ContenedoresVarios>().csvToObject(Path.of(args[1]))
+        //   var arrayListOfContenedoreVarios = InterchangeContenedoresVarios<ContenedoresVarios>().csvToObject(Path.of(args[1]))
 
         //todo esperara con un oin o un wait a que los procesos terminen
 
-        val isCorrectDistrict= CheckData().district(args[1], arrayListOfModeloResiduo,arrayListOfContenedoreVarios)
+        //val isCorrectDistrict= CheckData().district(args[1], arrayListOfModeloResiduo,arrayListOfContenedoreVarios)
 
         if (isCorrectData){
             logger.info("el distrito es correcto")
-            Resume().resumeDistrict(args[1], arrayListOfModeloResiduo ,arrayListOfContenedoreVarios)
+           // Resume().resumeDistrict(args[1], arrayListOfModeloResiduo ,arrayListOfContenedoreVarios)
         }else{
             logger.info("el distrito NO es correcto")
         }
@@ -207,10 +210,14 @@ fun getElection(args: Array<String>):Int{
     logger.info(" Entrado en get Elecion ")
 
     if(args.size == 4){
+        logger.info(" como los args son 4 devuelve elecion 3 ")
         return 3
     }else if(args[0]=="resumen"){
+        logger.info(" como los args no son 4  y es resumen devuelve elecion 2 ")
         return 2
-    }else{return 1}
+    }else{
+        logger.info(" como no es ninguna de las anteriores devuelve 1 ")
+        return 1}
 
 }
 

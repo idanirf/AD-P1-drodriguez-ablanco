@@ -21,27 +21,37 @@ class Csv {
     entra una path y extrae un alista de ModeloResiduo
      */
     public fun csvToMoeloResiduo(p : Path): ArrayList<ModeloResiduoDTO>{
-        logger.info(" entrado en csvToObjecto")
+        logger.info(" entrado ")
 
-        val br = BufferedReader(FileReader(p.toFile()))
+
         var lista = ArrayList<ModeloResiduoDTO>()
 
         try {
+            logger.info("buscando si el fuchero existe en " + p.toString())
             if(Files.exists(p)){
+                val br = BufferedReader(FileReader(p.toFile()))
+                try {
+                    logger.info(" fichero exixte ")
 
-                var lineas = br.readText()
-                var modelosResiduosCollection= Files.lines(p)
-                    .skip(1)
-                    .map(this::getModelRediduoDTO)
-                    .collect(Collectors.toList());
-                modelosResiduosCollection.forEach { m -> lista.add(m) }
+                    var lineas = br.readText()
+                    logger.info(" lineas leidas")
+                    var modelosResiduosCollection= Files.lines(p)
+                        .skip(1)
+                        .map(this::getModelRediduoDTO)
+                        .collect(Collectors.toList());
+
+                    modelosResiduosCollection.forEach { m -> lista.add(m) }
+
+                }catch (e : Exception){
+
+                }finally {
+                    br.close()
+                }
 
             }
         }catch (e : Exception) {
             println(" entro en la excepcion por csvtoobject")
 
-        }finally {
-            br.close()
         }
         return lista
     }
@@ -52,7 +62,7 @@ class Csv {
     public fun ModeloRosiduoToCsv(a : ArrayList<ModeloResiduoDTO>, p : Path): File {
         logger.info(" entrado en Modelo residuo ToCsv")
 
-        var listaString = StringBuilder().append("año;mes;Meses;lote;Int;residuo;TipoResiduo;distrito;nombreDistrito;toneladas\n")
+        var listaString = StringBuilder().append("año;mes;Meses;lote;Int;residuo;TipoResiduo;distrito;nombreDistrito;toneladas")
         a.forEach { m -> listaString.append(getStringToModeloResiduoCSV(m)) }
 
 
@@ -86,8 +96,20 @@ class Csv {
         return  lista
     }
 
-    //Todo falta funcion de contenedores varios a csv
 
+    public fun ContenedoresVariosToCsv(a : ArrayList<ContenedoresVariosDTO>, p : Path): File {
+        logger.info(" entrado en contenedores varios ToCsv")
+
+
+        var listaString = StringBuilder().append("codigoInternoSituado; tipoContenedor;modelo;descripcionModelo" +
+                ";cantidad;lote;distrito;barrio;tipoVia;nombre;numero;coordenadaX;coordenadaY;TAG")
+        a.forEach { m -> listaString.append(getStringToMContenedoresVarios(m)) }
+
+
+        var fi: File = writeInFile(p, listaString)
+
+        return fi
+    }
     //    -------------otros extras--------------------------------------------------
 
     fun writeInFile(p: Path, listaString: java.lang.StringBuilder): File {
@@ -118,7 +140,13 @@ class Csv {
 
 
     private fun getStringToModeloResiduoCSV(m : ModeloResiduoDTO): String {
-        return m.getStringScv()
+        return "${m.año};${m.mes};${m.lote};${m.residuo};${m.distrito};" +
+                    "${m.nombreDistrito};${m.toneladas}"
+    }
+    private fun getStringToMContenedoresVarios(m: ContenedoresVariosDTO): String? {
+        return "${m.codigoInternoSituado};${m.tipoContenedor};${m.modelo};${m.descripcionModelo};" +
+                "${m.cantidad};${m.lote};${m.distrito};${m.barrio};${m.tipoVia};${m.nombre};"+
+                "${m.numero};${m.coordenadaX};${m.coordenadaY};${m.TAG}"
     }
 
     private fun getContenedoresVariosDto(line: String): ContenedoresVariosDTO {
