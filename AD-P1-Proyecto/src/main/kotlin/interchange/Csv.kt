@@ -66,7 +66,7 @@ class Csv {
         a.forEach { m -> listaString.append(getStringToModeloResiduoCSV(m)) }
 
 
-        var fi: File = writeInFile(p, listaString)
+        var fi: File = writeInFile(p, Path.of(p.toString()+File.separator+ "modelo_residuo.csv"), listaString)
 
         return fi
     }
@@ -75,23 +75,31 @@ class Csv {
 
 
     public fun csvToContenedoresVarios(p: Path): ArrayList<ContenedoresVariosDTO> {
-        logger.info("Accediendo a la función CSV to Contenedores varios")
-        val br = BufferedReader(FileReader(p.toFile()))
+        logger.info("iniciando")
+
         var lista = ArrayList<ContenedoresVariosDTO>()
 
         try {
+            logger.info("cojiendo datos de "+ p)
             if (Files.exists(p)){
-                var line = br.readLine()
-                var contenedoresVariosCollection = Files.lines(p)
-                    .skip(1)
-                    .map(this::getContenedoresVariosDto)
-                    .collect(Collectors.toList())
-                contenedoresVariosCollection.forEach { m -> lista.add(m)}
+                val br = BufferedReader(FileReader(p.toFile()))
+                try {
+
+                    var line = br.readLine()
+                    var contenedoresVariosCollection = Files.lines(p)
+                        .skip(1)
+                        .map(this::getContenedoresVariosDto)
+                        .collect(Collectors.toList())
+                    contenedoresVariosCollection.forEach { m -> lista.add(m)}
+                }catch (e : Exception){
+
+                }finally {
+                    br.close()
+                }
+
             }
         } catch (e: Exception){
             logger.severe(e.toString())
-        }finally {
-            br.close()
         }
         return  lista
     }
@@ -106,23 +114,35 @@ class Csv {
         a.forEach { m -> listaString.append(getStringToMContenedoresVarios(m)) }
 
 
-        var fi: File = writeInFile(p, listaString)
+        var fi: File = writeInFile(p, Path.of(p.toString()+"contenedoresVarios.csv") ,listaString)
 
         return fi
     }
     //    -------------otros extras--------------------------------------------------
 
-    fun writeInFile(p: Path, listaString: java.lang.StringBuilder): File {
+    fun writeInFile(pathDeDirectorio: Path, pathDeFichero: Path, listaString: java.lang.StringBuilder): File {
+
+        //ver si el directorio exixte, si no crearlo
+        if(Files.exists(pathDeDirectorio) && (Files.isDirectory(pathDeDirectorio))){
+            logger.info(" la carpeta donde guardar ficheros nuevos exixte y es un directorio")
+        }else{
+            logger.info(" creamos la carpeta porue no exsite para guardar ficheros ")
+            Files.createDirectory(pathDeDirectorio)
+            logger.info(" creada ")
+        }
+
+
         logger.info("Escribiendo en fichero")
         var f: File
-        if (Files.notExists(p)) {
+        if (Files.notExists(pathDeFichero)) {
             logger.info("El fichero no existe")
-            f = File(p.toString())
+            f = File(pathDeFichero.toString())
             logger.info("creado")
         } else {
             logger.info("el fichero existe")
-            f = p.toFile()
+            f = pathDeFichero.toFile()
         }
+        logger.info(" escribiendo en : " + pathDeFichero)
         val bw = BufferedWriter(FileWriter(f))
         try {
             logger.info("Escribiendo en el fichero")
@@ -151,6 +171,7 @@ class Csv {
 
     private fun getContenedoresVariosDto(line: String): ContenedoresVariosDTO {
         val campos = line.split(";")
+        logger.info("pasando de string a contenedor varios dto")
 
         return ContenedoresVariosDTO(
             codigoInternoSituado = campos[0],

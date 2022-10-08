@@ -76,15 +76,19 @@ fun beginingParser(args: Array<String>) {
         logger.info(" cogiendo datos de archivo Modelo residuo ")
         var arrayListOfModeloResiduo = Csv().csvToMoeloResiduo(Path.of(args[1]+File.separator+"modelo_residuos_2021.csv"))
         logger.info(" cogiendo datos de contenedores Varios")
-       var arrayListOfContenedoreVarios = Csv().csvToContenedoresVarios(Path.of(args[1]+File.separator+"contenedores_varios.csv"))
-
+        var arrayListOfContenedoreVarios = Csv().csvToContenedoresVarios(Path.of(args[1]+File.separator+"contenedores_varios.csv"))
+        logger.info(" leidos los dos ficheros ")
 
         //todo Una vez que tengamos cargado los dtos de arraylistModeoResidio con un join o un wait hacer por hilos
-        logger.info(" mandando por hilos las creaciones de ficheros Modelo residuo ")
+        logger.info(" creamos ficheros Modelo residuo ")
+        logger.info(" csv ")
         Csv().ModeloRosiduoToCsv(arrayListOfModeloResiduo , Path.of(args[2]))
+        logger.info(" json")
         Json<ModeloResiduoDTO>().objectToJson(arrayListOfModeloResiduo , Path.of(args[2]))
-        Xml<ModeloResiduoDTO>().objectToXml(arrayListOfModeloResiduo,Path.of(args[2]))
+        logger.info(" xml ")
+        Xml<ModeloResiduoDTO>().objectToXml(arrayListOfModeloResiduo,Path.of(args[2]+File.separator+"modelo_residuos_2021.xml"))
 
+        logger.info(" creados todos los ficheros")
 
         //todo Una vez que tengamos cargado los dtos de arraylistContenedores vvarios con un join o un wait hacer por hilos
         logger.info(" mandando por hilos las creaciones de ficheros Contenedores varios ")
