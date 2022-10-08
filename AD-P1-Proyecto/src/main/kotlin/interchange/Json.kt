@@ -1,6 +1,7 @@
 package interchange
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import dto.ModeloResiduoDTO
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
@@ -49,11 +50,20 @@ class Json<T> {
             Files.createDirectory(p)
         }
 
-        Files.createFile(Path.of(p.toString()+File.separator+"modelo_residuos_2021.json"))
+
+        var nombreFile: String
+        if(objects.get(0) is ModeloResiduoDTO){
+            nombreFile="modelo_residuo"
+        }else{
+            nombreFile="contenedores_varios"
+        }
+
+
+        Files.createFile(Path.of(p.toString()+File.separator+nombreFile+".json"))
         logger.info("creando el fichero json ")
 
 
-        var fichero : File = File(p.toString()+File.separator+"modelo_residuos_2021.json")
+        var fichero : File = File(p.toString()+File.separator+nombreFile+".json")
         var mapper = ObjectMapper();
         try {
             mapper.writeValue(fichero, objects);

@@ -86,16 +86,20 @@ fun beginingParser(args: Array<String>) {
         logger.info(" json")
         Json<ModeloResiduoDTO>().objectToJson(arrayListOfModeloResiduo , Path.of(args[2]))
         logger.info(" xml ")
-        Xml<ModeloResiduoDTO>().objectToXml(arrayListOfModeloResiduo,Path.of(args[2]+File.separator+"modelo_residuos_2021.xml"))
+        Xml<ModeloResiduoDTO>().objectToXml(arrayListOfModeloResiduo,Path.of(args[2]+File.separator+"modelo_residuos.xml"))
 
-        logger.info(" creados todos los ficheros")
+        logger.info(" creados todos los ficheros de modelo residuos")
 
         //todo Una vez que tengamos cargado los dtos de arraylistContenedores vvarios con un join o un wait hacer por hilos
-        logger.info(" mandando por hilos las creaciones de ficheros Contenedores varios ")
-        //todo falta por hacer
-       // Csv().contenedoresVariosToCsv(arrayListOfContenedoreVarios , Path.of(args[2]))
+        logger.info(" creamos ficheros contenedores varios ")
+        logger.info(" csv ")
+        Csv().ContenedoresVariosToCsv(arrayListOfContenedoreVarios , Path.of(args[2]))
+        logger.info(" json")
         Json<ContenedoresVariosDTO>().objectToJson(arrayListOfContenedoreVarios , Path.of(args[2]))
-        Xml<ContenedoresVariosDTO>().objectToXml(arrayListOfContenedoreVarios,Path.of(args[2]))
+        logger.info(" xml ")
+        Xml<ContenedoresVariosDTO>().objectToXml(arrayListOfContenedoreVarios,Path.of(args[2]+File.separator+"contenedores_varios.xml"))
+
+        logger.info(" creados todos los ficheros")
 
         //todo con hilos esperamos a que esten todos los hilos terminados con join o con whait
 
