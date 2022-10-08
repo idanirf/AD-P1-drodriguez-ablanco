@@ -5,6 +5,7 @@ import dto.ModeloResiduoDTO
 import enums.Meses
 import enums.TipoContenedor
 import enums.TipoResiduo
+import mappers.MaperModeloResiduo
 import java.io.*
 import java.nio.file.Files
 import java.nio.file.Path
@@ -23,7 +24,7 @@ class Csv {
         logger.info(" entrado en csvToObjecto")
 
         val br = BufferedReader(FileReader(p.toFile()))
-        var lista = ArrayList<models.ModeloResiduo>()
+        var lista = ArrayList<ModeloResiduoDTO>()
 
         try {
             if(Files.exists(p)){
@@ -31,9 +32,9 @@ class Csv {
                 var lineas = br.readText()
                 var modelosResiduosCollection= Files.lines(p)
                     .skip(1)
-                    .map(this::getModelRediduo)
+                    .map(this::getModelRediduoDTO)
                     .collect(Collectors.toList());
-                modelosResiduosCollection.forEach { m -> lista.add(m.DtoToMdeloRediduo()) }
+                modelosResiduosCollection.forEach { m -> lista.add(m) }
 
             }
         }catch (e : Exception) {
@@ -116,7 +117,7 @@ class Csv {
     }
 
 
-    private fun getStringToModeloResiduoCSV(m : models.ModeloResiduo): String {
+    private fun getStringToModeloResiduoCSV(m : ModeloResiduoDTO): String {
         return m.getStringScv()
     }
 
@@ -145,7 +146,7 @@ class Csv {
     /**
      * funcion que pasandole una linea de un scv te debuelve un ModeloResiduo
      */
-    private fun getModelRediduo(linea : String): ModeloResiduoDTO {
+    private fun getModelRediduoDTO(linea : String): ModeloResiduoDTO {
         logger.info(" entra a  getModel resituo")
 
         val campos  = linea.split(";")

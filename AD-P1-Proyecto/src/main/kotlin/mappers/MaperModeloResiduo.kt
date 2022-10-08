@@ -77,6 +77,8 @@ class MaperModeloResiduo {
         }
         return TipoResiduo.DESCONOCIDO
     }
+
+
 }
 
 
