@@ -113,6 +113,8 @@ class CheckData {
     }
 
     private fun areFileJsonModeloResiduo(args: Array<String>): Boolean {
+        logger.info("comenzando el check")
+        logger.info(args[2] + File.separator + "modelo_residuos_2021.json")
         try {
             //exixten los ficheros en csv
             if (Files.exists(Path.of(args[2] + File.separator + "modelo_residuos_2021.json"))) {
@@ -126,8 +128,10 @@ class CheckData {
     }
 
     private fun isFileCsvContenedoresVarios(args: Array<String>): Boolean {
+
+        logger.info("comenzando el check en " +args[1] + File.separator + "contenedores_varios.csv")
         try {
-                if (Files.exists(Path.of(args[2] + File.separator + "contenedores_varios.csv"))) {
+                if (Files.exists(Path.of(args[1] + File.separator + "contenedores_varios.csv"))) {
                     logger.info("el fichero es csv")
                     return true
                 }
@@ -138,9 +142,10 @@ class CheckData {
     }
 
     private fun isFileCsvModeloResiduo(args: Array<String>): Boolean {
+        logger.info( "comenzando el check en " + args[1] + File.separator + "modelo_residuos_2021.csv")
         try {
             //exixten los ficheros en csv
-            if (Files.exists(Path.of(args[2] + File.separator + "modelo_residuos_2021.csv"))) {
+            if (Files.exists(Path.of(args[1] + File.separator + "modelo_residuos_2021.csv"))) {
                     logger.info("el fichero es csv")
                     return true
             }

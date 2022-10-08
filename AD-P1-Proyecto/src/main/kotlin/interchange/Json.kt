@@ -3,6 +3,7 @@ package interchange
 import com.fasterxml.jackson.databind.ObjectMapper
 import java.io.File
 import java.io.IOException
+import java.nio.file.Files
 import java.nio.file.Path
 import java.util.logging.Logger
 
@@ -42,8 +43,17 @@ class Json<T> {
     fun objectToJson(objects: ArrayList<T>, p: Path): File {
 
         logger.info(" entrado en funcion  objectToJson")
+        if(Files.exists(p)&& Files.isDirectory(p)){
+            logger.info("el directorio existe")
+        }else{
+            Files.createDirectory(p)
+        }
 
-        var fichero = p.toFile()
+        Files.createFile(Path.of(p.toString()+File.separator+"modelo_residuos_2021.json"))
+        logger.info("creando el fichero json ")
+
+
+        var fichero : File = File(p.toString()+File.separator+"modelo_residuos_2021.json")
         var mapper = ObjectMapper();
         try {
             mapper.writeValue(fichero, objects);
