@@ -1,6 +1,7 @@
 package dataOfUse
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import interchange.Xml
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
@@ -38,38 +39,6 @@ class DataofUse(tipoOpcion : String, exito: Boolean, tiempoEjecucion : Long) {
     var exito : Boolean = exito
     val tiempoDeEjecucion : Long = tiempoEjecucion
 
-    init {
-        logger.info("cerrando el escritor del fichero")
-
-        //path del archivo
-
-        val path : String= Paths.get("").toString()+ File.separator +
-                "scr" + File.separator +
-                "main" + File.separator +
-                "kotlin" +File.separator +
-                "dataOfUse" +File.separator +
-                "DataRunnin.xml"
-
-        //ver si existe el fichero si no crearlo
-        logger.info("comprobando que es fichero exixte")
-        if(Files.notExists(Path.of(path))){Files.createFile(Path.of(path))}
-        var file : File = Path.of(path).toFile()
-        val mapper = XmlMapper()
-        val string: String = mapper.writeValueAsString(this)
-
-        //añadir datos
-        var bw = BufferedWriter(FileWriter(file))
-        try {
-            bw.write(string)
-            logger.info("escrito ")
-        }catch (e:Exception){
-            logger.info("error: cno se a podido escribir ")
-        }finally{
-            bw.close()
-            logger.info("finalizado el bw ")
-        }
-
-    }
 
 
 }

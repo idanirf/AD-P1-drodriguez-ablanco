@@ -114,7 +114,7 @@ class Csv {
         a.forEach { m -> listaString.append(getStringToMContenedoresVarios(m)) }
 
 
-        var fi: File = writeInFile(p, Path.of(p.toString()+"contenedoresVarios.csv") ,listaString)
+        var fi: File = writeInFile(p, Path.of(p.toString()+File.separator+ "contenedores_Varios.csv"), listaString)
 
         return fi
     }
@@ -130,6 +130,7 @@ class Csv {
             Files.createDirectory(pathDeDirectorio)
             logger.info(" creada ")
         }
+
 
 
         logger.info("Escribiendo en fichero")
