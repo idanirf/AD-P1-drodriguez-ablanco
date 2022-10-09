@@ -33,16 +33,8 @@ fun main(args: Array<String>) {
     //para falsear los datos ponemos aqui los comando
     val args : Array<String> = strings
     //donde vamos a guardar los datos
-    val stringOfData = Paths.get("").toAbsolutePath().toString()+ File.separator +
-            "scr" + File.separator +
-            "main" + File.separator +
-            "kotlin" +File.separator +
-            "dataOfUse" +File.separator +
-            "DataRunnin.xml"
-    if (Files.notExists(Path.of(stringOfData))){
-        //todo no funcionan estos dos comandos ni el if ni el otro
-       // Files.createFile(Path.of(stringOfData))
-    }
+    val stringOfData =Paths.get("").toAbsolutePath().toString()+ File.separator +
+            "data"+File.separator +"DataOfAllUses"+File.separator +"datos.xml"
 
 
     val election : Int  = getElection(args)
@@ -121,12 +113,10 @@ fun beginingParser(args: Array<String>, stringOfData : String) {
     //para ver cuanto tarda
     var tFinal = System.currentTimeMillis();
     var tDiference= tFinal - tInit;
-    //aqui ahy que poner en el archivo de guardar area lo que hemos hecho
-     var data = DataofUse(tipoOpcion = "Parser", exito = areCorrectDataInFiles , tiempoEjecucion = tDiference)
-   //Todo no funciona el Data od use 
-    // var dataList = ArrayList<DataofUse>()
-   // dataList.add(data)
-   // Xml<DataofUse>().objectToXml(dataList, Path.of(stringOfData))
+
+    var data = DataofUse(tipoOpcion = "Parser", exito = areCorrectDataInFiles , tiempoEjecucion = tDiference)
+    logger.info(data.toString())
+    Xml<DataofUse>().writeData( Path.of(stringOfData),data)
     logger.info("escrito datos")
 
 }

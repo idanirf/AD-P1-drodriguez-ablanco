@@ -2,9 +2,11 @@ package interchange
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
+import com.sun.source.tree.IfTree
 import dataOfUse.DataofUse
 import java.io.File
 import java.io.IOException
+import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.logging.Logger
@@ -58,21 +60,21 @@ class Xml<T> {
 
     }
 
-    fun writeData(p: String, data : DataofUse) {
+    fun writeData(p: Path, data : DataofUse) {
+
         logger.info(" entrado en funcion  write xml data")
 
-        // todo aqui falla
-        var fichero = Path.of(Paths.get("").toAbsolutePath().toString()+"datos").toFile()
+
+
+
+        var fichero = p.toFile()
         var mapper = XmlMapper();
         try {
-            logger.info(data.toString())
-            mapper.writeValue(fichero,data);
+            logger.info("escribiendo en el fichero")
+            mapper.writeValue(fichero, data);
         } catch (e : IOException) {
-            e.printStackTrace()
             logger.info("error al crear Xml")
         }
-
-
-
+        logger.info("se ha creado el  Xml")
     }
 }
