@@ -30,15 +30,15 @@ XML un listado de las ejecuciones con la siguiente información:
 class DataofUse(tipoOpcion : String, exito: Boolean, tiempoEjecucion : Long) {
 
     val id = UUID.randomUUID()
-
     //SO 8601: la porción de la fecha sigue el formato YYYY-MM-DD ejemplo: 2016-06-01T14:41:36-08:00.
-    val instanteTemporal = LocalDateTime.now()
-    val instante  = instanteTemporal.format(DateTimeFormatter.ISO_DATE_TIME)
-
+    val instanteFormatoISO  = LocalDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME)
     val tipoOpcion : String =  tipoOpcion
     var exito : Boolean = exito
     val tiempoDeEjecucion : Long = tiempoEjecucion
 
+    override fun toString(): String {
+        return "DataofUse(id=$id, instanteFormatoISO='$instanteFormatoISO', tipoOpcion='$tipoOpcion', exito=$exito, tiempoDeEjecucion=$tiempoDeEjecucion)"
+    }
 
 
 }

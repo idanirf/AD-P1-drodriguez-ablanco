@@ -1,6 +1,7 @@
 package interchange
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.SerializationFeature
 import dto.ModeloResiduoDTO
 import java.io.File
 import java.io.IOException
@@ -72,6 +73,7 @@ class Json<T> {
         var fichero : File = File(p.toString()+File.separator+nombreFile+".json")
         var mapper = ObjectMapper();
         try {
+            mapper.enable(SerializationFeature.INDENT_OUTPUT);
             mapper.writeValue(fichero, objects);
         } catch (e : IOException) {
             logger.info("error al crear json")
