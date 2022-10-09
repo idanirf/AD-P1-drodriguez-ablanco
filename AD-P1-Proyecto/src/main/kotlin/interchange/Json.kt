@@ -16,19 +16,20 @@ class Json<T> {
     /**
     funcion que pasa de un json a una lista de objetos
      */
-    fun jsonToObject(p : Path, classValue: ClassValue<T>): ArrayList<T>{
+    fun jsonToObject(p : Path, t : T): ArrayList<T>{
         logger.info(" entrado en funcion  jsonto object")
 
         var fichero = p.toFile()
         var mapper = ObjectMapper();
         var arrayOfObjects = ArrayList<T>()
 
+        var clase = t.class
         try {
 
             arrayOfObjects = mapper.readValue(
-                fichero, mapper.typeFactory.constructCollectionType(
-                    ArrayList::class.java,
-                    classValue.javaClass)
+                fichero,
+                mapper.typeFactory.constructCollectionType(
+                    ArrayList::class.java, clase.)
             )
 
         } catch (e : IOException) {

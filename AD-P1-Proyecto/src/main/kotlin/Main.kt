@@ -1,4 +1,3 @@
-import Resume.Resume
 import chekData.CheckData
 import dataOfUse.DataofUse
 import dto.ContenedoresVariosDTO
@@ -6,14 +5,12 @@ import dto.ModeloResiduoDTO
 import interchange.Csv
 import interchange.Json
 import interchange.Xml
-import models.ContenedoresVarios
-import models.ModeloResiduo
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.logging.Logger
-
+import java.util.stream.Stream
 
 
 private val logger: Logger = Logger.getLogger("Azahara y Dani Log")
@@ -23,30 +20,30 @@ private val logger: Logger = Logger.getLogger("Azahara y Dani Log")
 val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator +
         "data"
 
-private val strings = arrayOf("parser", path, path+File.separator + "copia")
+//para probar el beging
+// private val strings = arrayOf("parser", path, path+File.separator + "copia")
+
+//para probar el parse all
+private val strings = arrayOf("", path, path+File.separator + "copia")
 
 fun main(args: Array<String>) {
 
     logger.info(" Iniciando Programa")
 
-
     //para falsear los datos ponemos aqui los comando
     val args : Array<String> = strings
+
     //donde vamos a guardar los datos
     val stringOfData =Paths.get("").toAbsolutePath().toString()+ File.separator +
             "data"+File.separator +"DataOfAllUses"+File.separator +"datos.xml"
 
-
     val election : Int  = getElection(args)
-    //poner log
+
     when (election){
         1 -> beginingParser(args,stringOfData)
         2 -> beginingSumaryAll(args,stringOfData)
         3 -> beginingSumaryDistrict(args,stringOfData)
     }
-
-    //para comprobar
-    logger.info("la elecione es $election")
 
 }
 /**
@@ -122,8 +119,9 @@ fun beginingParser(args: Array<String>, stringOfData : String) {
 }
 
 /**
- * puede leer de csv json o xml, pero tiene que tener todos los datos
  *
+resumen path parh
+puede leer de csv json o xml, pero tiene que tener todos los datos
 funcion que comprueva los args y si son ciestos debe tomar la información
 de los contenedores y de la recogida, independientemente de la extensión que tenga (si no
 corresponde a la extensión o al formato deberá indicar error) y deberá procesarla
@@ -134,7 +132,61 @@ fun  beginingSumaryAll(args: Array<String>, stringOfData: String) {
     //para ver el tiempo que tarda
     var tInit = System.currentTimeMillis();
 
-    val isCorrectData = CheckData().sumaryAll(args)
+    var isCorrectData = CheckData().sumaryAll(args)
+    //para comprobar los datos tengo que ver si de todos los ficheros que hay en ese directorio hay
+    //alguno que se lea y que dentro dependiendo el formato coincida con los datos wue queremos
+
+    //1. sacar todos los ficheros qe hay en el directorio
+    //2. ver en cada uno hasta que sea el que queremos
+    //3. ver el formato, leerlo segun el formato, y ver si tienen los datos
+
+    //1.sacar todos los ficheros del directorio
+    if(args[0]!="resumen"){
+        logger.info("el primer args No es resume la opcion no es correcta")
+        isCorrectData=false
+    }else{
+        logger.info("el primer args en resume")
+        if (Files.notExists(Path.of(args[1])) && !Files.isDirectory(Path.of(args[1]))){
+            logger.info("el path de los archivos No exixte o NO es un directorio")
+        }else{
+            logger.info("el path de los archivos exixte y es un directorio")
+
+            //listar todos los archivos dentro de un directorio y quedarnos con los de formato correcto
+            var regrexJson = Regex(".json$")
+            var regrexXml = Regex(".xml$")
+            var regrexCsv = Regex(".csv$")
+
+            var ficheros : Stream<Path>  = Files.list(Path.of(args[1]))
+
+            var ficherosReadble = ficheros.filter { p -> Files.isReadable(p) }
+            var ficherosJson = ficherosReadble.filter { p -> path.matches(regrexJson) }
+            var ficherosXml = ficherosReadble.filter { p -> path.matches(regrexXml) }
+            var ficherosCsv = ficherosReadble.filter { p -> path.matches(regrexCsv) }
+
+            //con cada uno porbamos si se pueden leer y son de los que queremos, quitaremos con excepciones
+
+
+          var listaDeFicheroJson = ficherosJson.toArray()
+            var encontrado = false
+            while (listaDeFicheroJson.size!=0 || encontrado==true)
+                var fichero = listaDeFicheroJson[0]
+                try {
+                    var fichero = Json<ModeloResiduoDTO>.jsonToObject(fichero)
+                }
+
+            }
+
+
+
+
+
+
+        }
+
+
+
+    }
+    if(Files.exists(args[1]))
     if (isCorrectData){
         logger.info("los datos de la path son correctos")
 
