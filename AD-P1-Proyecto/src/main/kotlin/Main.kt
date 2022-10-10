@@ -5,6 +5,7 @@ import dto.ModeloResiduoDTO
 import interchange.Csv
 import interchange.Json
 import interchange.Xml
+import mappers.MaperModeloResiduo
 import models.ContenedoresVarios
 import java.io.File
 import java.nio.file.Files
@@ -240,7 +241,7 @@ fun doResumen(pathOfContenedoresVarios : Path, pathDeModeloResiduo : Path) : Boo
 
 fun doMappetToContenedresVarios(array: ArrayList<ContenedoresVariosDTO>): ArrayList<ContenedoresVarios> {
 
-    Conte
+    MaperModeloResiduo
 
     try {
 
