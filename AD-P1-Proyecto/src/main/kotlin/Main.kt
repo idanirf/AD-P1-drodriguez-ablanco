@@ -11,6 +11,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.logging.Logger
 import java.util.stream.Stream
+import kotlin.streams.toList
 
 
 private val logger: Logger = Logger.getLogger("Azahara y Dani Log")
@@ -159,24 +160,40 @@ fun  beginingSumaryAll(args: Array<String>, stringOfData: String) {
             var ficheros : Stream<Path>  = Files.list(Path.of(args[1]))
 
             var ficherosReadble = ficheros.filter { p -> Files.isReadable(p) }
-            var ficherosJson = ficherosReadble.filter { p -> path.matches(regrexJson) }
-            var ficherosXml = ficherosReadble.filter { p -> path.matches(regrexXml) }
-            var ficherosCsv = ficherosReadble.filter { p -> path.matches(regrexCsv) }
+            var ficherosJson = ficherosReadble.filter { p -> path.matches(regrexJson) }.toList()
+            var ficherosXml = ficherosReadble.filter { p -> path.matches(regrexXml) }.toList()
+            var ficherosCsv = ficherosReadble.filter { p -> path.matches(regrexCsv) }.toList()
 
             //con cada uno porbamos si se pueden leer y son de los que queremos, quitaremos con excepciones
 
+            var pathModeloResiduo : Path?
+            var pathContenedoresVarios : Path?
 
-          var listaDeFicheroJson = ficherosJson.toArray()
-            var encontrado = false
-            while (listaDeFicheroJson.size!=0 || encontrado==true)
-                var fichero = listaDeFicheroJson[0]
-                try {
-                    var fichero = Json<ModeloResiduoDTO>.jsonToObject(fichero)
-                }
+            pathModeloResiduo = searchCorrectFileInJsonFiles(ficherosJson)
 
+            if (pathModeloResiduo == null){
+                pathModeloResiduo = searchCorrectFileInxmlFiles(ficherosXml)
+            }
+            if (pathModeloResiduo == null) {
+                pathModeloResiduo = searchCorrectFileInCsvFiles(ficherosCsv)
             }
 
+            if (pathModeloResiduo==null){
+                logger.info("no hay ningun archivo en la path que contenga los datos necesarios ")
+            }else{
+                logger.info("exixte un fichero con los datos necesarios para modelo residuo, buscamos para contenedores varios")
 
+                pathModeloResiduo = searchCorrectFileInJsonFiles(ficherosJson)
+
+                if (pathModeloResiduo == null){
+                    pathModeloResiduo = searchCorrectFileInxmlFiles(ficherosXml)
+                }
+                if (pathModeloResiduo == null) {
+                    pathModeloResiduo = searchCorrectFileInCsvFiles(ficherosCsv)
+                }
+
+
+            }
 
 
 
@@ -211,6 +228,64 @@ fun  beginingSumaryAll(args: Array<String>, stringOfData: String) {
     DataofUse(tipoOpcion = "Sumary all", exito = isCorrectData , tiempoEjecucion = tDiference)
 
 }
+
+fun searchCorrectFileInCsvFiles(ficherosCsv: MutableList<Path>): Path?{
+
+    var encontrado1 = false
+    while (ficherosCsv.size != 0 || encontrado1 == true) {
+        var ficheroCorrecto: ArrayList<ModeloResiduoDTO> = ArrayList()
+        try {
+            var pathEncontrada = ficherosCsv.get(0)
+            ficheroCorrecto = Csv().csvToMoeloResiduo(ficherosCsv.removeAt(0))
+            encontrado1 = true
+            return pathEncontrada
+            logger.info("fichero tiene las columnas correctas y en el orden correcto")
+
+        } catch (e: Exception) {
+            logger.info("fichero no tiene las columnas correctas en el orden correcto")
+        }
+    }
+    return null
+
+}
+
+fun searchCorrectFileInxmlFiles(ficherosXml: MutableList<Path>): Path? {
+
+    var encontrado1 = false
+    while (ficherosXml.size != 0 || encontrado1 == true) {
+        var ficheroCorrecto: ArrayList<ModeloResiduoDTO> = ArrayList()
+        try {
+            var pathEncontrada = ficherosXml.get(0)
+            ficheroCorrecto = Xml<ModeloResiduoDTO>().xmlToModeloResiduo(ficherosXml.removeAt(0))
+            encontrado1 = true
+            return pathEncontrada
+            logger.info("fichero tiene las columnas correctas y en el orden correcto")
+
+        } catch (e: Exception) {
+            logger.info("fichero no tiene las columnas correctas en el orden correcto")
+        }
+    }
+    return null
+}
+
+private fun searchCorrectFileInJsonFiles(ficherosJson: MutableList<Path>): Path? {
+    var encontrado1 = false
+    while (ficherosJson.size != 0 || encontrado1 == true) {
+        var ficheroCorrecto: ArrayList<ModeloResiduoDTO> = ArrayList()
+        try {
+            var pathEncontrada = ficherosJson.get(0)
+            ficheroCorrecto = Json<ModeloResiduoDTO>().jsonToModeloResiduo(ficherosJson.removeAt(0))
+            encontrado1 = true
+            return pathEncontrada
+            logger.info("fichero tiene las columnas correctas y en el orden correcto")
+
+        } catch (e: Exception) {
+            logger.info("fichero no tiene las columnas correctas en el orden correcto")
+        }
+    }
+    return null
+}
+
 /**
 funcion que comprueva los args y si son ciestos debe tomar la
 información de los contenedores y de la recogida, independientemente de la extensión que
