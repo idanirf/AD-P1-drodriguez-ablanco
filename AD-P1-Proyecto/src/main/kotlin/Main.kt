@@ -1,3 +1,4 @@
+import Resume.Resume
 import chekData.CheckData
 import dataOfUse.DataofUse
 import dto.ContenedoresVariosDTO
@@ -8,6 +9,7 @@ import interchange.Xml
 import mappers.MaperModeloResiduo
 import mappers.MapperContenedoresVarios
 import models.ContenedoresVarios
+import models.ModeloResiduo
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -229,32 +231,73 @@ fun  beginingSumaryAll(args: Array<String>, stringOfData: String) {
 fun doResumen(pathOfContenedoresVarios : Path, pathDeModeloResiduo : Path) : Boolean {
     logger.info("los datos de la path son correctos")
 
-    //Todo hacer con distintos hilos
-    logger.info(" cogiendo datos de archivo Modelo residuo ")
-    var arrayListOfModeloResiduoDTO = Csv().csvToMoeloResiduo(pathDeModeloResiduo)
-    var arrayListOfModeloResiduo = doMappetToModeloResiduo(arrayListOfModeloResiduoDTO)
-        logger.info(" cogiendo datos de contenedores Varios")
-    var arrayListOfContenedoreVariosDTO = Csv().csvToContenedoresVarios(pathOfContenedoresVarios)
-    var arrayListOfContenedoreVarios = doMappetToContenedresVarios(arrayListOfContenedoreVariosDTO)
-    //todo esperara con un oin o un wait a que los procesos terminen
-    //hacer el resume
-}
 
-fun doMappetToContenedresVarios(array: ArrayList<ContenedoresVariosDTO>): ArrayList<ContenedoresVarios> {
+    var arrayListOfModeloResiduo : ArrayList<ModeloResiduo> = ArrayList()
+    var arrayListOfContenedoreVarios : ArrayList<ContenedoresVarios> = ArrayList()
 
-    var mapper = MapperContenedoresVarios()
+
 
     try {
+        //Todo hacer con distintos hilos
+        logger.info(" cogiendo datos de archivo Modelo residuo ")
+        var arrayListOfModeloResiduoDTO = Csv().csvToMoeloResiduo(pathDeModeloResiduo)
 
-        //todo me he quedado aqui
-        return array.stream().map { x -> mapper.  }
+        logger.info(" pasando modelo residuo dto a modelo residuo")
+         arrayListOfModeloResiduo = doMappetToModeloResiduo(arrayListOfModeloResiduoDTO)
+
+        logger.info(" cogiendo datos de contenedores Varios")
+        var arrayListOfContenedoreVariosDTO = Csv().csvToContenedoresVarios(pathOfContenedoresVarios)
+
+        logger.info(" pasando modelo residuo dto a modelo residuo")
+         arrayListOfContenedoreVarios = doMappetToContenedresVarios(arrayListOfContenedoreVariosDTO)
+
+    }catch (e: Exception){
+        logger.info("error al cojer datos de los ficheros y convertirlos a dto")
+        e.printStackTrace()
+        return false
+    }
+    //todo esperara con un oin o un wait a que los procesos terminen
+    if(arrayListOfModeloResiduo.size==0 ||  arrayListOfContenedoreVarios.size==0){
+        logger.info("los datos no se han cargado bien o no son suficientes")
+        return false
+    }else{
+        logger.info("iniciando resumen")
+         return  Resume().resumeAll(arrayListOfModeloResiduo,arrayListOfContenedoreVarios)
+    }
+
+}
+
+fun doMappetToContenedresVarios(array: ArrayList<ContenedoresVariosDTO>):
+        ArrayList<ContenedoresVarios> {
+
+    var mapper = MapperContenedoresVarios()
+    var arrayOfContenedoresVarios = ArrayList<ContenedoresVarios>()
+
+    try {
+        //por cada uno lo mapeamos y guardamos
+         array.stream().map { x -> arrayOfContenedoresVarios.add(mapper.tdoToContenedoresVarios(x))}
+
     }catch (e: Exception){
         logger.info("no se ha conseguido pasar de modelo a object")
     }
+    return arrayOfContenedoresVarios
+
 }
 
-fun doMappetToModeloResiduo(arrayListOfModeloResiduoDTO: ArrayList<ModeloResiduoDTO>): Any {
+fun doMappetToModeloResiduo(array: ArrayList<ModeloResiduoDTO>):
+        ArrayList<ModeloResiduo> {
 
+    var mapper = MaperModeloResiduo()
+    var arrayOfModeloResiduo = ArrayList<ModeloResiduo>()
+
+    try {
+        //por cada uno lo mapeamos y guardamos
+        array.stream().map { x -> arrayOfModeloResiduo.add(mapper.tdoToModrloResiduo(x))}
+
+    }catch (e: Exception){
+        logger.info("no se ha conseguido pasar de modelo a object")
+    }
+    return arrayOfModeloResiduo
 }
 
 fun searchCorrectFileInCsvFilesContenedoresVarios(ficherosCsv: MutableList<Path>): Path? {

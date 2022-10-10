@@ -41,9 +41,12 @@ class Resume {
     - Máximo, mínimo , media y desviación de toneladas anuales de recogidas por cada tipo
     de basura agrupadas por distrito.
     - Suma de todo lo recogido en un año por distrito.
-    - Por cada distrito obtener para cada tipo de residuo la
+    - Por cada distrito obtener para cada tipo de residuo la cantidad recogida.
+    - Tiempo de generación del mismo en milisegundos.
      */
-    fun resumeAll(sM : ArrayList<ModeloResiduo>, sCV : ArrayList<ContenedoresVarios>){
+    fun resumeAll(sM : ArrayList<ModeloResiduo>, sCV : ArrayList<ContenedoresVarios>): Boolean{
+
+
         //Todo hacer
     }
 
