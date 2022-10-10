@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.sun.source.tree.IfTree
 import dataOfUse.DataofUse
+import dto.ContenedoresVariosDTO
+import dto.ModeloResiduoDTO
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
@@ -88,4 +90,47 @@ class Xml<T> {
         }
         logger.info("se ha creado el  Xml")
     }
+
+    fun xmlToModeloResiduo(p : Path): ArrayList<T> {
+
+            logger.info(" entrado en funcion ")
+
+            var fichero = p.toFile()
+            var mapper = XmlMapper();
+            var arrayOfObjects = ArrayList<T>()
+
+            try {
+                arrayOfObjects = mapper.readValue(
+                    fichero,
+                    mapper.typeFactory.constructCollectionType(
+                        ArrayList::class.java, ModeloResiduoDTO::class.java)
+                )
+
+            } catch (e : IOException) {
+                logger.info("error al leer el xml de Modelo residuo")
+            }
+            return  arrayOfObjects
+    }
+    fun xmlToContenedoresVarios(p : Path): ArrayList<T> {
+
+        logger.info(" entrado en funcion ")
+
+        var fichero = p.toFile()
+        var mapper = XmlMapper();
+        var arrayOfObjects = ArrayList<T>()
+
+        try {
+            arrayOfObjects = mapper.readValue(
+                fichero,
+                mapper.typeFactory.constructCollectionType(
+                    ArrayList::class.java, ContenedoresVariosDTO::class.java)
+            )
+
+        } catch (e : IOException) {
+            logger.info("error al leer el xml de Contenedores Varios")
+        }
+        return  arrayOfObjects
+    }
+
+
 }

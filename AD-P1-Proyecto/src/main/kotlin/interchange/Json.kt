@@ -2,7 +2,10 @@ package interchange
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import dto.ContenedoresVariosDTO
 import dto.ModeloResiduoDTO
+import models.ContenedoresVarios
+import models.ModeloResiduo
 import java.io.File
 import java.io.IOException
 import java.nio.file.Files
@@ -16,7 +19,7 @@ class Json<T> {
     /**
     funcion que pasa de un json a una lista de objetos
      */
-    fun jsonToObject(p : Path, classValue: ClassValue<T>): ArrayList<T>{
+    fun jsonToModeloResiduo(p : Path): ArrayList<T>{
         logger.info(" entrado en funcion  jsonto object")
 
         var fichero = p.toFile()
@@ -24,17 +27,36 @@ class Json<T> {
         var arrayOfObjects = ArrayList<T>()
 
         try {
-
             arrayOfObjects = mapper.readValue(
-                fichero, mapper.typeFactory.constructCollectionType(
-                    ArrayList::class.java,
-                    classValue.javaClass)
+                fichero,
+                mapper.typeFactory.constructCollectionType(
+                    ArrayList::class.java, ModeloResiduoDTO::class.java)
             )
 
         } catch (e : IOException) {
-            logger.info("error al leer el json")
+            logger.info("error al leer el json de Modelo residuo")
         }
+        return  arrayOfObjects
+    }
+    /**
+    funcion que pasa de un json a una lista de objetos
+     */
+    fun jsonToConteedoresVarios(p : Path): ArrayList<T>{
+        logger.info(" entrado en funcion  jsonto object")
 
+        var fichero = p.toFile()
+        var mapper = ObjectMapper();
+        var arrayOfObjects = ArrayList<T>()
+
+        try {
+            arrayOfObjects = mapper.readValue(
+                fichero,
+                mapper.typeFactory.constructCollectionType(
+                    ArrayList::class.java, ContenedoresVariosDTO::class.java))
+
+        } catch (e : IOException) {
+            logger.info("error al leer el json de Modelo residuo")
+        }
         return  arrayOfObjects
     }
 
