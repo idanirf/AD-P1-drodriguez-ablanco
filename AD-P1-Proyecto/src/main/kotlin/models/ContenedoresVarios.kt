@@ -4,7 +4,7 @@ import enums.TipoContenedor
 import java.io.File
 
  class ContenedoresVarios(codigoInternoSituado: String?,
-                          tipoContenedor: TipoContenedor?,
+                          tipoContenedor: String?,
                           modelo: String?,
                           descripcionModelo: String?,
                           cantidad: String?,
@@ -18,10 +18,13 @@ import java.io.File
                           coordenadaY: String?,
                           TAG: String?
 
+     //todo si da tiempo poner como enum
+     //   tipoContenedor: TipoContenedor?
 
 )  {
      val codigoInternoSituado: String?= codigoInternoSituado
-     val tipoContenedor: TipoContenedor?=tipoContenedor
+        //  val tipoContenedor: TipoContenedor?=tipoContenedor
+        val tipoContenedor: String? = tipoContenedor
      val modelo: String?=modelo
      val descripcionModelo: String?= descripcionModelo
      val cantidad: String?= cantidad
@@ -41,47 +44,50 @@ import java.io.File
                 "${this.coordenadaX};${this.coordenadaY};${this.TAG}"
     }
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (other !is ContenedoresVarios) return false
+     override fun equals(other: Any?): Boolean {
+         if (this === other) return true
+         if (javaClass != other?.javaClass) return false
 
-        if (codigoInternoSituado != other.codigoInternoSituado) return false
-        if (tipoContenedor != other.tipoContenedor) return false
-        if (modelo != other.modelo) return false
-        if (descripcionModelo != other.descripcionModelo) return false
-        if (cantidad != other.cantidad) return false
-        if (lote != other.lote) return false
-        if (distrito != other.distrito) return false
-        if (barrio != other.barrio) return false
-        if (tipoVia != other.tipoVia) return false
-        if (nombre != other.nombre) return false
-        if (numero != other.numero) return false
-        if (coordenadaX != other.coordenadaX) return false
-        if (coordenadaY != other.coordenadaY) return false
-        if (TAG != other.TAG) return false
+         other as ContenedoresVarios
 
-        return true
-    }
+         if (codigoInternoSituado != other.codigoInternoSituado) return false
+         if (tipoContenedor != other.tipoContenedor) return false
+         if (modelo != other.modelo) return false
+         if (descripcionModelo != other.descripcionModelo) return false
+         if (cantidad != other.cantidad) return false
+         if (lote != other.lote) return false
+         if (distrito != other.distrito) return false
+         if (barrio != other.barrio) return false
+         if (tipoVia != other.tipoVia) return false
+         if (nombre != other.nombre) return false
+         if (numero != other.numero) return false
+         if (coordenadaX != other.coordenadaX) return false
+         if (coordenadaY != other.coordenadaY) return false
+         if (TAG != other.TAG) return false
 
-    override fun hashCode(): Int {
-        var result = codigoInternoSituado?.hashCode() ?: 0
-        result = 31 * result + (tipoContenedor?.hashCode() ?: 0)
-        result = 31 * result + (modelo?.hashCode() ?: 0)
-        result = 31 * result + (descripcionModelo?.hashCode() ?: 0)
-        result = 31 * result + (cantidad?.hashCode() ?: 0)
-        result = 31 * result + (lote?.hashCode() ?: 0)
-        result = 31 * result + (distrito?.hashCode() ?: 0)
-        result = 31 * result + (barrio?.hashCode() ?: 0)
-        result = 31 * result + (tipoVia?.hashCode() ?: 0)
-        result = 31 * result + (nombre?.hashCode() ?: 0)
-        result = 31 * result + (numero?.hashCode() ?: 0)
-        result = 31 * result + (coordenadaX?.hashCode() ?: 0)
-        result = 31 * result + (coordenadaY?.hashCode() ?: 0)
-        result = 31 * result + (TAG?.hashCode() ?: 0)
-        return result
-    }
+         return true
+     }
 
-}
+     override fun hashCode(): Int {
+         var result = codigoInternoSituado?.hashCode() ?: 0
+         result = 31 * result + (tipoContenedor?.hashCode() ?: 0)
+         result = 31 * result + (modelo?.hashCode() ?: 0)
+         result = 31 * result + (descripcionModelo?.hashCode() ?: 0)
+         result = 31 * result + (cantidad?.hashCode() ?: 0)
+         result = 31 * result + (lote?.hashCode() ?: 0)
+         result = 31 * result + (distrito?.hashCode() ?: 0)
+         result = 31 * result + (barrio?.hashCode() ?: 0)
+         result = 31 * result + (tipoVia?.hashCode() ?: 0)
+         result = 31 * result + (nombre?.hashCode() ?: 0)
+         result = 31 * result + (numero?.hashCode() ?: 0)
+         result = 31 * result + (coordenadaX?.hashCode() ?: 0)
+         result = 31 * result + (coordenadaY?.hashCode() ?: 0)
+         result = 31 * result + (TAG?.hashCode() ?: 0)
+         return result
+     }
+
+
+ }
 
 fun loadContenedoresVariosCSV(csvFile: File): List<ContenedoresVarios>{
     val contenedoresVarios: List<ContenedoresVarios> = csvFile.readLines()
@@ -91,7 +97,8 @@ fun loadContenedoresVariosCSV(csvFile: File): List<ContenedoresVarios>{
             it.map { campo -> campo.trim() }
             ContenedoresVarios(
                 codigoInternoSituado = it[0],
-                tipoContenedor = getEnumTipoContenedor(it[1]),
+                //tipoContenedor = getEnumTipoContenedor(it[1]),
+                tipoContenedor = it[1],
                 modelo = it[2],
                 descripcionModelo = it[3],
                 cantidad = it[4],

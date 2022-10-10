@@ -5,6 +5,7 @@ import dto.ModeloResiduoDTO
 import interchange.Csv
 import interchange.Json
 import interchange.Xml
+import models.ContenedoresVarios
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Path
@@ -229,12 +230,28 @@ fun doResumen(pathOfContenedoresVarios : Path, pathDeModeloResiduo : Path) : Boo
     //Todo hacer con distintos hilos
     logger.info(" cogiendo datos de archivo Modelo residuo ")
     var arrayListOfModeloResiduoDTO = Csv().csvToMoeloResiduo(pathDeModeloResiduo)
-    var arrayListOfModeloResiduo =//todo modelo a tdo
+    var arrayListOfModeloResiduo = doMappetToModeloResiduo(arrayListOfModeloResiduoDTO)
         logger.info(" cogiendo datos de contenedores Varios")
     var arrayListOfContenedoreVariosDTO = Csv().csvToContenedoresVarios(pathOfContenedoresVarios)
-    var arrayListOfContenedoreVarios = //todo hacer pasar de dto a objeto
+    var arrayListOfContenedoreVarios = doMappetToContenedresVarios(arrayListOfContenedoreVariosDTO)
     //todo esperara con un oin o un wait a que los procesos terminen
     //hacer el resume
+}
+
+fun doMappetToContenedresVarios(array: ArrayList<ContenedoresVariosDTO>): ArrayList<ContenedoresVarios> {
+
+    Conte
+
+    try {
+
+        return array.stream().map { x ->  }
+    }catch (e: Exception){
+        logger.info("no se ha conseguido pasar de modelo a object")
+    }
+}
+
+fun doMappetToModeloResiduo(arrayListOfModeloResiduoDTO: ArrayList<ModeloResiduoDTO>): Any {
+
 }
 
 fun searchCorrectFileInCsvFilesContenedoresVarios(ficherosCsv: MutableList<Path>): Path? {
