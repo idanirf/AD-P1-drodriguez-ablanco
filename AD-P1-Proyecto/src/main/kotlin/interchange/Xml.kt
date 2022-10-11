@@ -7,6 +7,7 @@ import com.sun.source.tree.IfTree
 import dataOfUse.DataofUse
 import dto.ContenedoresVariosDTO
 import dto.ModeloResiduoDTO
+import kotlinx.serialization.encodeToString
 import nl.adaptivity.xmlutil.serialization.XML
 import java.io.BufferedWriter
 import java.io.File
@@ -19,7 +20,7 @@ import java.util.logging.Logger
 
 class Xml<T> {
 
-    private val logger: Logger = Logger.getLogger("Azahara y Dani Log")
+    private var logger: Logger = Logger.getLogger("Azahara y Dani Log")
 
 
     fun xmlToModeloresiduoDto(p : Path): ArrayList<ModeloResiduoDTO>{
@@ -86,17 +87,17 @@ class Xml<T> {
         logger.info("se ha creado el  Xml")
     }
 
-    fun contenedoresVariosDtoToXml(tenistasDto: List<TenistaDto>) {
-        logger.debug { "Escribiendo fichero XML" }
-        val file = File(dir + File.separator + "tenistas.xml")
+    fun contenedoresVariosDtoToXml(array: ArrayList<ContenedoresVariosDTO>, p :Path) {
+        logger.info("empezando")
+        val file = p.toFile()
         val xml = XML { indent = 4 }
-        file.writeText(xml.encodeToString(tenistasDto))
+        file.writeText(xml.encodeToString(array))
     }
-    fun modeloResiduoDtoToXml(tenistasDto: List<TenistaDto>) {
-        logger.debug { "Escribiendo fichero XML" }
-        val file = File(dir + File.separator + "tenistas.xml")
+    fun modeloResiduoDtoToXml(array: ArrayList<ModeloResiduoDTO> , p : Path) {
+        logger.info("empezando")
+        val file = p.toFile()
         val xml = XML { indent = 4 }
-        file.writeText(xml.encodeToString(tenistasDto))
+        file.writeText(xml.encodeToString(array))
     }
 
 
