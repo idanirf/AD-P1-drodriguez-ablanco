@@ -30,8 +30,13 @@ class Resume {
         //Todo hacer
 
         logger.info("Número de contenedores de cada tipo que hay en este distrito")
-        var numContenedoresPorTipo = sCV.asSequence()
-            .filter { a->a.barrio==district }.toCollection(Collectors.toMap<String,Int>())
+        var numContenedoresPorTipo = sCV.stream()
+            .filter { a->a.barrio==district }
+            .collect(Collectors.groupingBy { x -> x.tipoContenedor})
+            .map {  (a, b )-> b.stream().map { b.count() }.toList()}
+
+        
+
         //todo no se como hacerlo
 
         logger.info("Total de toneladas recogidas en ese distrito por residuo.")

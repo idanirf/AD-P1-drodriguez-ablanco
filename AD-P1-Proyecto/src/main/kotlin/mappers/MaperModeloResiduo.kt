@@ -50,6 +50,18 @@ class MaperModeloResiduo {
             "OCTUBRE" -> return Meses.OCTUBRE
             "NOVIEMBRE" -> return Meses.NOVIEMBRE
             "DICIEMBRE" -> return Meses.DICIEMBRE
+            "enero" -> return Meses.ENERO
+            "febrero" -> return Meses.FEBRERO
+            "marzo" -> return Meses.MARZO
+            "abril" -> return Meses.ABRIL
+            "mayo" -> return Meses.MAYO
+            "junio" -> return Meses.JUNIO
+            "julio" -> return Meses.JULIO
+            "agosto" -> return Meses.AGOSTO
+            "septiembre" -> return Meses.SEPTIEMBRE
+            "octubre" -> return Meses.OCTUBRE
+            "noviembre" -> return Meses.NOVIEMBRE
+            "diciembre" -> return Meses.DICIEMBRE
             else -> return null
         }
         return null

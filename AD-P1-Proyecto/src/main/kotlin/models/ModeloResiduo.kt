@@ -8,6 +8,7 @@ import java.time.LocalDate
  class ModeloResiduo (año:Int?, mes: Meses?, lote: Int?, residuo: TipoResiduo?, distrito : String?
                      , nombreDistrito: String?, toneladas: Int?): Serializable {
     val año : Int?=año
+     //todo no esta pasando bien a meses al dto
     val mes : Meses? = mes
     val lote : Int? = lote
     var residuo : TipoResiduo? = residuo
@@ -50,6 +51,10 @@ import java.time.LocalDate
 
      fun getStringScv(): String {
          return "$año";"$mes";"$lote";"$residuo";"$distrito";"$nombreDistrito";"$toneladas"
+     }
+
+     override fun toString(): String {
+         return "ModeloResiduo(año=$año, mes=$mes, lote=$lote, residuo=$residuo, distrito=$distrito, nombreDistrito=$nombreDistrito, toneladas=$toneladas)"
      }
 
 

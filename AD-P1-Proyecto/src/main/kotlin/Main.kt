@@ -275,7 +275,7 @@ fun doMappetToContenedresVarios(array: ArrayList<ContenedoresVariosDTO>):
 
     try {
         //por cada uno lo mapeamos y guardamos
-         array.stream().map { x -> arrayOfContenedoresVarios.add(mapper.tdoToContenedoresVarios(x))}
+         array.stream().forEach { x -> arrayOfContenedoresVarios.add(mapper.tdoToContenedoresVarios(x))}
 
     }catch (e: Exception){
         logger.info("no se ha conseguido pasar de modelo a object")
@@ -292,7 +292,7 @@ fun doMappetToModeloResiduo(array: ArrayList<ModeloResiduoDTO>):
 
     try {
         //por cada uno lo mapeamos y guardamos
-        array.stream().map { x -> arrayOfModeloResiduo.add(mapper.tdoToModrloResiduo(x))}
+        array.stream().forEach(){ x -> arrayOfModeloResiduo.add(mapper.tdoToModrloResiduo(x))}
 
     }catch (e: Exception){
         logger.info("no se ha conseguido pasar de modelo a object")

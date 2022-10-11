@@ -18,4 +18,9 @@ data class ContenedoresVariosDTO(
     val coordenadaX: String?,
     val coordenadaY: String?,
     val TAG: String?
-): Serializable {} //todo preguntar a Jose sí es lo mismo que @Serializable y sí es diferente en que se diferencia
+): Serializable { //todo preguntar a Jose sí es lo mismo que @Serializable y sí es diferente en que se diferencia
+
+    override fun toString(): String {
+        return "ContenedoresVariosDTO(codigoInternoSituado=$codigoInternoSituado, tipoContenedor=$tipoContenedor, modelo=$modelo, descripcionModelo=$descripcionModelo, cantidad=$cantidad, lote=$lote, distrito=$distrito, barrio=$barrio, tipoVia=$tipoVia, nombre=$nombre, numero=$numero, coordenadaX=$coordenadaX, coordenadaY=$coordenadaY, TAG=$TAG)"
+    }
+}

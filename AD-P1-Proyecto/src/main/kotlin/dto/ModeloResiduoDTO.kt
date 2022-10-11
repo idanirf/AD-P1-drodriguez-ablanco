@@ -24,7 +24,9 @@ class ModeloResiduoDTO(año: Int?,
     var distrito: String? = distrito
     var nombreDistrito: String? = nombreDistrito
     var toneladas: Int? = toneladas
-
+    override fun toString(): String {
+        return "ModeloResiduoDTO(año=$año, mes=$mes, lote=$lote, residuo=$residuo, distrito=$distrito, nombreDistrito=$nombreDistrito, toneladas=$toneladas)"
+    }
 
 
 }
