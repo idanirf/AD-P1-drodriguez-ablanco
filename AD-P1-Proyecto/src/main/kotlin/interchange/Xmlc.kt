@@ -1,24 +1,19 @@
 package interchange
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
-import com.sun.source.tree.IfTree
 import dataOfUse.DataofUse
 import dto.ContenedoresVariosDTO
 import dto.ModeloResiduoDTO
 import kotlinx.serialization.encodeToString
 import nl.adaptivity.xmlutil.serialization.XML
 import java.io.BufferedWriter
-import java.io.File
 import java.io.FileWriter
 import java.io.IOException
-import java.nio.file.Files
 import java.nio.file.Path
-import java.nio.file.Paths
 import java.util.logging.Logger
 
-class Xml<T> {
+class Xmlc {
 
     private var logger: Logger = Logger.getLogger("Azahara y Dani Log")
 

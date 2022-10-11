@@ -4,8 +4,8 @@ import dataOfUse.DataofUse
 import dto.ContenedoresVariosDTO
 import dto.ModeloResiduoDTO
 import interchange.Csv
-import interchange.Jsonantiguo
-import interchange.Xml
+import interchange.Jsonc
+import interchange.Xmlc
 import mappers.MaperModeloResiduo
 import mappers.MapperContenedoresVarios
 import models.ContenedoresVarios
@@ -18,7 +18,7 @@ import java.util.logging.Logger
 import java.util.stream.Stream
 
 
-private val logger: Logger = Logger.getLogger("Azahara y Dani Log")
+val logger: Logger = Logger.getLogger("Azahara y Dani Log")
 
 
 //con esto lo probamos
@@ -52,22 +52,20 @@ fun main(args: Array<String>) {
 
 }
 /**
- * solo lee de csv
-funcion que comprueva los args y si son ciestos debe tomar los ficheros csv
-del directorio origen y trasformalos en JSON y XML en el directorio destino. En dicho
+ Comprueva los args y si son ciertos debe tomar los ficheros csv
+del directorio origen y transformar en JSON y XML en el directorio destino. En dicho
 directorio destino deberán estar las tres versiones: CSV, JSON y XML.
  */
 fun beginingParser(args: Array<String>, stringOfData : String) {
-    logger.info(" Entrado en begininParser ")
 
     //para ver el tiempo que tarda
     var tInit = System.currentTimeMillis();
 
+    logger.info(" Entrado en begininParser ")
 
     //comprobamos datos
     val thereAreFiles = CheckData().parser(args)
     logger.info(" los datos son corrctos = $thereAreFiles")
-    //si es correctos llamamos  intercange para hacerlo en los 3 formatos con hilos
 
     var areCorrectDataInFiles : Boolean = false
     if(thereAreFiles){
@@ -77,32 +75,20 @@ fun beginingParser(args: Array<String>, stringOfData : String) {
     }
 
     if(areCorrectDataInFiles){
+
         //Todo hacer con distintos hilos
-        logger.info(" cogiendo datos de archivo Modelo residuo ")
-        var arrayListOfModeloResiduo = Csv().csvToMoeloResiduo(Path.of(args[1]+File.separator+"modelo_residuos_2021.csv"))
-        logger.info(" cogiendo datos de contenedores Varios")
-        var arrayListOfContenedoreVarios = Csv().csvToContenedoresVarios(Path.of(args[1]+File.separator+"contenedores_varios.csv"))
+        var arrayListOfModeloResiduo = getModeloResiduotoCSV(args)
+        var arrayListOfContenedoreVarios = getContenedoresVariosCSV(args)
+
         logger.info(" leidos los dos ficheros ")
 
         //todo Una vez que tengamos cargado los dtos de arraylistModeoResidio con un join o un wait hacer por hilos
-        logger.info(" creamos ficheros Modelo residuo ")
-        logger.info(" csv ")
-        Csv().ModeloRosiduoToCsv(arrayListOfModeloResiduo , Path.of(args[2]))
-        logger.info(" json")
-        Jsonantiguo<ModeloResiduoDTO>().objectToJson(arrayListOfModeloResiduo , Path.of(args[2]))
-        logger.info(" xml ")
-        Xml<ModeloResiduoDTO>().objectToXml(arrayListOfModeloResiduo,Path.of(args[2]+File.separator+"modelo_residuos.xml"))
+        createFilesModeloresiduo(arrayListOfModeloResiduo, args)
 
         logger.info(" creados todos los ficheros de modelo residuos")
 
         //todo Una vez que tengamos cargado los dtos de arraylistContenedores vvarios con un join o un wait hacer por hilos
-        logger.info(" creamos ficheros contenedores varios ")
-        logger.info(" csv ")
-        Csv().ContenedoresVariosToCsv(arrayListOfContenedoreVarios , Path.of(args[2]))
-        logger.info(" json")
-        Jsonantiguo<ContenedoresVariosDTO>().objectToJson(arrayListOfContenedoreVarios , Path.of(args[2]))
-        logger.info(" xml ")
-        Xml<ContenedoresVariosDTO>().objectToXml(arrayListOfContenedoreVarios,Path.of(args[2]+File.separator+"contenedores_varios.xml"))
+        createFilesContenedoreVarios(arrayListOfContenedoreVarios, args)
 
         logger.info(" creados todos los ficheros")
 
@@ -118,9 +104,55 @@ fun beginingParser(args: Array<String>, stringOfData : String) {
 
     var data = DataofUse(tipoOpcion = "Parser", exito = areCorrectDataInFiles , tiempoEjecucion = tDiference)
     logger.info(data.toString())
-    Xml<DataofUse>().writeData( Path.of(stringOfData),data)
+    Xmlc().writeData( Path.of(stringOfData),data)
     logger.info("escrito datos")
 
+}
+
+private fun createFilesContenedoreVarios(
+    arrayListOfContenedoreVarios: ArrayList<ContenedoresVariosDTO>,
+    args: Array<String>
+) {
+    logger.info(" creamos ficheros contenedores varios ")
+    logger.info(" csv ")
+    Csv().ContenedoresVariosToCsv(arrayListOfContenedoreVarios, Path.of(args[2]))
+    logger.info(" json")
+    Jsonc().contenedoresVariosToAJson(Path.of(args[2]), arrayListOfContenedoreVarios)
+    logger.info(" xml ")
+    Xmlc().contenedoresVariosDtoToXml(
+        arrayListOfContenedoreVarios,
+        Path.of(args[2] + File.separator + "contenedores_varios.xml")
+    )
+}
+
+private fun createFilesModeloresiduo(
+    arrayListOfModeloResiduo: ArrayList<ModeloResiduoDTO>,
+    args: Array<String>
+) {
+    logger.info(" creamos ficheros Modelo residuo ")
+    logger.info(" csv ")
+    Csv().ModeloRosiduoToCsv(arrayListOfModeloResiduo, Path.of(args[2]))
+    logger.info(" json")
+    Jsonc().modeloResiduoDtoToAJson(Path.of(args[2]), arrayListOfModeloResiduo)
+    logger.info(" xml ")
+    Xmlc().modeloResiduoDtoToXml(
+        arrayListOfModeloResiduo,
+        Path.of(args[2] + File.separator + "modelo_residuos.xml")
+    )
+}
+
+private fun getContenedoresVariosCSV(args: Array<String>): ArrayList<ContenedoresVariosDTO> {
+    logger.info(" cogiendo datos de contenedores Varios")
+    var arrayListOfContenedoreVarios =
+        Csv().csvToContenedoresVarios(Path.of(args[1] + File.separator + "contenedores_varios.csv"))
+    return arrayListOfContenedoreVarios
+}
+
+private fun getModeloResiduotoCSV(args: Array<String>): ArrayList<ModeloResiduoDTO> {
+    logger.info(" cogiendo datos de archivo Modelo residuo ")
+    var arrayListOfModeloResiduo =
+        Csv().csvToMoeloResiduo(Path.of(args[1] + File.separator + "modelo_residuos_2021.csv"))
+    return arrayListOfModeloResiduo
 }
 
 /**
@@ -142,12 +174,7 @@ fun  beginingSumaryAll(args: Array<String>, stringOfData: String) {
     var exito = false
 
     var isCorrectData = CheckData().sumaryAll(args)
-    //para comprobar los datos tengo que ver si de todos los ficheros que hay en ese directorio hay
-    //alguno que se lea y que dentro dependiendo el formato coincida con los datos wue queremos
 
-    //1. sacar todos los ficheros qe hay en el directorio
-    //2. ver en cada uno hasta que sea el que queremos
-    //3. ver el formato, leerlo segun el formato, y ver si tienen los datos
 
     //1.sacar todos los ficheros del directorio
     if(args[0]!="resumen"){
@@ -177,38 +204,22 @@ fun  beginingSumaryAll(args: Array<String>, stringOfData: String) {
             var pathModeloResiduo : Path? = null
             var pathContenedoresVarios : Path? = null
 
-            pathModeloResiduo = searchCorrectFileInJsonFilesModeloResiduo(ficherosJson)
-
-            if (pathModeloResiduo == null){
-                pathModeloResiduo = searchCorrectFileInxmlFilesModeloResiduo(ficherosXml)
-            }
-            if (pathModeloResiduo == null) {
-                pathModeloResiduo = searchCorrectFileInCsvFilesModeloResiduo(ficherosCsv)
-            }
+            pathModeloResiduo = getPactCorrectOfModeloResiduo(pathModeloResiduo, ficherosJson, ficherosXml, ficherosCsv)
 
             if (pathModeloResiduo==null){
                 logger.info("no hay ningun archivo en la path que contenga los datos necesarios ")
             }else{
                 logger.info("exixte un fichero con los datos necesarios para modelo residuo, buscamos para contenedores varios")
 
-                pathModeloResiduo = searchCorrectFileInJsonFilesContenedoresVarios(ficherosJson)
+                pathContenedoresVarios = getCorrectPathOfContenedoresVarios(pathContenedoresVarios, ficherosJson, ficherosXml, ficherosCsv)
 
-                if (pathModeloResiduo == null){
-                    pathModeloResiduo = searchCorrectFileInxmlFilesContenedoresVarios(ficherosXml)
-                }
-                if (pathModeloResiduo == null) {
-                    pathModeloResiduo = searchCorrectFileInCsvFilesContenedoresVarios(ficherosCsv)
-                }
-
-                if (pathModeloResiduo==null){
+                if (pathContenedoresVarios==null){
                     logger.info("no exixte ningun fichero que contenga las columnas y en el orden necesarios para crear Contenedores vartios")
-
-                    //todo termina pasandole a check data
 
                 }else{
 
                     logger.info("exixten los dos archivos necesarios para hacer el resumen")
-                    exito = doResumen(pathContenedoresVarios,pathModeloResiduo)
+                    exito = doResumen("",pathContenedoresVarios,pathModeloResiduo)
 
                 }
             }
@@ -223,18 +234,52 @@ fun  beginingSumaryAll(args: Array<String>, stringOfData: String) {
 
     var data = DataofUse(tipoOpcion = "resume", exito = exito , tiempoEjecucion = tDiference)
     logger.info(data.toString())
-    Xml<DataofUse>().writeData( Path.of(stringOfData),data)
+    Xmlc().writeData( Path.of(stringOfData),data)
     logger.info("escrito datos")
 }
 
-fun doResumen(pathOfContenedoresVarios : Path, pathDeModeloResiduo : Path) : Boolean {
+private fun getCorrectPathOfContenedoresVarios(
+    pathContenedoresVarios: Path?,
+    ficherosJson: MutableList<Path>,
+    ficherosXml: MutableList<Path>,
+    ficherosCsv: MutableList<Path>
+): Path? {
+    var pathContenedoresVarios1 = pathContenedoresVarios
+    pathContenedoresVarios1 = searchCorrectFileInJsonFilesContenedoresVarios(ficherosJson)
+
+    if (pathContenedoresVarios1 == null) {
+        pathContenedoresVarios1 = searchCorrectFileInxmlFilesContenedoresVarios(ficherosXml)
+    }
+    if (pathContenedoresVarios1 == null) {
+        pathContenedoresVarios1 = searchCorrectFileInCsvFilesContenedoresVarios(ficherosCsv)
+    }
+    return pathContenedoresVarios1
+}
+
+private fun getPactCorrectOfModeloResiduo(
+    pathModeloResiduo: Path?,
+    ficherosJson: MutableList<Path>,
+    ficherosXml: MutableList<Path>,
+    ficherosCsv: MutableList<Path>
+): Path? {
+    var pathModeloResiduo1 = pathModeloResiduo
+    pathModeloResiduo1 = searchCorrectFileInJsonFilesModeloResiduo(ficherosJson)
+
+    if (pathModeloResiduo1 == null) {
+        pathModeloResiduo1 = searchCorrectFileInxmlFilesModeloResiduo(ficherosXml)
+    }
+    if (pathModeloResiduo1 == null) {
+        pathModeloResiduo1 = searchCorrectFileInCsvFilesModeloResiduo(ficherosCsv)
+    }
+    return pathModeloResiduo1
+}
+
+fun doResumen(distrito: String , pathOfContenedoresVarios : Path, pathDeModeloResiduo : Path) : Boolean {
     logger.info("los datos de la path son correctos")
 
 
     var arrayListOfModeloResiduo : ArrayList<ModeloResiduo> = ArrayList()
     var arrayListOfContenedoreVarios : ArrayList<ContenedoresVarios> = ArrayList()
-
-
 
     try {
         //Todo hacer con distintos hilos
@@ -260,8 +305,9 @@ fun doResumen(pathOfContenedoresVarios : Path, pathDeModeloResiduo : Path) : Boo
         logger.info("los datos no se han cargado bien o no son suficientes")
         return false
     }else{
+        //todo comprobar que exite el distrito
         logger.info("iniciando resumen")
-         return  Resume().resumeAll(arrayListOfModeloResiduo,arrayListOfContenedoreVarios)
+         return  Resume().resumeDistrict(distrito,arrayListOfModeloResiduo,arrayListOfContenedoreVarios)
     }
 
 }
@@ -382,7 +428,7 @@ fun searchCorrectFileInxmlFilesModeloResiduo(ficherosXml: MutableList<Path>): Pa
         var ficheroCorrecto: ArrayList<ModeloResiduoDTO> = ArrayList()
         try {
             var pathEncontrada = ficherosXml.get(0)
-            ficheroCorrecto = Xml<ModeloResiduoDTO>().xmlToModeloResiduo(ficherosXml.removeAt(0))
+            ficheroCorrecto = Xmlc().xmlToModeloresiduoDto(ficherosXml.removeAt(0))
             encontrado1 = true
             return pathEncontrada
             logger.info("fichero tiene las columnas correctas y en el orden correcto")
@@ -400,7 +446,7 @@ private fun searchCorrectFileInJsonFilesModeloResiduo(ficherosJson: MutableList<
         var ficheroCorrecto: ArrayList<ModeloResiduoDTO> = ArrayList()
         try {
             var pathEncontrada = ficherosJson.get(0)
-            ficheroCorrecto = Jsonantiguo<ModeloResiduoDTO>().jsonToModeloResiduo(ficherosJson.removeAt(0))
+            ficheroCorrecto = Jsonc().readJsontoModeloresiduoDto(ficherosJson.removeAt(0))
             encontrado1 = true
             return pathEncontrada
             logger.info("fichero tiene las columnas correctas y en el orden correcto")
@@ -426,39 +472,64 @@ fun  beginingSumaryDistrict(args: Array<String>, stringOfData: String) {
     var tInit = System.currentTimeMillis();
 
 
-    val isCorrectData = CheckData().sumaryDistrict(args)
+    var isCorrectData = CheckData().sumaryDistrict(args)
     logger.info("los datos correctos es : " + isCorrectData)
     //si es correctos llamamos  resume para hacer html
 
-
-    //cojemos datos
-    if (isCorrectData){
-        logger.info("los datos de la path son correctos")
-
-        //si es correctos llamamos
-
-        //Todo hacer con distintos hilos
-        logger.info(" cogiendo datos de archivo Modelo residuo ")
-        //    var arrayListOfModeloResiduo = InterchangeModeloResiduo<ModeloResiduo>().csvToObject(Path.of(args[1]))
-        logger.info(" cogiendo datos de contenedores Varios")
-        //   var arrayListOfContenedoreVarios = InterchangeContenedoresVarios<ContenedoresVarios>().csvToObject(Path.of(args[1]))
-
-        //todo esperara con un oin o un wait a que los procesos terminen
-
-        //val isCorrectDistrict= CheckData().district(args[1], arrayListOfModeloResiduo,arrayListOfContenedoreVarios)
-
-        if (isCorrectData){
-            logger.info("el distrito es correcto")
-           // Resume().resumeDistrict(args[1], arrayListOfModeloResiduo ,arrayListOfContenedoreVarios)
-        }else{
-            logger.info("el distrito NO es correcto")
-        }
+    //para ver si ha tenido exito o no
+    var exito = false
 
 
+    //1.sacar todos los ficheros del directorio
+    if(args[0]!="resumen"){
+        logger.info("el primer args No es resume la opcion no es correcta")
+        isCorrectData=false
     }else{
-        logger.info("los datos de la path NO son correctos")
+        logger.info("el primer args en resume")
+        if (Files.notExists(Path.of(args[2])) && !Files.isDirectory(Path.of(args[2]))){
+            logger.info("el path de los archivos No exixte o NO es un directorio")
+        }else{
+            logger.info("el path de los archivos exixte y es un directorio")
+
+            //listar todos los archivos dentro de un directorio y quedarnos con los de formato correcto
+            var regrexJson = Regex(".json$")
+            var regrexXml = Regex(".xml$")
+            var regrexCsv = Regex(".csv$")
+
+            var ficheros : Stream<Path>  = Files.list(Path.of(args[2]))
+
+            var ficherosReadble = ficheros.filter { p -> Files.isReadable(p) }
+            var ficherosJson = ficherosReadble.filter { p -> path.matches(regrexJson) }.toList()
+            var ficherosXml = ficherosReadble.filter { p -> path.matches(regrexXml) }.toList()
+            var ficherosCsv = ficherosReadble.filter { p -> path.matches(regrexCsv) }.toList()
+
+            //con cada uno porbamos si se pueden leer y son de los que queremos, quitaremos con excepciones
+
+            var pathModeloResiduo : Path? = null
+            var pathContenedoresVarios : Path? = null
+
+            pathModeloResiduo = getPactCorrectOfModeloResiduo(pathModeloResiduo, ficherosJson, ficherosXml, ficherosCsv)
+
+            if (pathModeloResiduo==null){
+                logger.info("no hay ningun archivo en la path que contenga los datos necesarios ")
+            }else{
+                logger.info("exixte un fichero con los datos necesarios para modelo residuo, buscamos para contenedores varios")
+
+                pathContenedoresVarios = getCorrectPathOfContenedoresVarios(pathContenedoresVarios, ficherosJson, ficherosXml, ficherosCsv)
+
+                if (pathContenedoresVarios==null){
+                    logger.info("no exixte ningun fichero que contenga las columnas y en el orden necesarios para crear Contenedores vartios")
+
+                }else{
+
+                    logger.info("exixten los dos archivos necesarios para hacer el resumen")
+                    exito = doResumen(args[1],pathContenedoresVarios,pathModeloResiduo)
+
+                }
+            }
+        }
     }
-    
+
 
     //para ver cuanto tarda
     var tFinal = System.currentTimeMillis();

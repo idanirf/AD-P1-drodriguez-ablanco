@@ -24,18 +24,17 @@ class Resume {
     - Gráfica del máximo, mínimo y media por meses en dicho distrito.
     - Tiempo de generación del mismo en milisegundos.
      */
-    fun resumeDistrict(district : String, sM : ArrayList<ModeloResiduo>, sCV : ArrayList<ContenedoresVarios>){
+    fun resumeDistrict(district: String, sM: ArrayList<ModeloResiduo>, sCV: ArrayList<ContenedoresVarios>): Boolean {
         //para ver el tiempo que tarda
         var tInit = System.currentTimeMillis();
         //Todo hacer
 
         logger.info("Número de contenedores de cada tipo que hay en este distrito")
         var numContenedoresPorTipo = sCV.stream()
-            .filter { a->a.barrio==district }
-            .collect(Collectors.groupingBy { x -> x.tipoContenedor})
-            .map {  (a, b )-> b.stream().map { b.count() }.toList()}
+            .filter { a -> a.barrio == district }
+            .collect(Collectors.groupingBy { x -> x.tipoContenedor })
+            .map { (a, b) -> b.stream().map { b.count() }.toList() }
 
-        
 
         //todo no se como hacerlo
 
@@ -52,12 +51,14 @@ class Resume {
         //todo no se como hacerlo
 
 
-
-
         //para ver cuanto tarda
         var tFinal = System.currentTimeMillis();
-        var tDiference= tFinal - tInit;
+        var tDiference = tFinal - tInit;
+
+        //Todo devuelve si consigue
+        return false
     }
+
 
     /**
     funcion que devuelve un resumen en html del contenido de la secuencia
