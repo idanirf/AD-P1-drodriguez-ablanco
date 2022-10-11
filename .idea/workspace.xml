@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="9fa7b3a0-c510-480c-839e-f3f3b1ed6fe4" name="Changes" comment="" />
+    <list default="true" id="9fa7b3a0-c510-480c-839e-f3f3b1ed6fe4" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/AD-P1-Proyecto/src/main/kotlin/Resume/Resume.kt" beforeDir="false" afterPath="$PROJECT_DIR$/AD-P1-Proyecto/src/main/kotlin/Resume/Resume.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

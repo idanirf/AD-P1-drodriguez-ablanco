@@ -44,6 +44,7 @@ import java.io.File
                 "${this.coordenadaX};${this.coordenadaY};${this.TAG}"
     }
 
+
      override fun equals(other: Any?): Boolean {
          if (this === other) return true
          if (javaClass != other?.javaClass) return false
@@ -86,6 +87,10 @@ import java.io.File
          return result
      }
 
+     override fun toString(): String {
+         return "ContenedoresVarios(codigoInternoSituado=$codigoInternoSituado, tipoContenedor=$tipoContenedor, modelo=$modelo, descripcionModelo=$descripcionModelo, cantidad=$cantidad, lote=$lote, distrito=$distrito, barrio=$barrio, tipoVia=$tipoVia, nombre=$nombre, numero=$numero, coordenadaX=$coordenadaX, coordenadaY=$coordenadaY, TAG=$TAG)"
+     }
+
 
  }
 
@@ -125,6 +130,8 @@ fun getEnumTipoContenedor(s: String): TipoContenedor {
         "Vidrio" -> return TipoContenedor.VIDRIO
     }
     return TipoContenedor.DESCONOCIDO
+
+
 }
 
 
