@@ -32,7 +32,6 @@ class MapperContenedoresVarios {
         //Todo creo que falla esto
         return ContenedoresVarios(
             codigoInternoSituado = dto.codigoInternoSituado,
-            //tipoContenedor = getTipoContenedor(pojo.tipoContenedor),
             tipoContenedor = dto.tipoContenedor,
             modelo = dto.modelo,
             descripcionModelo = dto.descripcionModelo,

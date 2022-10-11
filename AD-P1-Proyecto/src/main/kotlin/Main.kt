@@ -327,6 +327,7 @@ fun doResumen(distrito: String , pathOfContenedoresVarios : Path, pathDeModeloRe
         getModeloResiduoDtoToFile(pathOfContenedoresVarios, ListOfModeloResiduoDTO, pathDeModeloResiduo)
 
 
+        //todo no se cargan bien
         logger.info(" pasando contenedores varios dto a contenedores varios")
          arrayListOfContenedoreVarios = doMappetToContenedresVarios(contenedoreVariosDTO)
 
@@ -339,6 +340,8 @@ fun doResumen(distrito: String , pathOfContenedoresVarios : Path, pathDeModeloRe
         return false
     }
     //todo esperara con un oin o un wait a que los procesos terminen
+    logger.info("modeloResiduo tenemos ${arrayListOfModeloResiduo.size}")
+    logger.info("contenedoresVarios tenemos ${arrayListOfContenedoreVarios.size}")
     if(arrayListOfModeloResiduo.size==0 ||  arrayListOfContenedoreVarios.size==0){
         logger.info("los datos no se han cargado bien o no son suficientes")
         return false
@@ -413,11 +416,13 @@ fun doMappetToContenedresVarios(array: ArrayList<ContenedoresVariosDTO>):
     var arrayOfContenedoresVarios = ArrayList<ContenedoresVarios>()
 
     try {
+        //aqui falla pero no se porque
         //por cada uno lo mapeamos y guardamos
          array.stream().forEach { x -> arrayOfContenedoresVarios.add(mapper.tdoToContenedoresVarios(x))}
 
     }catch (e: Exception){
         logger.info("no se ha conseguido pasar de modelo a object")
+        e.printStackTrace()
     }
     return arrayOfContenedoresVarios
 
@@ -436,6 +441,7 @@ fun doMappetToModeloResiduo(array: ArrayList<ModeloResiduoDTO>):
 
     }catch (e: Exception){
         logger.info("no se ha conseguido pasar de modelo a object")
+        e.printStackTrace()
     }
     return arrayOfModeloResiduo
 }

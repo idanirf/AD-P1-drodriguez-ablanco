@@ -70,3 +70,19 @@
   <exito>false</exito>
   <tiempoDeEjecucion>3140</tiempoDeEjecucion>
 </DataofUse>
+
+<DataofUse>
+  <id>27b73ad6-a4f6-46c3-b151-8e43692e96c1</id>
+  <instanteFormatoISO>2022-10-12T00:06:41.483072808</instanteFormatoISO>
+  <tipoOpcion>resumen</tipoOpcion>
+  <exito>false</exito>
+  <tiempoDeEjecucion>2280</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>b5a6849f-d683-4f21-a326-614c3e74297b</id>
+  <instanteFormatoISO>2022-10-12T00:09:17.733287059</instanteFormatoISO>
+  <tipoOpcion>resumen</tipoOpcion>
+  <exito>false</exito>
+  <tiempoDeEjecucion>2220</tiempoDeEjecucion>
+</DataofUse>

@@ -18,13 +18,9 @@ import java.io.File
                           coordenadaY: String?,
                           TAG: String?
 
-     //todo si da tiempo poner como enum
-     //   tipoContenedor: TipoContenedor?
-
 )  {
      val codigoInternoSituado: String?= codigoInternoSituado
-        //  val tipoContenedor: TipoContenedor?=tipoContenedor
-        val tipoContenedor: String? = tipoContenedor
+     val tipoContenedor: String? = tipoContenedor
      val modelo: String?=modelo
      val descripcionModelo: String?= descripcionModelo
      val cantidad: String?= cantidad
