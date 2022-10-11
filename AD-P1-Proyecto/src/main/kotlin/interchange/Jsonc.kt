@@ -5,14 +5,19 @@ import dto.ModeloResiduoDTO
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.io.File
+import java.nio.file.Files
 import java.nio.file.Path
 
 class Jsonc {
 
     fun contenedoresVariosToAJson(p : Path, array : ArrayList<ContenedoresVariosDTO>){
 
+        var path = Path.of(p.toString()+File.separator+"contenedoresVarios.Json")
 
-        val file = p.toFile()
+        if (Files.notExists(path)){Files.createFile(path)}
+
+        val file = path.toFile()
         val json = Json { prettyPrint = true }
         file.writeText(json.encodeToString(array))
 
@@ -30,8 +35,11 @@ class Jsonc {
     }
     fun modeloResiduoDtoToAJson(p : Path, array : ArrayList<ModeloResiduoDTO>){
 
+        var path = Path.of(p.toString()+File.separator+"modeloResiduo.Json")
 
-        val file = p.toFile()
+        if (Files.notExists(path)){Files.createFile(path)}
+
+        val file = path.toFile()
         val json = Json { prettyPrint = true }
         file.writeText(json.encodeToString(array))
 

@@ -6,3 +6,43 @@
   <exito>true</exito>
   <tiempoDeEjecucion>7595</tiempoDeEjecucion>
 </DataofUse>
+
+<DataofUse>
+  <id>6dfc827c-52fb-4521-9420-5f27d19e72de</id>
+  <instanteFormatoISO>2022-10-11T21:19:37.136730562</instanteFormatoISO>
+  <tipoOpcion>Parser</tipoOpcion>
+  <exito>false</exito>
+  <tiempoDeEjecucion>21</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>248c8f7d-1921-4ec7-ac33-112002ed3cb3</id>
+  <instanteFormatoISO>2022-10-11T22:22:29.928597327</instanteFormatoISO>
+  <tipoOpcion>resume</tipoOpcion>
+  <exito>false</exito>
+  <tiempoDeEjecucion>31</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>7245d43e-a933-4f77-8efd-5824a1c040dc</id>
+  <instanteFormatoISO>2022-10-11T22:37:03.712549509</instanteFormatoISO>
+  <tipoOpcion>resume</tipoOpcion>
+  <exito>false</exito>
+  <tiempoDeEjecucion>35</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>a5d94aa7-4feb-421f-9d5c-4df42655c15f</id>
+  <instanteFormatoISO>2022-10-11T22:47:32.587687587</instanteFormatoISO>
+  <tipoOpcion>resume</tipoOpcion>
+  <exito>false</exito>
+  <tiempoDeEjecucion>7012</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>d9a59bec-7950-460d-a50a-11a310f1a86e</id>
+  <instanteFormatoISO>2022-10-11T23:09:19.241182898</instanteFormatoISO>
+  <tipoOpcion>Parser</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>7355</tiempoDeEjecucion>
+</DataofUse>

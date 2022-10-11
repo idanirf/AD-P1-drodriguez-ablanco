@@ -39,41 +39,6 @@ class CheckData {
     }
 
 
-    /**
-     * Comprueva que los parametros sean 3 ,
-     * el primero resume , y el segundo una path que exixta
-     * y tenga dos archivos llamados correctamente en cualquier formato
-     */
-    fun sumaryAll(args: Array<String>): Boolean{
-        logger.info("entrando en sumaryall")
-        //args so 3 y primero resume
-        if(args.size==3 && args[0]=="resume"){
-            var ficheroModeloResiduoOK : Boolean = false
-            var ficheroContenedoresVariosOK: Boolean = false
-            try {
-                //ves si el fichero 1 es correcto en algun formato
-
-                if(isFileCsvModeloResiduo(args) || areFileJsonModeloResiduo (args)|| areFilesXmlModeloResiduo (args)){
-                    ficheroModeloResiduoOK = true
-                }
-                //ver si el fichero 2 es corrcto en algun formato
-
-                if(isFileCsvContenedoresVarios(args) || areFileJsonContenedoresVarios(args) || areFilesXmlContenedoresVarios(args)){
-                    ficheroModeloResiduoOK = true
-                }
-
-            }catch(e:Exception ){
-                logger.info("Error: datos incorrectos")
-            }
-            if(ficheroContenedoresVariosOK && ficheroModeloResiduoOK){
-                logger.info("datos correctos")
-                return true}
-        }
-
-        logger.info("Error: datos incorrectos")
-        return false
-    }
-
     private fun areFilesXmlContenedoresVarios(args: Array<String>): Boolean {
         try {
             if (Files.exists(Path.of(args[2] + File.separator + "contenedores_varios.Xml"))) {
