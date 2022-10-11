@@ -26,36 +26,48 @@ class Resume {
      */
     fun resumeDistrict(district: String, sM: ArrayList<ModeloResiduo>, sCV: ArrayList<ContenedoresVarios>): Boolean {
         //para ver el tiempo que tarda
-        var tInit = System.currentTimeMillis();
-        //Todo hacer
+        var isDistrictInModeloResiduo = sM.stream().anyMatch{x -> x.distrito==(district.trim())}
+        var idDistrictInContenedoreVarios = sCV.stream().anyMatch{x -> x.distrito==(district.trim())}
 
-        logger.info("Número de contenedores de cada tipo que hay en este distrito")
-        var numContenedoresPorTipo = sCV.stream()
-            .filter { a -> a.barrio == district }
-            .collect(Collectors.groupingBy { x -> x.tipoContenedor })
-            .map { (a, b) -> b.stream().map { b.count() }.toList() }
+        if(!isDistrictInModeloResiduo || !idDistrictInContenedoreVarios){
+            logger.info("no existe el distrito buscado en los ficheros")
+        }else{
 
+            var tInit = System.currentTimeMillis();
+            //Todo hacer
 
-        //todo no se como hacerlo
-
-        logger.info("Total de toneladas recogidas en ese distrito por residuo.")
-        //todo no se como hacerlo
-
-        logger.info("Gráfico con el total de toneladas por residuo en ese distrito.")
-        //todo no se como hacerlo
-
-        logger.info("Máximo, mínimo , media y desviación por mes por residuo en dicho distrito.")
-        //todo no se como hacerlo
-
-        logger.info("Gráfica del máximo, mínimo y media por meses en dicho distrito.")
-        //todo no se como hacerlo
+            logger.info("Número de contenedores de cada tipo que hay en este distrito")
+            var numContenedoresPorTipo = sCV.stream()
+                .filter { a -> a.barrio == district }
+                .collect(Collectors.groupingBy { x -> x.tipoContenedor })
+                .map { (a, b) -> b.stream().map { b.count() }.toList() }
 
 
-        //para ver cuanto tarda
-        var tFinal = System.currentTimeMillis();
-        var tDiference = tFinal - tInit;
+            //todo no se como hacerlo
 
-        //Todo devuelve si consigue
+            logger.info("Total de toneladas recogidas en ese distrito por residuo.")
+            //todo no se como hacerlo
+
+            logger.info("Gráfico con el total de toneladas por residuo en ese distrito.")
+            //todo no se como hacerlo
+
+            logger.info("Máximo, mínimo , media y desviación por mes por residuo en dicho distrito.")
+            //todo no se como hacerlo
+
+            logger.info("Gráfica del máximo, mínimo y media por meses en dicho distrito.")
+            //todo no se como hacerlo
+
+
+            //para ver cuanto tarda
+            var tFinal = System.currentTimeMillis();
+            var tDiference = tFinal - tInit;
+
+            //Todo devuelve si consigue
+            logger.info("falta hacer resimen district")
+            return true
+
+        }
+
         return false
     }
 
@@ -83,6 +95,7 @@ class Resume {
         //para ver el tiempo que tarda
         var tInit = System.currentTimeMillis();
 
+        logger.info("entramos")
         //todo hacer consultas
 
         logger.info("numero de contenedores por distrito")
@@ -126,7 +139,10 @@ class Resume {
         var tDiference= tFinal - tInit;
         //todo hacerhtml con las consultas
 
-        return false
+        //Todo devuelve si consigue
+        logger.info("falta hacer resimen ")
+        return true
+
     }
 
 }
