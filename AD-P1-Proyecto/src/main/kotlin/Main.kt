@@ -4,7 +4,7 @@ import dataOfUse.DataofUse
 import dto.ContenedoresVariosDTO
 import dto.ModeloResiduoDTO
 import interchange.Csv
-import interchange.Json
+import interchange.Jsonantiguo
 import interchange.Xml
 import mappers.MaperModeloResiduo
 import mappers.MapperContenedoresVarios
@@ -16,7 +16,6 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.logging.Logger
 import java.util.stream.Stream
-import kotlin.streams.toList
 
 
 private val logger: Logger = Logger.getLogger("Azahara y Dani Log")
@@ -90,7 +89,7 @@ fun beginingParser(args: Array<String>, stringOfData : String) {
         logger.info(" csv ")
         Csv().ModeloRosiduoToCsv(arrayListOfModeloResiduo , Path.of(args[2]))
         logger.info(" json")
-        Json<ModeloResiduoDTO>().objectToJson(arrayListOfModeloResiduo , Path.of(args[2]))
+        Jsonantiguo<ModeloResiduoDTO>().objectToJson(arrayListOfModeloResiduo , Path.of(args[2]))
         logger.info(" xml ")
         Xml<ModeloResiduoDTO>().objectToXml(arrayListOfModeloResiduo,Path.of(args[2]+File.separator+"modelo_residuos.xml"))
 
@@ -101,7 +100,7 @@ fun beginingParser(args: Array<String>, stringOfData : String) {
         logger.info(" csv ")
         Csv().ContenedoresVariosToCsv(arrayListOfContenedoreVarios , Path.of(args[2]))
         logger.info(" json")
-        Json<ContenedoresVariosDTO>().objectToJson(arrayListOfContenedoreVarios , Path.of(args[2]))
+        Jsonantiguo<ContenedoresVariosDTO>().objectToJson(arrayListOfContenedoreVarios , Path.of(args[2]))
         logger.info(" xml ")
         Xml<ContenedoresVariosDTO>().objectToXml(arrayListOfContenedoreVarios,Path.of(args[2]+File.separator+"contenedores_varios.xml"))
 
@@ -401,7 +400,7 @@ private fun searchCorrectFileInJsonFilesModeloResiduo(ficherosJson: MutableList<
         var ficheroCorrecto: ArrayList<ModeloResiduoDTO> = ArrayList()
         try {
             var pathEncontrada = ficherosJson.get(0)
-            ficheroCorrecto = Json<ModeloResiduoDTO>().jsonToModeloResiduo(ficherosJson.removeAt(0))
+            ficheroCorrecto = Jsonantiguo<ModeloResiduoDTO>().jsonToModeloResiduo(ficherosJson.removeAt(0))
             encontrado1 = true
             return pathEncontrada
             logger.info("fichero tiene las columnas correctas y en el orden correcto")
