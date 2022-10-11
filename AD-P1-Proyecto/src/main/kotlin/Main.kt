@@ -27,10 +27,10 @@ val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator +
         "data"
 
 //para probar el parser
-private val strings = arrayOf("parser", path, path+File.separator + "copia")
+//private val strings = arrayOf("parser", path, path+File.separator + "copia")
 
 //para probar el resume
-//private val strings = arrayOf("resumen", path, path+File.separator + "copia")
+private val strings = arrayOf("resumen", path+File.separator+"xmlResume", path+File.separator + "copia")
 
 fun main(args: Array<String>) {
 
@@ -207,15 +207,9 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
             logger.info("el path de los archivos exixte y es un directorio")
 
             //listar todos los archivos dentro de un directorio y quedarnos con los de formato correcto
-            var regrexJson = Regex(".json$")
-            var regrexXml = Regex(".xml$")
-            var regrexCsv = Regex(".csv$")
-
             var ficheros : Stream<Path>  = Files.list(Path.of(args[1]))
 
             var ficherosReadble = ficheros.filter { p -> Files.isReadable(p) }.toList()
-
-
 
             logger.info("buscamos si hay xml")
             var ficherosXml = ficherosReadble.map { x -> x.toString() }.filter{x-> x.endsWith(".xml")}
@@ -317,19 +311,27 @@ fun doResumen(distrito: String , pathOfContenedoresVarios : Path, pathDeModeloRe
     var arrayListOfModeloResiduo : ArrayList<ModeloResiduo> = ArrayList()
     var arrayListOfContenedoreVarios : ArrayList<ContenedoresVarios> = ArrayList()
 
+    var ListOfContenedoreVariosDTO : List<ContenedoresVariosDTO> = ArrayList<ContenedoresVariosDTO>()
+    var ListOfModeloResiduoDTO : List<ModeloResiduoDTO> = ArrayList<ModeloResiduoDTO>()
+
+    var contenedoreVariosDTO =ArrayList<ContenedoresVariosDTO>()
+    ListOfContenedoreVariosDTO.stream().forEach{x -> contenedoreVariosDTO.add(x)}
+    var modeloResiduoDTO = ArrayList<ModeloResiduoDTO>()
+    ListOfModeloResiduoDTO.stream().forEach{x -> modeloResiduoDTO.add(x)}
+
+
     try {
-        //Todo hacer con distintos hilos
-        logger.info(" cogiendo datos de archivo Modelo residuo ")
-        var arrayListOfModeloResiduoDTO = Csv().csvToMoeloResiduo(pathDeModeloResiduo)
+
+        getContenedoresVariosDtoToFile(pathOfContenedoresVarios, ListOfContenedoreVariosDTO)
+
+        getModeloResiduoDtoToFile(pathOfContenedoresVarios, ListOfModeloResiduoDTO, pathDeModeloResiduo)
+
+
+        logger.info(" pasando contenedores varios dto a contenedores varios")
+         arrayListOfContenedoreVarios = doMappetToContenedresVarios(contenedoreVariosDTO)
 
         logger.info(" pasando modelo residuo dto a modelo residuo")
-         arrayListOfModeloResiduo = doMappetToModeloResiduo(arrayListOfModeloResiduoDTO)
-
-        logger.info(" cogiendo datos de contenedores Varios")
-        var arrayListOfContenedoreVariosDTO = Csv().csvToContenedoresVarios(pathOfContenedoresVarios)
-
-        logger.info(" pasando modelo residuo dto a modelo residuo")
-         arrayListOfContenedoreVarios = doMappetToContenedresVarios(arrayListOfContenedoreVariosDTO)
+        arrayListOfModeloResiduo = doMappetToModeloResiduo(modeloResiduoDTO)
 
     }catch (e: Exception){
         logger.info("error al cojer datos de los ficheros y convertirlos a dto")
@@ -357,8 +359,55 @@ fun doResumen(distrito: String , pathOfContenedoresVarios : Path, pathDeModeloRe
 
 }
 
+private fun getModeloResiduoDtoToFile(
+    pathOfContenedoresVarios: Path,
+    arrayListOfModeloResiduoDTO: List<ModeloResiduoDTO>,
+    pathDeModeloResiduo: Path
+) {
+    var arrayListOfModeloResiduoDTO1 = arrayListOfModeloResiduoDTO
+    if (pathOfContenedoresVarios.endsWith(".json")) {
+        logger.info(" cogiendo datos de contenedores Varios desde json")
+        arrayListOfModeloResiduoDTO1 = Jsonc()
+            .readJsontoModeloresiduoDto(pathDeModeloResiduo)
+
+    } else if (pathOfContenedoresVarios.endsWith(".csv")) {
+        logger.info(" cogiendo datos de contenedores Varios desde csv")
+        arrayListOfModeloResiduoDTO1 = Csv()
+            .csvToMoeloResiduo(pathDeModeloResiduo)
+
+    } else {
+        logger.info(" cogiendo datos de contenedores Varios desde xml")
+        arrayListOfModeloResiduoDTO1 = Xmlc()
+            .xmlToModeloresiduoDto(pathDeModeloResiduo)
+    }
+}
+
+private fun getContenedoresVariosDtoToFile(
+    pathOfContenedoresVarios: Path,
+    arrayListOfContenedoreVariosDTO: List<ContenedoresVariosDTO>
+): List<ContenedoresVariosDTO> {
+    var arrayListOfContenedoreVariosDTO1 = arrayListOfContenedoreVariosDTO
+    if (pathOfContenedoresVarios.endsWith(".json")) {
+        logger.info(" cogiendo datos de contenedores Varios desde json")
+        arrayListOfContenedoreVariosDTO1 = Jsonc()
+            .readJsontoContenedoresvariosDto(pathOfContenedoresVarios)
+
+    } else if (pathOfContenedoresVarios.endsWith(".csv")) {
+        logger.info(" cogiendo datos de contenedores Varios desde csv")
+        arrayListOfContenedoreVariosDTO1 = Csv()
+            .csvToContenedoresVarios(pathOfContenedoresVarios)
+
+    } else {
+        logger.info(" cogiendo datos de contenedores Varios desde xml")
+        arrayListOfContenedoreVariosDTO1 = Xmlc()
+            .xmlToContenedoresVariosDto(pathOfContenedoresVarios)
+    }
+    return arrayListOfContenedoreVariosDTO1
+}
+
 fun doMappetToContenedresVarios(array: ArrayList<ContenedoresVariosDTO>):
         ArrayList<ContenedoresVarios> {
+    logger.info("entramos")
 
     var mapper = MapperContenedoresVarios()
     var arrayOfContenedoresVarios = ArrayList<ContenedoresVarios>()
@@ -376,6 +425,7 @@ fun doMappetToContenedresVarios(array: ArrayList<ContenedoresVariosDTO>):
 
 fun doMappetToModeloResiduo(array: ArrayList<ModeloResiduoDTO>):
         ArrayList<ModeloResiduo> {
+    logger.info("entramos")
 
     var mapper = MaperModeloResiduo()
     var arrayOfModeloResiduo = ArrayList<ModeloResiduo>()

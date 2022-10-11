@@ -46,3 +46,27 @@
   <exito>true</exito>
   <tiempoDeEjecucion>7355</tiempoDeEjecucion>
 </DataofUse>
+
+<DataofUse>
+  <id>eeaf1533-dc23-40a3-9eeb-64f9c065cbf9</id>
+  <instanteFormatoISO>2022-10-11T23:14:38.158154886</instanteFormatoISO>
+  <tipoOpcion>resumen</tipoOpcion>
+  <exito>false</exito>
+  <tiempoDeEjecucion>597</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>4ef9fff2-7566-44be-ada1-f89db46fae09</id>
+  <instanteFormatoISO>2022-10-11T23:55:49.542223453</instanteFormatoISO>
+  <tipoOpcion>resumen</tipoOpcion>
+  <exito>false</exito>
+  <tiempoDeEjecucion>3093</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>e75e4c7f-ec40-4d19-8455-0f2a9c7edb98</id>
+  <instanteFormatoISO>2022-10-11T23:59:03.394401936</instanteFormatoISO>
+  <tipoOpcion>resumen</tipoOpcion>
+  <exito>false</exito>
+  <tiempoDeEjecucion>3140</tiempoDeEjecucion>
+</DataofUse>

@@ -29,6 +29,7 @@ class MapperContenedoresVarios {
 
     fun tdoToContenedoresVarios(dto: ContenedoresVariosDTO): ContenedoresVarios {
 
+        //Todo creo que falla esto
         return ContenedoresVarios(
             codigoInternoSituado = dto.codigoInternoSituado,
             //tipoContenedor = getTipoContenedor(pojo.tipoContenedor),
