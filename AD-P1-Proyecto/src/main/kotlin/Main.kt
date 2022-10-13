@@ -1,8 +1,9 @@
-import Resume.Resume
+import Resume.ResumenDataFrame
 import chekData.CheckData
 import dataOfUse.DataofUse
 import dto.ContenedoresVariosDTO
 import dto.ModeloResiduoDTO
+
 import interchange.Csv
 import interchange.Jsonc
 import interchange.Xmlc
@@ -16,7 +17,6 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.logging.Logger
 import java.util.stream.Stream
-import kotlin.streams.toList
 
 
 val logger: Logger = Logger.getLogger("Azahara y Dani Log")
@@ -30,7 +30,7 @@ val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator +
 //private val strings = arrayOf("parser", path, path+File.separator + "copia")
 
 //para probar el resume
-private val strings = arrayOf("resumen", path+File.separator+"xmlResume", path+File.separator + "copia")
+private val strings = arrayOf("resumen", path, path+File.separator + "copia")
 
 fun main(args: Array<String>) {
 
@@ -249,7 +249,7 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
                 }else{
 
                     logger.info("exixten los dos archivos necesarios para hacer el resumen")
-                    exito = doResumen("",pathContenedoresVarios,pathModeloResiduo)
+                    exito = doResumen("",pathContenedoresVarios,pathModeloResiduo, stringOfData)
 
                 }
             }
@@ -304,61 +304,34 @@ private fun getPactCorrectOfModeloResiduo(
     return pathModeloResiduo1
 }
 
-fun doResumen(distrito: String , pathOfContenedoresVarios : Path, pathDeModeloResiduo : Path) : Boolean {
+fun doResumen(distrito: String , pathOfContenedoresVarios : Path, pathDeModeloResiduo : Path, stringOfData: String) : Boolean {
     logger.info("los datos de la path son correctos")
 
+    //para ver el tiempo que tarda
+    var tInit = System.currentTimeMillis();
+    var tipoOpcion = ""
+    var exito = false
+    if (distrito.equals("")){
+        tipoOpcion="resume District"
+        exito = ResumenDataFrame().resumeDistrictFrame(pathDeModeloResiduo, pathOfContenedoresVarios, distrito)
 
-    var arrayListOfModeloResiduo : ArrayList<ModeloResiduo> = ArrayList()
-    var arrayListOfContenedoreVarios : ArrayList<ContenedoresVarios> = ArrayList()
-
-    var ListOfContenedoreVariosDTO : List<ContenedoresVariosDTO> = ArrayList<ContenedoresVariosDTO>()
-    var ListOfModeloResiduoDTO : List<ModeloResiduoDTO> = ArrayList<ModeloResiduoDTO>()
-
-    var contenedoreVariosDTO =ArrayList<ContenedoresVariosDTO>()
-    ListOfContenedoreVariosDTO.stream().forEach{x -> contenedoreVariosDTO.add(x)}
-    var modeloResiduoDTO = ArrayList<ModeloResiduoDTO>()
-    ListOfModeloResiduoDTO.stream().forEach{x -> modeloResiduoDTO.add(x)}
-
-
-    try {
-
-        getContenedoresVariosDtoToFile(pathOfContenedoresVarios, ListOfContenedoreVariosDTO)
-
-        getModeloResiduoDtoToFile(pathOfContenedoresVarios, ListOfModeloResiduoDTO, pathDeModeloResiduo)
-
-
-        //todo no se cargan bien
-        logger.info(" pasando contenedores varios dto a contenedores varios")
-         arrayListOfContenedoreVarios = doMappetToContenedresVarios(contenedoreVariosDTO)
-
-        logger.info(" pasando modelo residuo dto a modelo residuo")
-        arrayListOfModeloResiduo = doMappetToModeloResiduo(modeloResiduoDTO)
-
-    }catch (e: Exception){
-        logger.info("error al cojer datos de los ficheros y convertirlos a dto")
-        e.printStackTrace()
-        return false
-    }
-    //todo esperara con un oin o un wait a que los procesos terminen
-    logger.info("modeloResiduo tenemos ${arrayListOfModeloResiduo.size}")
-    logger.info("contenedoresVarios tenemos ${arrayListOfContenedoreVarios.size}")
-    if(arrayListOfModeloResiduo.size==0 ||  arrayListOfContenedoreVarios.size==0){
-        logger.info("los datos no se han cargado bien o no son suficientes")
-        return false
     }else{
-        //todo comprobar que exite el distrito
-        logger.info("iniciando resumen")
-        if(distrito==""){
-            return  Resume().resumeAll(arrayListOfModeloResiduo,arrayListOfContenedoreVarios)
-        }else{
-            return  Resume().resumeDistrict(distrito,arrayListOfModeloResiduo,arrayListOfContenedoreVarios)
-        }
-
+        tipoOpcion="resume all"
+        exito = ResumenDataFrame().resumenFrame(pathDeModeloResiduo, pathOfContenedoresVarios)
     }
 
+    logger.info("fin de tarea ")
 
+    //para ver cuanto tarda
+    var tFinal = System.currentTimeMillis();
+    var tDiference= tFinal - tInit;
 
+    var data = DataofUse(tipoOpcion = tipoOpcion, exito = exito , tiempoEjecucion = tDiference)
+    logger.info(data.toString())
+    Xmlc().writeData( Path.of(stringOfData),data)
+    logger.info("escrito datos")
 
+return true
 
 }
 

@@ -1,15 +1,17 @@
 package Resume
 
-import dto.logger
-import models.ContenedoresVarios
-import models.ModeloResiduo
-import java.util.Collections
-import java.util.stream.Collector
+
+import dto.ModeloResiduoDTO
+import logger
+import org.jetbrains.kotlinx.dataframe.DataFrame
+import org.jetbrains.kotlinx.dataframe.api.*
+import org.jetbrains.kotlinx.dataframe.io.read
+import org.jetbrains.kotlinx.dataframe.values
+import java.io.File
+import java.nio.file.Path
 import java.util.stream.Collectors
 
-
-class Resume {
-    //esta clase se va a encargar de que cuando le pasemos una lista haga el resumen
+class ResumenDataFrame {
 
     /**
     funcion que devuelve un resumen en html de el distrito selecionado
@@ -24,38 +26,57 @@ class Resume {
     - Gráfica del máximo, mínimo y media por meses en dicho distrito.
     - Tiempo de generación del mismo en milisegundos.
      */
-    fun resumeDistrict(district: String, sM: ArrayList<ModeloResiduo>, sCV: ArrayList<ContenedoresVarios>): Boolean {
-        //para ver el tiempo que tarda
-        var isDistrictInModeloResiduo = sM.stream().anyMatch{x -> x.distrito==(district.trim())}
-        var idDistrictInContenedoreVarios = sCV.stream().anyMatch{x -> x.distrito==(district.trim())}
 
-        if(!isDistrictInModeloResiduo || !idDistrictInContenedoreVarios){
-            logger.info("no existe el distrito buscado en los ficheros")
-        }else{
+    fun resumeDistrictFrame(pathMR: Path, pathCV: Path, district: String): Boolean {
+
+        //para ver si exixte el distrito
+
+
+        var districtsInModeloResiduo = DataFrame.read(pathMR.toFile())
+            .filter { x -> x.get("Distrito") == district }
+
+        logger.info("buscando distrito en el fichero Modelo Residio ")
+
+        var districtsInContenedoresVarios = DataFrame.read(pathCV.toFile())
+            .filter { x -> x.get("Distrito") == district }
+
+        logger.info("buscando distrito en el fichero Contenedores varios ")
+
+
+        if (districtsInModeloResiduo.count() == 0 && (districtsInContenedoresVarios.count() == 0)) {
+            logger.info("no existe el distrito en el fichero")
+        } else {
+            logger.info("existe el distrito en el fichero")
 
             var tInit = System.currentTimeMillis();
-            //Todo hacer
 
+
+            //todo no se si está bien
             logger.info("Número de contenedores de cada tipo que hay en este distrito")
-            var numContenedoresPorTipo = sCV.stream()
-                .filter { a -> a.barrio == district }
-                .collect(Collectors.groupingBy { x -> x.tipoContenedor })
-                .map { (a, b) -> b.stream().map { b.count() }.toList() }
+            var contenedoresPorTipo =
+                districtsInContenedoresVarios.groupBy("Tipo Contenedor").aggregate { count() }.print()
 
-
-            //todo no se como hacerlo
-
+            //todo no se si está bien
             logger.info("Total de toneladas recogidas en ese distrito por residuo.")
-            //todo no se como hacerlo
+            var toneladasPorResiduo = districtsInModeloResiduo.groupBy("Residuo").aggregate { sum("Toneladas") }.print()
 
+            //todo no se como hacerlo pero es fráfico de lo anterior
             logger.info("Gráfico con el total de toneladas por residuo en ese distrito.")
-            //todo no se como hacerlo
 
+
+            //todo no se como hacerlo
             logger.info("Máximo, mínimo , media y desviación por mes por residuo en dicho distrito.")
-            //todo no se como hacerlo
+            var estadisticasPorResiduoMaxYMin = districtsInModeloResiduo.groupBy("Residuo")
+                .aggregate { max("Toneladas") }
+                .aggregate { min("Toneladas") }.print()
 
-            logger.info("Gráfica del máximo, mínimo y media por meses en dicho distrito.")
+            var estadisticasPorResiduoMedYDesv = districtsInModeloResiduo.groupBy("Residuo")
+                .aggregate { mean("Toneladas") }
+                .aggregate { std("Toneladas") }.print()
+
+
             //todo no se como hacerlo
+            logger.info("Gráfica del máximo, mínimo y media por meses en dicho distrito.")
 
 
             //para ver cuanto tarda
@@ -69,6 +90,8 @@ class Resume {
         }
 
         return false
+
+
     }
 
 
@@ -91,23 +114,19 @@ class Resume {
     - Por cada distrito obtener para cada tipo de residuo la cantidad recogida.
     - Tiempo de generación del mismo en milisegundos.
      */
-    fun resumeAll(sM : ArrayList<ModeloResiduo>, sCV : ArrayList<ContenedoresVarios>): Boolean{
-        //para ver el tiempo que tarda
+    fun resumenFrame(pathMR: Path, pathCV: Path): Boolean {
+//para ver el tiempo que tarda
         var tInit = System.currentTimeMillis();
 
         logger.info("entramos")
         //todo hacer consultas
 
         logger.info("numero de contenedores por distrito")
-        var c = HashMap<String?,Int>()
-         sCV.stream()
-            .filter{a -> a.tipoContenedor!=null}
-            .collect(Collectors.groupingBy { a -> a.tipoContenedor })
-            .forEach { a, b -> c.put(a, b.size)  }
-        println(c)
+        var c = HashMap<String?, Int>()
+
 
         logger.info("Media de contenedores de cada tipo que hay en cada distrito")
-        var d : HashMap<String?,HashMap<String?,Int>>
+        var d: HashMap<String?, HashMap<String?, Int>>
         //              distrito        tipo    cuantos/total
         //todo no se como hacerlo
 
@@ -115,16 +134,22 @@ class Resume {
         logger.info("Gráfico con el total de contenedores por distrito")
         //todo no se como hacerlo
 
-        logger.info("Media de toneladas anuales de recogidas por" +
-                " cada tipo de basura agrupadas por distrito")
+        logger.info(
+            "Media de toneladas anuales de recogidas por" +
+                    " cada tipo de basura agrupadas por distrito"
+        )
         //todo no se como hacerlo
 
-        logger.info("Gráfico de media de toneladas mensuales de recogida de basura por distrito." +
-                " cada tipo de basura agrupadas por distrito")
+        logger.info(
+            "Gráfico de media de toneladas mensuales de recogida de basura por distrito." +
+                    " cada tipo de basura agrupadas por distrito"
+        )
         //todo no se como hacerlo
 
-        logger.info("Máximo, mínimo , media y desviación de toneladas anuales de recogidas por cada tipo\n" +
-                "    de basura agrupadas por distrito.")
+        logger.info(
+            "Máximo, mínimo , media y desviación de toneladas anuales de recogidas por cada tipo\n" +
+                    "    de basura agrupadas por distrito."
+        )
         //todo no se como hacerlo
 
         logger.info("Suma de todo lo recogido en un año por distrito")
@@ -136,7 +161,7 @@ class Resume {
 
         //para ver cuanto tarda
         var tFinal = System.currentTimeMillis();
-        var tDiference= tFinal - tInit;
+        var tDiference = tFinal - tInit;
         //todo hacerhtml con las consultas
 
         //Todo devuelve si consigue
@@ -144,5 +169,5 @@ class Resume {
         return true
 
     }
-
 }
+

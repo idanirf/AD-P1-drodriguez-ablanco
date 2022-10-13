@@ -12,7 +12,6 @@ var logger: Logger = Logger.getLogger("Azahara y Dani Log")
 @kotlinx.serialization.Serializable
 class ModeloResiduoDTO(
 
-
     var año: Int? ,
     var mes: String? ,
     var lote: Int? ,

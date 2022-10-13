@@ -21,6 +21,9 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test"))
+
+    //dataframe
+    implementation("org.jetbrains.kotlinx:dataframe:0.9.0-dev-1130-0.11.0.165")
     
 
     //provando otro tipo de json
