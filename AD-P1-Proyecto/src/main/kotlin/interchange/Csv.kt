@@ -62,7 +62,7 @@ class Csv {
     public fun ModeloRosiduoToCsv(a : ArrayList<ModeloResiduoDTO>, p : Path): File {
         logger.info(" entrado en Modelo residuo ToCsv")
 
-        var listaString = StringBuilder().append("año;mes;Meses;lote;Int;residuo;TipoResiduo;distrito;nombreDistrito;toneladas")
+        var listaString = StringBuilder().append("Año;Mes;Lote;Residuo;Distrito;Nombre Distrito;Toneladas")
         a.forEach { m -> listaString.append(getStringToModeloResiduoCSV(m)) }
 
 
