@@ -330,7 +330,7 @@ fun doResumen(distrito: String , pathOfContenedoresVarios : Path, pathDeModeloRe
 
     }else{
         tipoOpcion="resume District"
-        logger.info("entramos a la opcion resume  porque el distrito es  $distrito")
+        logger.info("entramos a la opcion resume distrito porque el distrito es  $distrito")
         exito = ResumenDataFrame().resumeDistrictFrame(pathDeModeloResiduo, pathOfContenedoresVarios, distrito)
     }
 
