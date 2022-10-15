@@ -1,15 +1,14 @@
 package Resume
 
 
-import dto.ModeloResiduoDTO
+import DataframeUtils.Consultas
+import DataframeUtils.GetDataFrame
+import DataframeUtils.Graficos
 import logger
 import org.jetbrains.kotlinx.dataframe.DataFrame
 import org.jetbrains.kotlinx.dataframe.api.*
-import org.jetbrains.kotlinx.dataframe.io.read
-import org.jetbrains.kotlinx.dataframe.values
-import java.io.File
 import java.nio.file.Path
-import java.util.stream.Collectors
+
 
 class ResumenDataFrame {
 
@@ -29,70 +28,50 @@ class ResumenDataFrame {
 
     fun resumeDistrictFrame(pathMR: Path, pathCV: Path, district: String): Boolean {
 
-        //para ver si exixte el distrito
+        //obtenemos los dataframe correspondientes con la clase GetDataFrame
+        var filasMr = GetDataFrame().dataFrameModeloResiduo(pathMR, district)
+        var filasCv = GetDataFrame().dataframeContenedoresVarios(pathCV,district)
 
 
-        var districtsInModeloResiduo = DataFrame.read(pathMR.toFile())
-            .filter { x -> x.get("Distrito") == district }
-
-        logger.info("buscando distrito en el fichero Modelo Residio ")
-
-        var districtsInContenedoresVarios = DataFrame.read(pathCV.toFile())
-            .filter { x -> x.get("Distrito") == district }
-
-        logger.info("buscando distrito en el fichero Contenedores varios ")
-
-
-        if (districtsInModeloResiduo.count() == 0 && (districtsInContenedoresVarios.count() == 0)) {
-            logger.info("no existe el distrito en el fichero")
+        if (filasMr.count() == 0 ) {
+            logger.info("no existe el distrito en el fichero modelo residuo, " +
+                    "por lo que las consultas relacionadas no se harán")
         } else {
-            logger.info("existe el distrito en el fichero")
+            logger.info("existe el distrito en los ficheros en modelo Residuo")
 
-            var tInit = System.currentTimeMillis();
+            var toneladasPorResiduo = Consultas().getToneladasPorResiduo(filasMr)
 
+            var graficoDeTotalToneladas = Graficos().doGraficoTotalToneladas()
 
-            //todo no se si está bien
-            logger.info("Número de contenedores de cada tipo que hay en este distrito")
-            var contenedoresPorTipo =
-                districtsInContenedoresVarios.groupBy("Tipo Contenedor").aggregate { count() }.print()
+            var estadisticasPorResiduoMax = Consultas().getMaximo(filasMr)
 
-            //todo no se si está bien
-            logger.info("Total de toneladas recogidas en ese distrito por residuo.")
-            var toneladasPorResiduo = districtsInModeloResiduo.groupBy("Residuo").aggregate { sum("Toneladas") }.print()
+            var estadisticasPorResiduoMin = Consultas().getMinimo(filasMr)
 
-            //todo no se como hacerlo pero es fráfico de lo anterior
-            logger.info("Gráfico con el total de toneladas por residuo en ese distrito.")
+            var estadisticasPorResiduoMed = Consultas().getMedia(filasMr)
 
+            var estadisticasPorResiduoDesv = Consultas.getDesviacion(filasMr)
 
-            //todo no se como hacerlo
-            logger.info("Máximo, mínimo , media y desviación por mes por residuo en dicho distrito.")
-            var estadisticasPorResiduoMaxYMin = districtsInModeloResiduo.groupBy("Residuo")
-                .aggregate { max("Toneladas") }
-                .aggregate { min("Toneladas") }.print()
+            var graficoDemaxMinMedYDes = Graficos().doGraficoDeEstadicticas(filasMr)
 
-            var estadisticasPorResiduoMedYDesv = districtsInModeloResiduo.groupBy("Residuo")
-                .aggregate { mean("Toneladas") }
-                .aggregate { std("Toneladas") }.print()
-
-
-            //todo no se como hacerlo
-            logger.info("Gráfica del máximo, mínimo y media por meses en dicho distrito.")
-
-
-            //para ver cuanto tarda
-            var tFinal = System.currentTimeMillis();
-            var tDiference = tFinal - tInit;
-
-            //Todo devuelve si consigue
-            logger.info("falta hacer resimen district")
-            return true
 
         }
+        if (filasMr.count() == 0 ) {
+                logger.info("no existe el distrito en el fichero Contenedores varios, " +
+                        "por lo que las consultas relacionadas no se harán")
+        } else {
+                logger.info("existe el distrito en los ficheros en contenedoresvarios")
 
-        return false
+                var contenedoresPorTipo =Consultas().getContenedoresDeCadaTipo(filasCv)
 
+
+        }
+        return true
 
     }
+
+
+
+
 
 
     /**
@@ -102,7 +81,7 @@ class ResumenDataFrame {
     - Titulo: Resumen de recogidas de basura y reciclaje de Madrid
     - Fecha de generación: Fecha y hora en formato español.
     - Autores: Nombre y apellidos de los dos autores.
-    ok- Número de contenedores de cada tipo que hay en cada distrito.
+    - Número de contenedores de cada tipo que hay en cada distrito.
     - Media de contenedores de cada tipo que hay en cada distrito.
     - Gráfico con el total de contenedores por distrito.
     - Media de toneladas anuales de recogidas por cada tipo de basura agrupadas por
@@ -115,57 +94,45 @@ class ResumenDataFrame {
     - Tiempo de generación del mismo en milisegundos.
      */
     fun resumenFrame(pathMR: Path, pathCV: Path): Boolean {
-//para ver el tiempo que tarda
-        var tInit = System.currentTimeMillis();
 
         logger.info("entramos")
-        //todo hacer consultas
 
-        logger.info("numero de contenedores por distrito")
-        var c = HashMap<String?, Int>()
-
-
-        logger.info("Media de contenedores de cada tipo que hay en cada distrito")
-        var d: HashMap<String?, HashMap<String?, Int>>
-        //              distrito        tipo    cuantos/total
-        //todo no se como hacerlo
+        //obtenemos los dataframe correspondientes con la clase GetDataFrame
+        var filasMr : DataFrame<Any?> = GetDataFrame().dataFrameModeloResiduoTotal(pathMR)
+        var filasCv : DataFrame<Any?> = GetDataFrame().dataframeContenedoresVariosTotal(pathCV)
 
 
-        logger.info("Gráfico con el total de contenedores por distrito")
-        //todo no se como hacerlo
+        if (filasCv.count()==0){
+            logger.info("no existe datos contenedores varios")
+        } else {
+            logger.info("existe datos en contenedores varios")
 
-        logger.info(
-            "Media de toneladas anuales de recogidas por" +
-                    " cada tipo de basura agrupadas por distrito"
-        )
-        //todo no se como hacerlo
+            var numeroContenedoresPorDistrito = Consultas().getNumeroContenedoresPorDistrito(filasCv)
 
-        logger.info(
-            "Gráfico de media de toneladas mensuales de recogida de basura por distrito." +
-                    " cada tipo de basura agrupadas por distrito"
-        )
-        //todo no se como hacerlo
+            var mediaDeContenedoresDeCadaTipo = Consultas().getmediaDeContenedoresDeCadaTipo(filasCv)
 
-        logger.info(
-            "Máximo, mínimo , media y desviación de toneladas anuales de recogidas por cada tipo\n" +
-                    "    de basura agrupadas por distrito."
-        )
-        //todo no se como hacerlo
+            var garficoDeMediaDeCadaTipo = Graficos().doGraficoDeMedia(filasCv)
 
-        logger.info("Suma de todo lo recogido en un año por distrito")
-        //todo no se como hacerlo
-
-        logger.info("Por cada distrito obtener para cada tipo de residuo la cantidad recogida.")
-        //todo no se como hacerlo
+        }
 
 
-        //para ver cuanto tarda
-        var tFinal = System.currentTimeMillis();
-        var tDiference = tFinal - tInit;
-        //todo hacerhtml con las consultas
 
-        //Todo devuelve si consigue
-        logger.info("falta hacer resimen ")
+        var mediaToneladasAnuales = Consultas().getmediaToneladasAnuales(filasCv)
+
+        var graficoMediaToneladasMensuales = Graficos().getgraficoMediaToneladasMensuales(filasCv)
+
+        var maxToneladasPorDistrito = Consultas().getmaxToneladasPorDistrito(filasCv)
+
+        var minToneladasPorDistrito = Consultas().getminToneladasPorDistrito(filasCv)
+
+        var medToneladasPorDistrito = Consultas().getMedToneladasPorDistrito(filasCv)
+
+        var sumToneladasPorDistrito = Consultas().getsumToneladasPorDistrito(filasCv)
+
+        var sumToneladasPorDistritoPorTipo = Consultas().sumToneladasPorDistritoPorTipo(filasCv)
+
+
+
         return true
 
     }

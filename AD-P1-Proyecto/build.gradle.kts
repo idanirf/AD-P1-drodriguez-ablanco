@@ -5,6 +5,7 @@ plugins {
     application
     // Serializacion importante
     kotlin("plugin.serialization") version "1.7.10"
+
 }
 
 group = "es.danizados"

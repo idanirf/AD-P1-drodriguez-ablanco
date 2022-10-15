@@ -30,7 +30,13 @@ val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator +
 //private val strings = arrayOf("parser", path, path+File.separator + "copia")
 
 //para probar el resume
-private val strings = arrayOf("resumen", path, path+File.separator + "copia")
+//private val strings = arrayOf("resumen", path, path+File.separator + "copia")
+
+//para probar el resume district
+//private val strings = arrayOf("resumen","CARABANCHEL", path, path+File.separator + "copia")
+
+//para probar el resume district
+private val strings = arrayOf("resumen","carabanchel", path, path+File.separator + "copia")
 
 fun main(args: Array<String>) {
 
@@ -190,27 +196,30 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
 
     //para ver si ha tenido exito o no
     var exito = false
+    var isCorrectData = false
     var tipoOpcion ="resumen"
+    var directorioDeorigen = Path.of(args[1])
+    var directoriodeResumen = Path.of(args[2])
+
+
     if (args.size==4){
         tipoOpcion="resumen district"
+        directorioDeorigen = Path.of(args[2])
+        directoriodeResumen = Path.of(args[3])
+        logger.info("la opcion es resumen district porque los args son 4")
     }
 
-
-    var isCorrectData = false
-
-
-    //1.sacar todos los ficheros del directorio
-
-        if (Files.notExists(Path.of(args[1])) && !Files.isDirectory(Path.of(args[1]))){
+        //1.sacar todos los ficheros del directorio
+        if (Files.notExists(directorioDeorigen) && !Files.isDirectory(directorioDeorigen)){
             logger.info("el path de los archivos No exixte o NO es un directorio")
+
         }else{
             logger.info("el path de los archivos exixte y es un directorio")
 
-            //listar todos los archivos dentro de un directorio y quedarnos con los de formato correcto
-            var ficheros : Stream<Path>  = Files.list(Path.of(args[1]))
+            //listar todos los archivos dentro de un directorio y que sean leibles
+            var ficherosReadble : List<Path>  = Files.list(directorioDeorigen).filter { p -> Files.isReadable(p) }.toList()
 
-            var ficherosReadble = ficheros.filter { p -> Files.isReadable(p) }.toList()
-
+            // quedarnos con los de formato correcto
             logger.info("buscamos si hay xml")
             var ficherosXml = ficherosReadble.map { x -> x.toString() }.filter{x-> x.endsWith(".xml")}
                 .map { x-> Path.of(x) }.toMutableList()
@@ -222,13 +231,11 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
             logger.info("encontramos ${ficherosCsv.size}")
 
             logger.info("buscamos si hay json")
-
             var ficherosJson = ficherosReadble.map { x -> x.toString() }.filter{x-> x.endsWith(".json")}
                 .map { x-> Path.of(x) }.toMutableList()
             logger.info("encontramos ${ficherosJson.size}")
 
             //con cada uno porbamos si se pueden leer y son de los que queremos, quitaremos con excepciones
-
             var pathModeloResiduo : Path? = null
             var pathContenedoresVarios : Path? = null
 
@@ -249,7 +256,14 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
                 }else{
 
                     logger.info("exixten los dos archivos necesarios para hacer el resumen")
-                    exito = doResumen("",pathContenedoresVarios,pathModeloResiduo, stringOfData)
+                    if(tipoOpcion == "resumen district"){
+
+                        exito = doResumen(args[1],pathContenedoresVarios,pathModeloResiduo, stringOfData)
+                    }else{
+
+                        exito = doResumen("",pathContenedoresVarios,pathModeloResiduo, stringOfData)
+                    }
+
 
                 }
             }
@@ -307,29 +321,20 @@ private fun getPactCorrectOfModeloResiduo(
 fun doResumen(distrito: String , pathOfContenedoresVarios : Path, pathDeModeloResiduo : Path, stringOfData: String) : Boolean {
     logger.info("los datos de la path son correctos")
 
-    //para ver el tiempo que tarda
-    var tInit = System.currentTimeMillis();
     var tipoOpcion = ""
     var exito = false
     if (distrito.equals("")){
-        tipoOpcion="resume District"
-        exito = ResumenDataFrame().resumeDistrictFrame(pathDeModeloResiduo, pathOfContenedoresVarios, distrito)
+        tipoOpcion="resume all"
+        logger.info("entramos a la opcion resume all  porque no hay distrito $distrito")
+        exito = ResumenDataFrame().resumenFrame(pathDeModeloResiduo, pathOfContenedoresVarios)
 
     }else{
-        tipoOpcion="resume all"
-        exito = ResumenDataFrame().resumenFrame(pathDeModeloResiduo, pathOfContenedoresVarios)
+        tipoOpcion="resume District"
+        logger.info("entramos a la opcion resume  porque el distrito es  $distrito")
+        exito = ResumenDataFrame().resumeDistrictFrame(pathDeModeloResiduo, pathOfContenedoresVarios, distrito)
     }
 
     logger.info("fin de tarea ")
-
-    //para ver cuanto tarda
-    var tFinal = System.currentTimeMillis();
-    var tDiference= tFinal - tInit;
-
-    var data = DataofUse(tipoOpcion = tipoOpcion, exito = exito , tiempoEjecucion = tDiference)
-    logger.info(data.toString())
-    Xmlc().writeData( Path.of(stringOfData),data)
-    logger.info("escrito datos")
 
 return true
 
