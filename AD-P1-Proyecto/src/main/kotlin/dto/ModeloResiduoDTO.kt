@@ -6,6 +6,7 @@ import models.ModeloResiduo
 import java.util.logging.Logger
 
 
+@JvmField
 var logger: Logger = Logger.getLogger("Azahara y Dani Log")
 
 //para pasar a json y a xml
