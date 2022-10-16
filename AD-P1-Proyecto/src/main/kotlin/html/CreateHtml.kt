@@ -56,7 +56,7 @@ class CreateHtml {
                         </li>
                         <li> <br>
                             <a href=""style="color: #355835 ;" >Número de contenedores de cada tipo que hay en cada distrito.</a> <br>
-                            
+                            <p> ${contenedoresPorTipo.toString()} </p>
                         </li>
                         <li> <br>
                             <a href="" style="color: #355835 ;">Media de contenedores de cada tipo que hay en cada distrito.</a> <br>
