@@ -30,10 +30,11 @@ val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator +
 //private val strings = arrayOf("parser", path, path+File.separator + "copia")
 
 //para probar el resume
-//private val strings = arrayOf("resumen", path, path+File.separator + "copia")
+
+private val strings = arrayOf("resumen", path, path+File.separator + "copia")
 
 //para probar el resume district
-private val strings = arrayOf("resumen","CARABANCHEL", path, path+File.separator + "copia")
+//private val strings = arrayOf("resumen","CARABANCHEL", path, path+File.separator + "copia")
 
 
 fun main(args: Array<String>) {
