@@ -153,6 +153,8 @@ class ResumenDataFrame {
             fun resumenFrame(pathMR: Path, pathCV: Path, directoriodeResumen: Path): String {
 
                 logger.info("entramos")
+                //para ver el tiempo que tarda
+                var tInit = System.currentTimeMillis();
 
                 //obtenemos los dataframe correspondientes con la clase GetDataFrame
                 logger.info("cojemos datos e mr")
@@ -164,7 +166,7 @@ class ResumenDataFrame {
 
                 var numeroContenedoresPorDistrito : DataFrame<Any?>? = null
                 var mediaDeContenedoresDeCadaTipo : DataFrame<Any?>? = null
-                var garficoDeMediaDeCadaTipo : Any? = null
+                var  garficoDecontenedoresPorDistrito : Any? = null
                 var mediaToneladasAnuales : DataFrame<Any?>? = null
                 var mediaToneladasMensuales : DataFrame<Any?>? = null
                 var graficoMediaToneladasMensuales : Any? = null
@@ -172,7 +174,10 @@ class ResumenDataFrame {
                 var minToneladasPorDistrito : DataFrame<Any?>? = null
                 var medToneladasPorDistrito : DataFrame<Any?>? = null
                 var sumToneladasPorDistrito : DataFrame<Any?>? = null
+                var totalEstadirticasPorDistrito : DataFrame<Any?>? = null
                 var sumToneladasPorDistritoPorTipo : DataFrame<Any?>? = null
+                var totalEstadisticasPorAño : DataFrame<Any?>? = null
+                var desvToneladasPorDistrito : DataFrame<Any?>? = null
 
 
 
@@ -186,12 +191,12 @@ class ResumenDataFrame {
                      numeroContenedoresPorDistrito = Consultas().getNumeroContenedoresPorDistrito(filasCv)
 
 
-                    //no da fallo pero no está correcto
+                    //ok gracias a jeremy que me lo ha esplicado
                     mediaDeContenedoresDeCadaTipo = Consultas().getmediaDeContenedoresDeCadaTipo(filasCv)
                     //println(mediaDeContenedoresDeCadaTipo)
 
-                    //falta gráfica
-                    garficoDeMediaDeCadaTipo = Graficos().doGraficoDeMedia(filasCv)
+                    //ok
+                    garficoDecontenedoresPorDistrito = Graficos().doGraficoDeMedia(numeroContenedoresPorDistrito, directoriodeResumen)
                     //println(garficoDeMediaDeCadaTipo)
                 }
                 if (filasMr?.count() == 0) {
@@ -200,53 +205,74 @@ class ResumenDataFrame {
 
                     logger.info("existe datos en Modelo Resifduo")
 
-                    //no da fallo pero no está bien
+                    //ok
                      mediaToneladasAnuales = Consultas().getmediaToneladasAnuales(filasMr)
                    //  println(mediaToneladasAnuales)
 
-                    //no da fallo pero no está bien
+                    //ok
                     mediaToneladasMensuales = Consultas().getMediaToneladasMensuales(filasMr)
                     //println(mediaToneladasMensuales)
 
-                    //no da fallo pero no está bien
-                     graficoMediaToneladasMensuales = Graficos().getgraficoMediaToneladasMensuales(filasMr)
+                    //ok
+                     graficoMediaToneladasMensuales = Graficos().getgraficoMediaToneladasMensuales(mediaToneladasMensuales, directoriodeResumen)
                     //println(graficoMediaToneladasMensuales)
 
-                    //no da fallo pero no está bien//falta anual
+                    //ok
                     maxToneladasPorDistrito = Consultas().getmaxToneladasPorDistrito(filasMr)
                     //println(maxToneladasPorDistrito)
 
-                    //no da fallo pero no está bien//falta anual
+                    //ok
                      minToneladasPorDistrito = Consultas().getminToneladasPorDistrito(filasMr)
                     //println(minToneladasPorDistrito)
 
-                    //no da fallo pero no está bien//falta anual
+                    //ok
                     medToneladasPorDistrito = Consultas().getMedToneladasPorDistrito(filasMr)
                     //println(medToneladasPorDistrito)
-
 
                     //ok
                     sumToneladasPorDistrito = Consultas().getsumToneladasPorDistrito(filasMr)
                     //println(sumToneladasPorDistrito)
 
                     //ok
+                    desvToneladasPorDistrito = Consultas().getDesToneladasPorDistrito(filasMr)
+                    //println(sumToneladasPorDistrito)
+
+                    //ok
                     sumToneladasPorDistritoPorTipo = Consultas().sumToneladasPorDistritoPorTipo(filasMr)
                     //println(sumToneladasPorDistritoPorTipo)
 
-                }
+                    totalEstadisticasPorAño = Consultas().getEstadisticasTotalPorAño(
+                        maxToneladasPorDistrito,
+                        minToneladasPorDistrito,
+                        medToneladasPorDistrito,
+                        desvToneladasPorDistrito
+                    )
 
+                }
+                //para ver cuanto tarda
+                var tFinal = System.currentTimeMillis();
+                var tDiference= tFinal - tInit;
+                var momentoDeRealizacion = LocalDate.now()
+
+
+                /**
+
+
+                - Gráfico con el total de contenedores por distrito.
+                Gráfico de media de toneladas mensuales de recogida de basura por distrito.
+
+                 */
                 var html : String = CreateHtml().htmlResume(
                     numeroContenedoresPorDistrito ,
                     mediaDeContenedoresDeCadaTipo,
-                    garficoDeMediaDeCadaTipo,
+                    garficoDecontenedoresPorDistrito,
                     mediaToneladasAnuales,
-                    mediaToneladasMensuales,
-                    graficoMediaToneladasMensuales,
-                    maxToneladasPorDistrito ,
-                    minToneladasPorDistrito ,
-                    medToneladasPorDistrito ,
+                    graficoMediaToneladasMensuales ,
+                    totalEstadisticasPorAño ,
                     sumToneladasPorDistrito ,
-                    sumToneladasPorDistritoPorTipo
+                    sumToneladasPorDistritoPorTipo,
+                    tDiference,
+                    momentoDeRealizacion
                 )
                 return html
             }

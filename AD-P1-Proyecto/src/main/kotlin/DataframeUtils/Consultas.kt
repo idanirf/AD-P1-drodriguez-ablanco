@@ -43,21 +43,26 @@ class Consultas {
     }
 
     fun getmediaDeContenedoresDeCadaTipo(filasCv: DataFrame<Any?>):  DataFrame<Any?> {
-        //todo no me sale
+
+
         logger.info("Media de contenedores de cada tipo que hay en cada distrito")
-        return filasCv.groupBy("Distrito", "Tipo Contenedor").sortBy("Distrito").aggregate { count() into "Numero de contenedores" }
+
+        return filasCv.groupBy("Distrito", "Tipo Contenedor")
+            .aggregate { mean("Número") into "Media" }
 
     }
 
     fun getmediaToneladasAnuales(filasMr: DataFrame<Any?>):  DataFrame<Any?> {
         //no coje año
-        println( filasMr.get(1))
+        var columnaAño = filasMr.columnNames().get(0)
+        println(filasMr.columnNames())
         logger.info(
             "Media de toneladas anuales de recogidas por" +
                     " cada tipo de basura agrupadas por distrito"
         )
-        //todo no se como hacerlo
-       return filasMr.groupBy("Nombre Distrito", "Residuo").aggregate { max()}
+
+         return filasMr.groupBy(columnaAño, "Nombre Distrito", "Residuo").sortBy("Nombre Distrito")
+            .aggregate { mean("Toneladas") into "Media de toneladas" }
 
 
 
@@ -72,10 +77,11 @@ class Consultas {
 
         //println(filasMr.columnNames())
 
-        return filasMr.groupBy("Nombre Distrito", "Residuo")
+        var año = filasMr.columnNames().get(0)
+        var f = filasMr.groupBy(año, "Nombre Distrito", "Residuo")
             .aggregate { max("Toneladas") into "maximo"}.sortBy("Nombre Distrito")
 
-
+        return f
 
     }
 
@@ -85,8 +91,12 @@ class Consultas {
             " mínimo de toneladas anuales de recogidas por cada tipo\\n\" +\n" +
                     "                    \"    de basura agrupadas por distrito. "
         )
-        return filasCv.groupBy("Nombre Distrito", "Residuo")
+
+        var año = filasCv.columnNames().get(0)
+        var f = filasCv.groupBy(año, "Nombre Distrito", "Residuo")
             .aggregate { min("Toneladas") into "minimo"}.sortBy("Nombre Distrito")
+
+        return f
     }
 
     fun getMedToneladasPorDistrito(filasCv: DataFrame<Any?>):  DataFrame<Any?> {
@@ -95,8 +105,11 @@ class Consultas {
             " media de toneladas anuales de recogidas por cada tipo\\n\" +\n" +
                     "                    \"    de basura agrupadas por distrito. "
         )
-        return filasCv.groupBy("Nombre Distrito", "Residuo")
+        var año = filasCv.columnNames().get(0)
+        var f = filasCv.groupBy(año, "Nombre Distrito", "Residuo")
             .aggregate { mean("Toneladas") into "media"}.sortBy("Nombre Distrito")
+
+        return f
     }
 
     fun getsumToneladasPorDistrito(filasCv: DataFrame<Any?>):  DataFrame<Any?> {
@@ -114,12 +127,27 @@ class Consultas {
     }
 
     fun getMediaToneladasMensuales(filasMr: DataFrame<Any?>):  DataFrame<Any?> {
-        logger.info( "media de toneladas mensuales de recogida de basura por distrito." +
-            " cada tipo de basura agrupadas por distrito")
-        return filasMr.get("Nombre Distrito", "Residuo", "Toneladas")
+        logger.info( "media de toneladas mensuales de recogida de basura por distrito")
 
+        return  filasMr.groupBy("Mes", "Nombre Distrito", "Residuo").sortBy("Nombre Distrito")
+            .aggregate { mean("Toneladas") into "Media de toneladas" }
+    }
 
+    fun getDesToneladasPorDistrito(filasMr: DataFrame<Any?>): DataFrame<Any?> {
+        logger.info("desviación de toneladas anuales de recogidas por cada tipo de basura agrupadas por distrito.")
+        var año = filasMr.columnNames().get(0)
+        var f = filasMr.groupBy(año, "Nombre Distrito", "Residuo")
+            .aggregate { std("Toneladas") into "Desviacion"}.sortBy("Nombre Distrito")
 
+        return f
+    }
+
+    fun getEstadisticasTotalPorAño(maxToneladasPorDistrito: DataFrame<Any?>, minToneladasPorDistrito: DataFrame<Any?>, medToneladasPorDistrito: DataFrame<Any?>, desvToneladasPorDistrito: DataFrame<Any?>): DataFrame<Any?>? {
+
+        var f = maxToneladasPorDistrito.join(minToneladasPorDistrito)
+            .join(medToneladasPorDistrito).join(desvToneladasPorDistrito)
+        println(f)
+        return f
 
     }
 
