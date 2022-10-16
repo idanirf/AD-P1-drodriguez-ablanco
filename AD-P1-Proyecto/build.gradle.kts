@@ -6,6 +6,7 @@ plugins {
     // Serializacion importante
     kotlin("plugin.serialization") version "1.7.10"
 
+
 }
 
 group = "es.danizados"
@@ -41,9 +42,16 @@ dependencies {
     // https://mvnrepository.com/artifact/org.mockito/mockito-core
     testImplementation ("org.mockito:mockito-core:4.6.1")
 
-// https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml
     implementation ("com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.13.4")
 
+    // Para hacer logs
+    implementation("io.github.microutils:kotlin-logging-jvm:2.1.23")
+    implementation("ch.qos.logback:logback-classic:1.3.0-alpha16")
+    
+    // LetsPlot
+    implementation("org.jetbrains.lets-plot:lets-plot-kotlin:3.2.0")
+    implementation("org.jetbrains.lets-plot:lets-plot-image-export:2.3.0")
 
 
 }

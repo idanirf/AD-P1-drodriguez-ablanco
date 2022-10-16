@@ -4,9 +4,9 @@ import logger
 import org.jetbrains.kotlinx.dataframe.DataFrame
 
 class Graficos {
-    fun doGraficoTotalToneladas(): Any? {
-        //todo no se como hacerlo pero es fráfico de lo anterior
+    fun doGraficoTotalToneladas(toneladasPorResiduo: DataFrame<Any?>): Any? {
         logger.info("Gráfico con el total de toneladas por residuo en ese distrito.")
+
 
         return null
     }

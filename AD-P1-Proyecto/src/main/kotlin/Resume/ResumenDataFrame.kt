@@ -8,7 +8,6 @@ import html.CreateHtml
 import logger
 import org.jetbrains.kotlinx.dataframe.DataFrame
 import org.jetbrains.kotlinx.dataframe.api.*
-import org.jetbrains.kotlinx.dataframe.size
 import java.nio.file.Path
 
 
@@ -61,7 +60,7 @@ class ResumenDataFrame {
                 toneladasPorResiduo = Consultas().getToneladasPorResiduo(filasMr)
        //         println(toneladasPorResiduo)
 
-                graficoDeTotalToneladas = Graficos().doGraficoTotalToneladas()
+                graficoDeTotalToneladas = Graficos().doGraficoTotalToneladas(toneladasPorResiduo)
            // println(graficoDeTotalToneladas)
 
                 estadisticasPorResiduoMax = Consultas().getMaximo(filasMr)
