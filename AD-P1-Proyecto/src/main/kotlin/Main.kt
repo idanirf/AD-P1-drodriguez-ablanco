@@ -30,13 +30,11 @@ val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator +
 //private val strings = arrayOf("parser", path, path+File.separator + "copia")
 
 //para probar el resume
-//private val strings = arrayOf("resumen", path, path+File.separator + "copia")
+private val strings = arrayOf("resumen", path, path+File.separator + "copia")
 
 //para probar el resume district
 //private val strings = arrayOf("resumen","CARABANCHEL", path, path+File.separator + "copia")
 
-//para probar el resume district
-private val strings = arrayOf("resumen","carabanchel", path, path+File.separator + "copia")
 
 fun main(args: Array<String>) {
 
@@ -330,7 +328,7 @@ fun doResumen(distrito: String , pathOfContenedoresVarios : Path, pathDeModeloRe
 
     }else{
         tipoOpcion="resume District"
-        logger.info("entramos a la opcion resume  porque el distrito es  $distrito")
+        logger.info("entramos a la opcion resume distrito porque el distrito es  $distrito")
         exito = ResumenDataFrame().resumeDistrictFrame(pathDeModeloResiduo, pathOfContenedoresVarios, distrito)
     }
 
