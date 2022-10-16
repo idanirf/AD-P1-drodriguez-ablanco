@@ -1,9 +1,9 @@
 package html
 
 import org.jetbrains.kotlinx.dataframe.DataFrame
-import org.jetbrains.kotlinx.dataframe.api.forEach
 import org.jetbrains.kotlinx.dataframe.io.html
 import org.jetbrains.kotlinx.dataframe.io.toHTML
+import java.time.LocalDate
 
 class CreateHtml {
 
@@ -24,14 +24,15 @@ class CreateHtml {
         return ""
     }
 
-    fun htmlResumeDistrict(toneladasPorResiduo: DataFrame<Any?>?,
-                           graficoDeTotalToneladas: Any?,
-                           estadisticasPorResiduoMax: DataFrame<Any?>?,
-                           estadisticasPorResiduoMin: DataFrame<Any?>?,
-                           estadisticasPorResiduoMed: DataFrame<Any?>?,
-                           estadisticasPorResiduoDesv: DataFrame<Any?>?,
-                           graficoDemaxMinMedYDes: Any?,
-                           contenedoresPorTipo: DataFrame<Any?>?): String {
+    fun htmlResumeDistrict(
+        toneladasPorResiduo: DataFrame<Any?>?,
+        graficoDeTotalToneladas: Any?,
+        estadisticasTotales: DataFrame<Any?>?,
+        graficoDemaxMinMedYDes: Any?,
+        contenedoresPorTipo: DataFrame<Any?>?,
+        tDiference: Long,
+        momentoDeRealizacion: LocalDate
+    ): String {
 
 
         var html : String = ("""
@@ -98,23 +99,23 @@ class CreateHtml {
                         <li>
                             <h2>3.Gráfico con el total de toneladas por residuo en ese distrito.</h2>
                              <br>
-                             faltaGrafico
+                             <img src=" $graficoDeTotalToneladas" alt ="grafica1">
+                            
                              
                      
                         </li>
                         <li>
                             <h2>4.Máximo, mínimo , media y desviación por mes por residuo en dicho distrito.</h2>
                             <br>
-                            ${estadisticasPorResiduoMax?.toHTML()}
-                           ${estadisticasPorResiduoMin?.toHTML()}
-                           ${estadisticasPorResiduoMed?.toHTML()}
-                           ${estadisticasPorResiduoDesv?.toHTML()}
+                           ${estadisticasTotales?.toHTML()}
+                           
                             
-                            
+                     
                         </li>
                         <li>
                             <h2>5.Gráfica del máximo, mínimo y media por meses en dicho distrito.</h2>
-                             faltaGrafico
+                            <br>
+                            <img src=" $graficoDemaxMinMedYDes" alt ="grafica1">
                         </li>
                         
                     </ul>
@@ -125,7 +126,7 @@ class CreateHtml {
             <div style="background-color: #804000 ; border-width: 2px; border-style: solid; border-color: #000000; text-align: center;
              bottom: 0;  width: 100%;  font-size: 15px; line-height:60%">
                 <p>Autores: Azahara Blanco Rodríguez y Daniel Rodriguez Sanchez</p>
-                <p> Fecha de generación de documento: Fecha y hora en formato español. Tiempo de generación del mismo en milisegundos : </p>
+                <p> Fecha de generación de documento: $momentoDeRealizacion Tiempo de generación del mismo en milisegundos : $tDiference </p>
             </div>
 
 

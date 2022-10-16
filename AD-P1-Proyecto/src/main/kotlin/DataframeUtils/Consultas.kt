@@ -3,6 +3,7 @@ package DataframeUtils
 import logger
 import org.jetbrains.kotlinx.dataframe.DataFrame
 import org.jetbrains.kotlinx.dataframe.api.*
+import java.nio.file.Path
 import javax.management.Query.div
 
 
@@ -127,6 +128,19 @@ class Consultas {
             logger.info("Desviacion de toneladas")
             return filasMr.groupBy("Residuo")
                 .aggregate { max("Toneladas") into "Desciacion de Toneladas" }
+        }
+
+        fun joinEstadisticas(estadisticasPorResiduoMax: DataFrame<Any?>,
+                             estadisticasPorResiduoMin: DataFrame<Any?>,
+                             estadisticasPorResiduoMed: DataFrame<Any?>,
+                             estadisticasPorResiduoDesv: DataFrame<Any?>,
+                             directoriodeResumen: Path
+        ): DataFrame<Any?>? {
+
+            var datosDesvYMed = estadisticasPorResiduoDesv.join(estadisticasPorResiduoMed,"Residuo")
+            var datosDesvYMedYMin = datosDesvYMed.join(estadisticasPorResiduoMin,"Residuo")
+            var datosUnion = datosDesvYMedYMin.join(estadisticasPorResiduoMax,"Residuo")
+            return datosUnion
         }
     }
 

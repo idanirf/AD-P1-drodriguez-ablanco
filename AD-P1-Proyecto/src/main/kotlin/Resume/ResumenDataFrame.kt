@@ -9,6 +9,7 @@ import logger
 import org.jetbrains.kotlinx.dataframe.DataFrame
 import org.jetbrains.kotlinx.dataframe.api.*
 import java.nio.file.Path
+import java.time.LocalDate
 
 
 class ResumenDataFrame {
@@ -27,7 +28,10 @@ class ResumenDataFrame {
     - Tiempo de generación del mismo en milisegundos.
      */
 
-    fun resumeDistrictFrame(pathMR: Path, pathCV: Path, district: String): String {
+    fun resumeDistrictFrame(pathMR: Path, pathCV: Path, district: String, directoriodeResumen: Path): String {
+
+        //para ver el tiempo que tarda
+        var tInit = System.currentTimeMillis();
 
         //obtenemos los dataframe correspondientes con la clase GetDataFrame
         logger.info("cojemos datos de mr")
@@ -45,6 +49,7 @@ class ResumenDataFrame {
         var estadisticasPorResiduoDesv : DataFrame<Any?>? = null
         var graficoDemaxMinMedYDes : Any? = null
         var contenedoresPorTipo : DataFrame<Any?>? = null
+        var estadisticasTotales : DataFrame<Any?>? = null
 
 
         logger.info("mirando que  mr no este vacio")
@@ -60,7 +65,7 @@ class ResumenDataFrame {
                 toneladasPorResiduo = Consultas().getToneladasPorResiduo(filasMr)
        //         println(toneladasPorResiduo)
 
-                graficoDeTotalToneladas = Graficos().doGraficoTotalToneladas(toneladasPorResiduo)
+                graficoDeTotalToneladas = Graficos().doGraficoTotalToneladas(toneladasPorResiduo,directoriodeResumen)
            // println(graficoDeTotalToneladas)
 
                 estadisticasPorResiduoMax = Consultas().getMaximo(filasMr)
@@ -75,8 +80,16 @@ class ResumenDataFrame {
                 estadisticasPorResiduoDesv = Consultas.getDesviacion(filasMr)
             //println(estadisticasPorResiduoDesv)
 
-                graficoDemaxMinMedYDes = Graficos().doGraficoDeEstadicticas(filasMr)
-           // println(graficoDemaxMinMedYDes)
+                estadisticasTotales = Consultas.joinEstadisticas( estadisticasPorResiduoMax,
+                    estadisticasPorResiduoMin,
+                    estadisticasPorResiduoMed,
+                    estadisticasPorResiduoDesv,
+                    directoriodeResumen)
+
+                graficoDemaxMinMedYDes = Graficos().doGraficoDeEstadicticas(
+                    estadisticasTotales,directoriodeResumen)
+
+                  // println(graficoDemaxMinMedYDes)
 
 
             }
@@ -94,17 +107,21 @@ class ResumenDataFrame {
 
 
             }
+        //para ver cuanto tarda
+        var tFinal = System.currentTimeMillis();
+        var tDiference= tFinal - tInit;
+        var momentoDeRealizacion = LocalDate.now()
+
 
         logger.info("pasando datos al html")
         var html : String = CreateHtml().htmlResumeDistrict(
             toneladasPorResiduo,
             graficoDeTotalToneladas ,
-            estadisticasPorResiduoMax,
-            estadisticasPorResiduoMin,
-            estadisticasPorResiduoMed,
-            estadisticasPorResiduoDesv,
+            estadisticasTotales,
             graficoDemaxMinMedYDes,
-            contenedoresPorTipo
+            contenedoresPorTipo,
+            tDiference,
+            momentoDeRealizacion
         )
 
 
@@ -133,7 +150,7 @@ class ResumenDataFrame {
             - Por cada distrito obtener para cada tipo de residuo la cantidad recogida.
             - Tiempo de generación del mismo en milisegundos.
              */
-            fun resumenFrame(pathMR: Path, pathCV: Path): String {
+            fun resumenFrame(pathMR: Path, pathCV: Path, directoriodeResumen: Path): String {
 
                 logger.info("entramos")
 
