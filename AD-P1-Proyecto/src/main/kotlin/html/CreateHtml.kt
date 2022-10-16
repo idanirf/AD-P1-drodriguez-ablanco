@@ -1,6 +1,7 @@
 package html
 
 import org.jetbrains.kotlinx.dataframe.DataFrame
+import org.jetbrains.kotlinx.dataframe.api.forEach
 
 class CreateHtml {
 
@@ -56,7 +57,7 @@ class CreateHtml {
                         </li>
                         <li> <br>
                             <a href=""style="color: #355835 ;" >Número de contenedores de cada tipo que hay en cada distrito.</a> <br>
-                            <p> ${contenedoresPorTipo.toString()} </p>
+                            ${contenedoresPorTipo?.forEach { x -> "<p> $x </p>" }} 
                         </li>
                         <li> <br>
                             <a href="" style="color: #355835 ;">Media de contenedores de cada tipo que hay en cada distrito.</a> <br>
@@ -138,10 +139,7 @@ class CreateHtml {
 
 
         )
-
-
-
-        return ""
+        return html
 
     }
 
