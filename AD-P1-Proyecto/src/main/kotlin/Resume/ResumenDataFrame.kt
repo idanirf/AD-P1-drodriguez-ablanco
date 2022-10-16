@@ -28,7 +28,7 @@ class ResumenDataFrame {
     - Tiempo de generación del mismo en milisegundos.
      */
 
-    fun resumeDistrictFrame(pathMR: Path, pathCV: Path, district: String): Boolean {
+    fun resumeDistrictFrame(pathMR: Path, pathCV: Path, district: String): String {
 
         //obtenemos los dataframe correspondientes con la clase GetDataFrame
         logger.info("cojemos datos de mr")
@@ -59,25 +59,25 @@ class ResumenDataFrame {
                 logger.info("existe el distrito en los ficheros en modelo Residuo")
 
                 toneladasPorResiduo = Consultas().getToneladasPorResiduo(filasMr)
-                println(toneladasPorResiduo)
+       //         println(toneladasPorResiduo)
 
                 graficoDeTotalToneladas = Graficos().doGraficoTotalToneladas()
-            println(graficoDeTotalToneladas)
+           // println(graficoDeTotalToneladas)
 
                 estadisticasPorResiduoMax = Consultas().getMaximo(filasMr)
-            println(estadisticasPorResiduoMax)
+           // println(estadisticasPorResiduoMax)
 
                 estadisticasPorResiduoMin = Consultas().getMinimo(filasMr)
-            println(estadisticasPorResiduoMin)
+           // println(estadisticasPorResiduoMin)
 
                 estadisticasPorResiduoMed = Consultas().getMedia(filasMr)
-            println(estadisticasPorResiduoMed)
+            // println(estadisticasPorResiduoMed)
 
                 estadisticasPorResiduoDesv = Consultas.getDesviacion(filasMr)
-            println(estadisticasPorResiduoDesv)
+            //println(estadisticasPorResiduoDesv)
 
                 graficoDemaxMinMedYDes = Graficos().doGraficoDeEstadicticas(filasMr)
-            println(graficoDemaxMinMedYDes)
+           // println(graficoDemaxMinMedYDes)
 
 
             }
@@ -96,6 +96,7 @@ class ResumenDataFrame {
 
             }
 
+        logger.info("pasando datos al html")
         var html : String = CreateHtml().htmlResumeDistrict(
             toneladasPorResiduo,
             graficoDeTotalToneladas ,
@@ -108,7 +109,7 @@ class ResumenDataFrame {
         )
 
 
-
+        logger.info("pasando string de html")
 
         return html
     }
@@ -133,7 +134,7 @@ class ResumenDataFrame {
             - Por cada distrito obtener para cada tipo de residuo la cantidad recogida.
             - Tiempo de generación del mismo en milisegundos.
              */
-            fun resumenFrame(pathMR: Path, pathCV: Path): Boolean {
+            fun resumenFrame(pathMR: Path, pathCV: Path): String {
 
                 logger.info("entramos")
 
@@ -231,7 +232,7 @@ class ResumenDataFrame {
                     sumToneladasPorDistrito ,
                     sumToneladasPorDistritoPorTipo
                 )
-                return true
+                return html
             }
 
         }

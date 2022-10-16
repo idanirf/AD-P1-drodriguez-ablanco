@@ -3,6 +3,7 @@ import chekData.CheckData
 import dataOfUse.DataofUse
 import dto.ContenedoresVariosDTO
 import dto.ModeloResiduoDTO
+import html.CreateFileHtml
 
 import interchange.Csv
 import interchange.Jsonc
@@ -30,10 +31,10 @@ val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator +
 //private val strings = arrayOf("parser", path, path+File.separator + "copia")
 
 //para probar el resume
-private val strings = arrayOf("resumen", path, path+File.separator + "copia")
+//private val strings = arrayOf("resumen", path, path+File.separator + "copia")
 
 //para probar el resume district
-//private val strings = arrayOf("resumen","CARABANCHEL", path, path+File.separator + "copia")
+private val strings = arrayOf("resumen","CARABANCHEL", path, path+File.separator + "copia")
 
 
 fun main(args: Array<String>) {
@@ -198,6 +199,7 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
     var tipoOpcion ="resumen"
     var directorioDeorigen = Path.of(args[1])
     var directoriodeResumen = Path.of(args[2])
+    var distrito = ""
 
 
     if (args.size==4){
@@ -205,6 +207,7 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
         directorioDeorigen = Path.of(args[2])
         directoriodeResumen = Path.of(args[3])
         logger.info("la opcion es resumen district porque los args son 4")
+        distrito= args[1]
     }
 
         //1.sacar todos los ficheros del directorio
@@ -252,17 +255,25 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
 
                     exito = false
                 }else{
+                    var html : String = ""
 
                     logger.info("exixten los dos archivos necesarios para hacer el resumen")
                     if(tipoOpcion == "resumen district"){
 
-                        exito = doResumen(args[1],pathContenedoresVarios,pathModeloResiduo, stringOfData)
+                        html = doResumen(args[1],pathContenedoresVarios,pathModeloResiduo, stringOfData)
                     }else{
 
-                        exito = doResumen("",pathContenedoresVarios,pathModeloResiduo, stringOfData)
+                        html = doResumen("",pathContenedoresVarios,pathModeloResiduo, stringOfData)
                     }
 
+                    if (html.equals("")){
+                        logger.info("no se ha podido hacer el html")
+                    }else{
+                        logger.info("convirtiendo a html")
 
+                        exito = CreateFileHtml().create( distrito, directoriodeResumen, html)
+
+                    }
                 }
             }
         }
@@ -316,25 +327,28 @@ private fun getPactCorrectOfModeloResiduo(
     return pathModeloResiduo1
 }
 
-fun doResumen(distrito: String , pathOfContenedoresVarios : Path, pathDeModeloResiduo : Path, stringOfData: String) : Boolean {
+fun doResumen(distrito: String , pathOfContenedoresVarios : Path, pathDeModeloResiduo : Path, stringOfData: String) : String{
     logger.info("los datos de la path son correctos")
 
     var tipoOpcion = ""
     var exito = false
+
+    var html : String = ""
+
     if (distrito.equals("")){
         tipoOpcion="resume all"
         logger.info("entramos a la opcion resume all  porque no hay distrito $distrito")
-        exito = ResumenDataFrame().resumenFrame(pathDeModeloResiduo, pathOfContenedoresVarios)
+        html = ResumenDataFrame().resumenFrame(pathDeModeloResiduo, pathOfContenedoresVarios)
 
     }else{
         tipoOpcion="resume District"
         logger.info("entramos a la opcion resume distrito porque el distrito es  $distrito")
-        exito = ResumenDataFrame().resumeDistrictFrame(pathDeModeloResiduo, pathOfContenedoresVarios, distrito)
+        html = ResumenDataFrame().resumeDistrictFrame(pathDeModeloResiduo, pathOfContenedoresVarios, distrito)
     }
 
     logger.info("fin de tarea ")
 
-return true
+return html
 
 }
 

@@ -56,7 +56,7 @@ class Consultas {
                     " cada tipo de basura agrupadas por distrito"
         )
         //todo no se como hacerlo
-       return filasMr.groupBy("Nombre Distrito", "Residuo")
+       return filasMr.groupBy("Nombre Distrito", "Residuo").aggregate { max()}
 
 
 
