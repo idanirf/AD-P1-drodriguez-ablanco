@@ -165,7 +165,7 @@ class Csv {
                     "${m.nombreDistrito};${m.toneladas}"
     }
     private fun getStringToMContenedoresVarios(m: ContenedoresVariosDTO): String? {
-        return "${m.codigoInternoSituado};${m.tipoContenedor};${m.modelo};${m.descripcionModelo};" +
+        return "\n${m.codigoInternoSituado};${m.tipoContenedor};${m.modelo};${m.descripcionModelo};" +
                 "${m.cantidad};${m.lote};${m.distrito};${m.barrio};${m.tipoVia};${m.nombre};"+
                 "${m.numero};${m.coordenadaX};${m.coordenadaY};${m.TAG}"
     }

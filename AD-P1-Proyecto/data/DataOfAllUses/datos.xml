@@ -886,3 +886,75 @@
   <exito>true</exito>
   <tiempoDeEjecucion>2825</tiempoDeEjecucion>
 </DataofUse>
+
+<DataofUse>
+  <id>9c83b8f6-6846-495d-ae1e-85bcf4259728</id>
+  <instanteFormatoISO>2022-10-17T23:00:20.710703844</instanteFormatoISO>
+  <tipoOpcion>Parser</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>2609</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>8680c95a-e6a9-4e11-b367-9267376d9fd7</id>
+  <instanteFormatoISO>2022-10-17T23:01:12.462074356</instanteFormatoISO>
+  <tipoOpcion>Parser</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>1130</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>5965b9bb-70ac-4bf9-807e-e4ea4090fe4a</id>
+  <instanteFormatoISO>2022-10-17T23:02:32.826141058</instanteFormatoISO>
+  <tipoOpcion>Parser</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>3788</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>05f0d1db-36d2-4ad7-87bf-d33def578fd8</id>
+  <instanteFormatoISO>2022-10-17T23:04:23.176973796</instanteFormatoISO>
+  <tipoOpcion>Parser</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>2338</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>0340f874-87a6-40be-95de-cd616dbe3298</id>
+  <instanteFormatoISO>2022-10-17T23:08:50.054932776</instanteFormatoISO>
+  <tipoOpcion>Parser</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>3296</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>799c7f8e-1157-4480-919e-5d02ce57cd1b</id>
+  <instanteFormatoISO>2022-10-17T23:09:16.282382678</instanteFormatoISO>
+  <tipoOpcion>Parser</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>2506</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>7278150c-1803-40b9-9d27-0658de0830a1</id>
+  <instanteFormatoISO>2022-10-17T23:09:50.948009267</instanteFormatoISO>
+  <tipoOpcion>Parser</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>998</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>13d2fbde-3048-400e-aa78-c71995ffabf4</id>
+  <instanteFormatoISO>2022-10-17T23:10:33.341719839</instanteFormatoISO>
+  <tipoOpcion>Parser</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>1476</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>c4b05532-8e49-4e2d-a139-fdfb6f9f146d</id>
+  <instanteFormatoISO>2022-10-17T23:11:16.045859925</instanteFormatoISO>
+  <tipoOpcion>Parser</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>1138</tiempoDeEjecucion>
+</DataofUse>
