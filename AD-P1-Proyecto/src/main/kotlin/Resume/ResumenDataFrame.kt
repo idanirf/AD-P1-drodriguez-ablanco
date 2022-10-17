@@ -161,13 +161,13 @@ class ResumenDataFrame {
 
                 //obtenemos los dataframe correspondientes con la clase GetDataFrame
                 logger.info("cojemos datos e mr")
-                var filasMrsinCast: DataFrame<Any?>? = GetDataFrame().dataFrameModeloResiduoTotal(pathMR)
-                var filasMr : DataFrame<Any?>? = filasMrsinCast?.cast<ModeloResiduo>()
-
+                var filasMr: DataFrame<Any?>? = GetDataFrame().dataFrameModeloResiduoTotal(pathMR)
+                //var filasMr : DataFrame<Any?>? = filasMrsinCast?.cast<ModeloResiduo>()
+                println(filasMr?.columnNames())
                 logger.info("cojemos datos e cv")
-                var filasCvsinCast: DataFrame<Any?>? = GetDataFrame().dataFrameModeloResiduoTotal(pathCV)
-                var filasCv: DataFrame<Any?>? = filasCvsinCast?.cast<ContenedoresVarios>()
-
+                var filasCv: DataFrame<Any?>? = GetDataFrame().dataFrameModeloResiduoTotal(pathCV)
+               // var filasCv: DataFrame<Any?>? = filasCvsinCast?.cast<ContenedoresVarios>()
+                println(filasCv?.columnNames())
 
                 var numeroContenedoresPorDistrito : DataFrame<Any?>? = null
                 var mediaDeContenedoresDeCadaTipo : DataFrame<Any?>? = null
