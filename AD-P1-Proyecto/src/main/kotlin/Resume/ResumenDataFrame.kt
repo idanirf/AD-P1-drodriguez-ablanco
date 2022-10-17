@@ -4,8 +4,11 @@ package Resume
 import DataframeUtils.Consultas
 import DataframeUtils.GetDataFrame
 import DataframeUtils.Graficos
+import dto.ModeloResiduoDTO
 import html.CreateHtml
 import logger
+import models.ContenedoresVarios
+import models.ModeloResiduo
 import org.jetbrains.kotlinx.dataframe.DataFrame
 import org.jetbrains.kotlinx.dataframe.api.*
 import java.nio.file.Path
@@ -158,10 +161,12 @@ class ResumenDataFrame {
 
                 //obtenemos los dataframe correspondientes con la clase GetDataFrame
                 logger.info("cojemos datos e mr")
-                var filasMr: DataFrame<Any?>? = GetDataFrame().dataFrameModeloResiduoTotal(pathMR)
+                var filasMrsinCast: DataFrame<Any?>? = GetDataFrame().dataFrameModeloResiduoTotal(pathMR)
+                var filasMr : DataFrame<Any?>? = filasMrsinCast?.cast<ModeloResiduo>()
 
                 logger.info("cojemos datos e cv")
-                var filasCv: DataFrame<Any?>? = GetDataFrame().dataframeContenedoresVariosTotal(pathCV)
+                var filasCvsinCast: DataFrame<Any?>? = GetDataFrame().dataFrameModeloResiduoTotal(pathCV)
+                var filasCv: DataFrame<Any?>? = filasCvsinCast?.cast<ContenedoresVarios>()
 
 
                 var numeroContenedoresPorDistrito : DataFrame<Any?>? = null
