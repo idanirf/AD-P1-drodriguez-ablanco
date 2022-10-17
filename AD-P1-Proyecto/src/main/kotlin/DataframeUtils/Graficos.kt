@@ -1,15 +1,15 @@
 package DataframeUtils
 
-import jetbrains.letsPlot.Stat
+import jetbrains.letsPlot.*
 import jetbrains.letsPlot.export.ggsave
 import jetbrains.letsPlot.geom.geomBar
+import jetbrains.letsPlot.geom.geomTile
+import jetbrains.letsPlot.geom.geom_tile
 import jetbrains.letsPlot.label.ggtitle
 import jetbrains.letsPlot.label.xlab
 import jetbrains.letsPlot.label.ylab
-import jetbrains.letsPlot.letsPlot
 import logger
 import org.jetbrains.kotlinx.dataframe.DataFrame
-import org.jetbrains.kotlinx.dataframe.api.join
 import org.jetbrains.kotlinx.dataframe.api.toMap
 import java.awt.Color
 import java.nio.file.Files
@@ -40,7 +40,7 @@ class Graficos {
         ) {
             x = "Residuo"; y = "Suma"
         } + xlab("Residuo") + ylab("Suma") + ggtitle("Toneladas por residuo")
-        //var plot = ggplot { toneladasPorResiduo.toMap()}+geomTile{ x = "Residuo"; y = "Suma"} + ggtitle("Toneladas por residuo")
+
         var nombrePlot = UUID.randomUUID().toString()+".png"
         ggsave(plot,nombrePlot,1,null,directoriodeResumen.toString())
         return nombrePlot
@@ -101,18 +101,38 @@ class Graficos {
 
     }
 
-    fun doGraficoDeMedia(filasCv: DataFrame<Any?>): Any? {
+    fun doGraficoDeMedia(contenedores: DataFrame<Any?>, directoriodeResumen: Path): Any? {
         logger.info("Gráfico con el total de contenedores por distrito")
-        //todo no se como hacerlo
-        return null
+
+        var plot = ggplot (contenedores.toMap())+ geomBar(
+            stat = Stat.identity,
+            alpha = 0.8,
+            width = 0.3,
+            fill = Color.ORANGE
+
+        ) {
+            x = "Distrito" ; y = "Numero de contenedores"
+        } + xlab("Distrito") + ylab("Contenedores")+ ggtitle("Grafica de contenedores")
+
+        var nombrePlot = UUID.randomUUID().toString()+".png"
+        ggsave(plot,nombrePlot,1,null,directoriodeResumen.toString())
+        return nombrePlot
+
+
     }
 
-    fun getgraficoMediaToneladasMensuales(filasCv: DataFrame<Any?>): Any ?{
+    fun getgraficoMediaToneladasMensuales(filasCvmediaToneladasMensuales: DataFrame<Any?>, directoriodeResumen: Path): Any ?{
         logger.info(
             "Gráfico de media de toneladas mensuales de recogida de basura por distrito." +
                     " cada tipo de basura agrupadas por distrito"
         )
-        return null
+        var plot = ggplot(filasCvmediaToneladasMensuales.toMap()){x = "Nombre Distrito"; y = "Residuo"; fill = "Media de toneladas"
+        } + geomTile(color = "white",
+                    linetype = 1)
+
+        var nombrePlot = UUID.randomUUID().toString()+".png"
+        ggsave(plot,nombrePlot,1,null,directoriodeResumen.toString())
+        return nombrePlot
     }
 
 }
