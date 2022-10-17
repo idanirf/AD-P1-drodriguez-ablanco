@@ -13,7 +13,7 @@ class Jsonc {
 
     fun contenedoresVariosToAJson(p : Path, array : ArrayList<ContenedoresVariosDTO>){
 
-        var path = Path.of(p.toString()+File.separator+"contenedoresVarios.Json")
+        var path = Path.of(p.toString()+File.separator+"contenedoresVarios.json")
 
         if (Files.notExists(path)){Files.createFile(path)}
 
