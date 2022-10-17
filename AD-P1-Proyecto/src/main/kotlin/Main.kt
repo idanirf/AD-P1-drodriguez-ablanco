@@ -198,12 +198,6 @@ private fun getContenedoresVariosCSV(args: Array<String>): ArrayList<Contenedore
     return null
 }
 
-
-
-
-
-
-
     fun doResumen(s: String, pathContenedoresVarios: Path, pathModeloResiduo: Path, stringOfData: String, directoriodeResumen: Path): String {
         
 
