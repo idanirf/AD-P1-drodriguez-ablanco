@@ -878,3 +878,11 @@
   <exito>false</exito>
   <tiempoDeEjecucion>1379</tiempoDeEjecucion>
 </DataofUse>
+
+<DataofUse>
+  <id>749f03f3-40cf-4afe-a113-310d26133660</id>
+  <instanteFormatoISO>2022-10-17T22:56:52.518565783</instanteFormatoISO>
+  <tipoOpcion>Parser</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>2825</tiempoDeEjecucion>
+</DataofUse>

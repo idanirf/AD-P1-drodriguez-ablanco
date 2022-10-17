@@ -27,11 +27,11 @@ val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator +
         "data"
 
 //para probar el parser
-//private val strings = arrayOf("parser", path, path+File.separator + "copia")
+private val strings = arrayOf("parser", path, path+File.separator + "copia")
 
 //para probar el resume
 
-private val strings = arrayOf("resumen", path, path+File.separator + "copia")
+//private val strings = arrayOf("resumen", path, path+File.separator + "copia")
 
 //para probar el resume district
 //private val strings = arrayOf("resumen","CARABANCHEL", path, path+File.separator + "copia")
@@ -48,15 +48,11 @@ fun main(args: Array<String>) {
     val stringOfData =Paths.get("").toAbsolutePath().toString()+ File.separator +
             "data"+File.separator +"DataOfAllUses"+File.separator +"datos.xml"
 
-    //probamomos pasar de un csv a json y volver a cojerlo
-
-
-    Csv().csvToMoeloResiduo(Path.of(args[1]))
 
 
 
-    //val election : Int  = getElection(args)
-    var election = 0
+    val election : Int  = getElection(args)
+
 
     when (election){
         1 -> beginingParser(args,stringOfData)
