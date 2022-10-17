@@ -1,5 +1,10 @@
 package chekData
 
+import dto.ContenedoresVariosDTO
+import dto.ModeloResiduoDTO
+import interchange.Csv
+import interchange.Jsonc
+import interchange.Xmlc
 import models.ContenedoresVarios
 import models.ModeloResiduo
 import java.io.File
@@ -18,21 +23,7 @@ private val logger: Logger = Logger.getLogger("Azahara y Dani Log")
 class CheckData {
 
 
-    /**
-     * Comprueva que los parametros sean 3 ,
-     * el primero parser, y el segundo una path que exixta
-     * y tenga dos archivos llamados correctamente y csv
-     */
-    fun parser(args: Array<String>): Boolean{
-        logger.info("chequeamos que existen los ficheros csv en parser: checkData().Parser")
 
-            //args son 3 y primero parser
-        if(args.size==3 && args[0]=="parser"){
-            if (areFileCsv(args)) return true
-        }
-
-        return false
-    }
 
     private fun areFileCsv(args: Array<String>): Boolean {
         return (isFileCsvContenedoresVarios(args) && isFileCsvModeloResiduo(args))
@@ -195,22 +186,228 @@ class CheckData {
         return false
     }
 
-    fun checkDataIntoFiles(args: Array<String>): Boolean {
-            //todo solo si da tiempo comprobar que los ficheros tiene todos los objetos que queremos
-            //no necesario totalmente solo si da iempo
-            //cualquier fichero
+    fun encontrarFicherosCorrectosEnELDirectoriodeModeloResiduo(directorioDeorigen: Path): Path? {
 
-            return true
+
+
+            //listar todos los archivos dentro de un directorio y que sean leibles
+            var ficherosReadble : List<Path>  = Files.list(directorioDeorigen).filter { p -> Files.isReadable(p) }.toList()
+
+            // quedarnos con los de formato correcto
+            logger.info("buscamos si hay xml")
+            var ficherosXml = ficherosReadble.map { x -> x.toString() }.filter{x-> x.endsWith(".xml")}
+                .map { x-> Path.of(x) }.toMutableList()
+            logger.info("encontramos ${ficherosXml.size}")
+
+            logger.info("buscamos si hay csv")
+            var ficherosCsv = ficherosReadble.map { x -> x.toString() }.filter{x-> x.endsWith(".csv")}
+                .map { x-> Path.of(x) }.toMutableList()
+            logger.info("encontramos ${ficherosCsv.size}")
+
+            logger.info("buscamos si hay json")
+            var ficherosJson = ficherosReadble.map { x -> x.toString() }.filter{x-> x.endsWith(".json")}
+                .map { x-> Path.of(x) }.toMutableList()
+            logger.info("encontramos ${ficherosJson.size}")
+
+            //con cada uno porbamos si se pueden leer y son de los que queremos, quitaremos con excepciones
+            var pathModeloResiduo : Path? = null
+            var pathContenedoresVarios : Path? = null
+
+
+            logger.info("buscamos entre todas la correcta de Modeo residuo")
+            return getPactCorrectOfModeloResiduo(pathModeloResiduo, ficherosJson, ficherosXml, ficherosCsv)
+
+
+
+
     }
 
-    fun checkDataIntoCsv(args: Array<String>): Boolean {
-        //todo solo si da tiempo comprobar que los ficheros tiene todos los objetos que queremos
-        //no necesario totalmente solo si da iempo
-        //cualquier fichero
+    private fun getPactCorrectOfModeloResiduo(pathModeloResiduo: Path?,
+                                              ficherosJson: MutableList<Path>,
+                                              ficherosXml: MutableList<Path>,
+                                              ficherosCsv: MutableList<Path>): Path? {
 
-        return true
+            var pathModeloResiduo1 = pathModeloResiduo
+            pathModeloResiduo1 = searchCorrectFileInJsonFilesModeloResiduo(ficherosJson)
+
+            if (pathModeloResiduo1 == null) {
+                pathModeloResiduo1 = searchCorrectFileInxmlFilesModeloResiduo(ficherosXml)
+            }
+            if (pathModeloResiduo1 == null) {
+                pathModeloResiduo1 = searchCorrectFileInCsvFilesModeloResiduo(ficherosCsv)
+            }
+            return pathModeloResiduo1
+
 
     }
+    fun searchCorrectFileInCsvFilesContenedoresVarios(ficherosCsv: MutableList<Path>): Path? {
+        var encontrado1 = false
+        while (ficherosCsv.size != 0 && encontrado1 != true) {
+            var ficheroCorrecto: ArrayList<ContenedoresVariosDTO> = ArrayList()
+            try {
+                var pathEncontrada = ficherosCsv.get(0)
+                ficheroCorrecto = Csv().csvToContenedoresVarios(ficherosCsv.removeAt(0))
+                encontrado1 = true
+                return pathEncontrada
+                logger.info("fichero tiene las columnas correctas y en el orden correcto")
+
+            } catch (e: Exception) {
+                logger.info("fichero no tiene las columnas correctas en el orden correcto")
+            }
+        }
+        return null
+
+    }
+
+    fun searchCorrectFileInxmlFilesContenedoresVarios(ficherosXml: MutableList<Path>): Path? {
+        var encontrado1 = false
+        while (ficherosXml.size != 0 && encontrado1 != true) {
+            var ficheroCorrecto: ArrayList<ContenedoresVariosDTO> = ArrayList()
+            try {
+                var pathEncontrada = ficherosXml.get(0)
+                ficheroCorrecto = Csv().csvToContenedoresVarios(ficherosXml.removeAt(0))
+                encontrado1 = true
+                return pathEncontrada
+                logger.info("fichero tiene las columnas correctas y en el orden correcto")
+
+            } catch (e: Exception) {
+                logger.info("fichero no tiene las columnas correctas en el orden correcto")
+            }
+        }
+        return null
+
+    }
+
+    fun searchCorrectFileInJsonFilesContenedoresVarios(ficherosJson: MutableList<Path>): Path? {
+        var encontrado1 = false
+        while (ficherosJson.size != 0 && encontrado1 != true) {
+            var ficheroCorrecto: ArrayList<ContenedoresVariosDTO> = ArrayList()
+            try {
+                var pathEncontrada = ficherosJson.get(0)
+                ficheroCorrecto = Csv().csvToContenedoresVarios(ficherosJson.removeAt(0))
+                encontrado1 = true
+                return pathEncontrada
+                logger.info("fichero tiene las columnas correctas y en el orden correcto")
+
+            } catch (e: Exception) {
+                logger.info("fichero no tiene las columnas correctas en el orden correcto")
+            }
+        }
+        return null
+    }
+
+    fun searchCorrectFileInCsvFilesModeloResiduo(ficherosCsv: MutableList<Path>): Path?{
+
+        var encontrado1 = false
+        while (ficherosCsv.size != 0 && encontrado1 != true) {
+            var ficheroCorrecto: ArrayList<ModeloResiduoDTO> = ArrayList()
+            try {
+                var pathEncontrada = ficherosCsv.get(0)
+                ficheroCorrecto = Csv().csvToMoeloResiduo(ficherosCsv.removeAt(0))
+                encontrado1 = true
+                return pathEncontrada
+                logger.info("fichero tiene las columnas correctas y en el orden correcto")
+
+            } catch (e: Exception) {
+                logger.info("fichero no tiene las columnas correctas en el orden correcto")
+            }
+        }
+        return null
+
+    }
+
+    fun searchCorrectFileInxmlFilesModeloResiduo(ficherosXml: MutableList<Path>): Path? {
+
+        var encontrado1 = false
+        while (ficherosXml.size != 0 && encontrado1 != true) {
+            var ficheroCorrecto: ArrayList<ModeloResiduoDTO> = ArrayList()
+            try {
+                var pathEncontrada = ficherosXml.get(0)
+                ficheroCorrecto = Xmlc().xmlToModeloresiduoDto(ficherosXml.removeAt(0))
+                encontrado1 = true
+                return pathEncontrada
+                logger.info("fichero tiene las columnas correctas y en el orden correcto")
+
+            } catch (e: Exception) {
+                logger.info("fichero no tiene las columnas correctas en el orden correcto")
+            }
+        }
+        return null
+    }
+
+    private fun searchCorrectFileInJsonFilesModeloResiduo(ficherosJson: MutableList<Path>): Path? {
+        var encontrado1 = false
+        while ((ficherosJson.size!= 0) && (encontrado1!= true)) {
+
+
+            logger.info("json sice es ${ficherosJson.size}  y encontraso es $encontrado1")
+            var ficheroCorrecto: ArrayList<ModeloResiduoDTO> = ArrayList()
+            try {
+                var pathEncontrada = ficherosJson.get(0)
+                ficheroCorrecto = Jsonc().readJsontoModeloresiduoDto(ficherosJson.removeAt(0))
+                encontrado1 = true
+                return pathEncontrada
+                logger.info("fichero tiene las columnas correctas y en el orden correcto")
+
+            } catch (e: Exception) {
+                logger.info("fichero no tiene las columnas correctas en el orden correcto")
+            }
+        }
+        return null
+    }
+
+
+
+    fun encontrarFicherosCorrectosEnELDirectoriodeContenedoresVarios(directorioDeorigen: Path): Path? {
+
+        //listar todos los archivos dentro de un directorio y que sean leibles
+        var ficherosReadble : List<Path>  = Files.list(directorioDeorigen).filter { p -> Files.isReadable(p) }.toList()
+
+        // quedarnos con los de formato correcto
+        logger.info("buscamos si hay xml")
+        var ficherosXml = ficherosReadble.map { x -> x.toString() }.filter{x-> x.endsWith(".xml")}
+            .map { x-> Path.of(x) }.toMutableList()
+        logger.info("encontramos ${ficherosXml.size}")
+
+        logger.info("buscamos si hay csv")
+        var ficherosCsv = ficherosReadble.map { x -> x.toString() }.filter{x-> x.endsWith(".csv")}
+            .map { x-> Path.of(x) }.toMutableList()
+        logger.info("encontramos ${ficherosCsv.size}")
+
+        logger.info("buscamos si hay json")
+        var ficherosJson = ficherosReadble.map { x -> x.toString() }.filter{x-> x.endsWith(".json")}
+            .map { x-> Path.of(x) }.toMutableList()
+        logger.info("encontramos ${ficherosJson.size}")
+
+        //con cada uno porbamos si se pueden leer y son de los que queremos, quitaremos con excepciones
+        var pathModeloResiduo : Path? = null
+        var pathContenedoresVarios : Path? = null
+
+
+        logger.info("buscamos entre todas la correcta de Modeo residuo")
+        return  getCorrectPathOfContenedoresVarios(pathContenedoresVarios, ficherosJson, ficherosXml, ficherosCsv)
+
+    }
+
+    private fun getCorrectPathOfContenedoresVarios(pathContenedoresVarios: Path?,
+                                                   ficherosJson: MutableList<Path>,
+                                                   ficherosXml: MutableList<Path>,
+                                                   ficherosCsv: MutableList<Path>): Path ?{
+
+        var pathContenedoresVarios1 = pathContenedoresVarios
+        pathContenedoresVarios1 = searchCorrectFileInJsonFilesContenedoresVarios(ficherosJson)
+
+        if (pathContenedoresVarios1 == null) {
+            pathContenedoresVarios1 = searchCorrectFileInxmlFilesContenedoresVarios(ficherosXml)
+        }
+        if (pathContenedoresVarios1 == null) {
+            pathContenedoresVarios1 = searchCorrectFileInCsvFilesContenedoresVarios(ficherosCsv)
+        }
+        return pathContenedoresVarios1
+
+
+    }
+
 
 
 
