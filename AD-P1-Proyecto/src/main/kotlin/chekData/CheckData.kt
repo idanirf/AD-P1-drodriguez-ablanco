@@ -207,7 +207,12 @@ class CheckData {
             logger.info("buscamos si hay json")
             var ficherosJson = ficherosReadble.map { x -> x.toString() }.filter{x-> x.endsWith(".json")}
                 .map { x-> Path.of(x) }.toMutableList()
-            logger.info("encontramos ${ficherosJson.size}")
+
+           var ficherosJson2 = ficherosReadble.map { x -> x.toString() }.filter{x-> x.endsWith(".Json")}
+            .map { x-> Path.of(x) }.toMutableList()
+
+                ficherosJson.addAll(ficherosJson2)
+            println("encontramos " + ficherosJson.toString())
 
             //con cada uno porbamos si se pueden leer y son de los que queremos, quitaremos con excepciones
             var pathModeloResiduo : Path? = null
@@ -280,13 +285,19 @@ class CheckData {
         var paths = ficherosJson
         for(i in 0..ficherosJson.size){
             var ficheroCorrecto: ArrayList<ContenedoresVariosDTO> = ArrayList()
-
-            var pathEncontrada = paths.get(i)
-            ficheroCorrecto = Csv().csvToContenedoresVarios(ficherosJson.get(i))
-            if (ficheroCorrecto.size!=0){
-                return pathEncontrada
-                logger.info("fichero tiene las columnas correctas y en el orden correcto")
+            try {
+                println(ficherosJson.get(i).toString())
+                var pathEncontrada = paths.get(i)
+                var ficheroCorrecto2 = Jsonc().readJsontoContenedoresvariosDto(ficherosJson.get(i))
+                ficheroCorrecto.addAll(ficheroCorrecto2)
+                if (ficheroCorrecto.size!=0){
+                    return pathEncontrada
+                    logger.info("fichero tiene las columnas correctas y en el orden correcto")
+                }
+            }catch (e : Exception){
+                e.printStackTrace()
             }
+
         }
         return null
     }
@@ -327,16 +338,23 @@ class CheckData {
 
     private fun searchCorrectFileInJsonFilesModeloResiduo(ficherosJson: MutableList<Path>): Path? {
        if (ficherosJson.size==0){return null}
+        println(ficherosJson.size)
         var paths = ficherosJson
         for(i in 0..ficherosJson.size){
+            println("miramos si coincide modelo residuo con "+ ficherosJson.get(i))
             var ficheroCorrecto: ArrayList<ModeloResiduoDTO> = ArrayList()
-
-            var pathEncontrada = paths.get(i)
-            ficheroCorrecto = Csv().csvToMoeloResiduo(ficherosJson.get(i))
-            if (ficheroCorrecto.size!=0){
-                return pathEncontrada
-                logger.info("fichero tiene las columnas correctas y en el orden correcto")
+            try {
+                println(ficherosJson.get(i).toString())
+                var pathEncontrada = paths.get(i)
+                ficheroCorrecto = Jsonc().readJsontoModeloresiduoDto(ficherosJson.get(i))
+                if (ficheroCorrecto.size!=0){
+                    return pathEncontrada
+                    logger.info("fichero tiene las columnas correctas y en el orden correcto")
+                }
+            }catch (e : Exception){
+                e.printStackTrace()
             }
+
         }
         return null
     }
@@ -364,6 +382,12 @@ class CheckData {
             .map { x-> Path.of(x) }.toMutableList()
         logger.info("encontramos ${ficherosJson.size}")
 
+        var ficherosJson2 = ficherosReadble.map { x -> x.toString() }.filter{x-> x.endsWith(".Json")}
+            .map { x-> Path.of(x) }.toMutableList()
+
+        ficherosJson.addAll(ficherosJson2)
+        println("encontramos " + ficherosJson.toString())
+
         //con cada uno porbamos si se pueden leer y son de los que queremos, quitaremos con excepciones
         var pathModeloResiduo : Path? = null
         var pathContenedoresVarios : Path? = null
@@ -379,8 +403,10 @@ class CheckData {
                                                    ficherosXml: MutableList<Path>,
                                                    ficherosCsv: MutableList<Path>): Path ?{
 
+        println(ficherosJson.size)
         var pathContenedoresVarios1 = pathContenedoresVarios
         pathContenedoresVarios1 = searchCorrectFileInJsonFilesContenedoresVarios(ficherosJson)
+
 
         if (pathContenedoresVarios1 == null) {
             pathContenedoresVarios1 = searchCorrectFileInxmlFilesContenedoresVarios(ficherosXml)

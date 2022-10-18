@@ -96,7 +96,15 @@ class Csv {
                         .skip(1)
                         .map(this::getContenedoresVariosDto)
                         .collect(Collectors.toList())
-                    contenedoresVariosCollection.forEach { m -> lista.add(m)}
+
+                    if (contenedoresVariosCollection.get(0)!=null){
+                        contenedoresVariosCollection.forEach { m ->
+                            if (m != null) {
+                                lista.add(m)
+                            }
+                        }
+                    }
+
                 }catch (e : Exception){
                     e.printStackTrace()
 

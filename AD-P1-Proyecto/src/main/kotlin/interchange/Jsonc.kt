@@ -50,7 +50,8 @@ class Jsonc {
 
         val file = p.toFile()
         if (file.exists()) {
-            return Json.decodeFromString<ArrayList<ModeloResiduoDTO>>(file.readText())
+            var j =Json.decodeFromString<ArrayList<ModeloResiduoDTO>>(file.readText())
+            return j
         } else {
             throw IllegalArgumentException("El fichero ${p} no existe")
         }

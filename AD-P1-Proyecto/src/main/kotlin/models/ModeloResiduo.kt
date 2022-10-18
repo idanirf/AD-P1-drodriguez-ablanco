@@ -6,7 +6,7 @@ import java.io.Serializable
 import java.time.LocalDate
 
  class ModeloResiduo (año:String?, mes: String?, lote: String?, residuo: String?, distrito : String?
-                     , nombreDistrito: String?, toneladas: String?): Serializable {
+                     , nombreDistrito: String?, toneladas: Float?): Serializable {
     val año : String?=año
      //todo no esta pasando bien a meses al dto
     val mes : String? = mes
@@ -14,7 +14,7 @@ import java.time.LocalDate
     var residuo : String? = residuo
     val distrito : String? = distrito
     val nombreDistrito : String? = nombreDistrito
-    val toneladas :  String? = toneladas
+    val toneladas :  Float? = toneladas
 
      /**
       * devuelve una strig de este objeto en csv

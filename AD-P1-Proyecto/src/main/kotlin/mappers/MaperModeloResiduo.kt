@@ -1,9 +1,10 @@
 package mappers
 
 import dto.ModeloResiduoDTO
-import dto.logger
+
 import enums.Meses
 import enums.TipoResiduo
+import logger
 import models.ModeloResiduo
 
 class MaperModeloResiduo {
@@ -17,21 +18,31 @@ class MaperModeloResiduo {
             pojo.residuo.toString(),
             pojo.distrito,
             pojo.nombreDistrito,
-            pojo.toneladas
+            pojo.toneladas.toString()
         )
     }
 
     fun tdoToModrloResiduo(dto: ModeloResiduoDTO): ModeloResiduo {
+        println("pasndo a modelo r")
         return ModeloResiduo(
             dto.año,
-            getMes(dto.mes),
+            dto.mes,
             dto.lote,
             dto.residuo,
             dto.distrito,
             dto.nombreDistrito,
-            dto.toneladas
+            pasarAFloat(dto.toneladas)
         )
 
+    }
+
+    private fun pasarAFloat(toneladas: String?): Float? {
+        println(toneladas)
+        var to = toneladas?.replace(",",".")
+        println("pasamos a " + to)
+        var flo = to?.toFloatOrNull()
+        println("pasamos a  float" + toneladas)
+        return flo
     }
 
     private fun getMes(s: String?): Meses? {
