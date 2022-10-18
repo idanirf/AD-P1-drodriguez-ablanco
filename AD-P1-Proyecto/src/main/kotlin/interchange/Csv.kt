@@ -40,7 +40,13 @@ class Csv {
                         .map(this::getModelRediduoDTO)
                         .collect(Collectors.toList());
 
-                    modelosResiduosCollection.forEach { m -> lista.add(m) }
+                    if (modelosResiduosCollection.get(0)!=null){
+                        modelosResiduosCollection.forEach { m ->
+                            if (m != null) {
+                                lista.add(m)
+                            }
+                        }
+                    }
 
                 }catch (e : Exception){
 
@@ -62,7 +68,7 @@ class Csv {
     public fun ModeloRosiduoToCsv(a : ArrayList<ModeloResiduoDTO>, p : Path): File {
         logger.info(" entrado en Modelo residuo ToCsv")
 
-        var listaString = StringBuilder().append("Año;Mes;Lote;Residuo;Distrito;Nombre Distrito;Toneladas")
+        var listaString = StringBuilder().append("Año;Mes;Lote;Residuo;Distrito;Nombre Distrito;Toneladas\n")
         a.forEach { m -> listaString.append(getStringToModeloResiduoCSV(m)) }
 
 
@@ -85,7 +91,7 @@ class Csv {
                 val br = BufferedReader(FileReader(p.toFile()))
                 try {
 
-                    var line = br.readLine()
+                    var line = br.readText()
                     var contenedoresVariosCollection = Files.lines(p)
                         .skip(1)
                         .map(this::getContenedoresVariosDto)
@@ -100,6 +106,7 @@ class Csv {
                     }
 
                 }catch (e : Exception){
+                    e.printStackTrace()
 
                 }finally {
                     br.close()
@@ -117,8 +124,8 @@ class Csv {
         logger.info(" entrado en contenedores varios ToCsv")
 
 
-        var listaString = StringBuilder().append("codigoInternoSituado; tipoContenedor;modelo;descripcionModelo" +
-                ";cantidad;lote;distrito;barrio;tipoVia;nombre;numero;coordenadaX;coordenadaY;TAG")
+        var listaString = StringBuilder().append("codigoInternoSituado;tipoContenedor;modelo;descripcionModelo" +
+                ";cantidad;lote;distrito;barrio;tipoVia;nombre;numero;coordenadaX;coordenadaY;TAG\n")
         a.forEach { m -> listaString.append(getStringToMContenedoresVarios(m)) }
 
 
@@ -170,18 +177,16 @@ class Csv {
 
     private fun getStringToModeloResiduoCSV(m : ModeloResiduoDTO): String {
         return "${m.año};${m.mes};${m.lote};${m.residuo};${m.distrito};" +
-                    "${m.nombreDistrito};${m.toneladas}"
+                    "${m.nombreDistrito};${m.toneladas}\n"
     }
     private fun getStringToMContenedoresVarios(m: ContenedoresVariosDTO): String? {
         return "${m.codigoInternoSituado};${m.tipoContenedor};${m.modelo};${m.descripcionModelo};" +
                 "${m.cantidad};${m.lote};${m.distrito};${m.barrio};${m.tipoVia};${m.nombre};"+
-                "${m.numero};${m.coordenadaX};${m.coordenadaY};${m.TAG}"
+                "${m.numero};${m.coordenadaX};${m.coordenadaY};${m.TAG}\n"
     }
 
     private fun getContenedoresVariosDto(line: String): ContenedoresVariosDTO {
         val campos = line.split(";")
-        logger.info("pasando de string a contenedor varios dto")
-
         return ContenedoresVariosDTO(
             codigoInternoSituado = campos[0],
             tipoContenedor = campos[1],
@@ -193,7 +198,7 @@ class Csv {
             barrio = campos[7],
             tipoVia = campos[8],
             nombre = campos[9],
-            numero = campos[10],
+            numero = campos[10].toIntOrNull(),
             coordenadaX = campos[11],
             coordenadaY = campos[12],
             TAG = campos[13]
@@ -204,25 +209,45 @@ class Csv {
     /**
      * funcion que pasandole una linea de un scv te debuelve un ModeloResiduo
      */
-    private fun getModelRediduoDTO(linea : String): ModeloResiduoDTO {
-        logger.info(" entra a  getModel resituo")
+    private fun getModelRediduoDTO(linea : String): ModeloResiduoDTO? {
 
         val campos  = linea.split(";")
-
-        return ModeloResiduoDTO(
-            año = campos[0].toIntOrNull(),
-            mes = campos[1],
-            lote = campos[2].toIntOrNull() ,
-            residuo = campos[3],
-            distrito = campos[4],
-            nombreDistrito = campos[5],
-            toneladas = campos[6].toIntOrNull()
-        )
+            //comprobamos si el campo mes es un meso, si no lo es salir sin hacerlo
+        if(campoEsMesCorrecto(campos[1])){
+            return ModeloResiduoDTO(
+                año = campos[0],//.toIntOrNull(),
+                mes = campos[1],
+                lote = campos[2],//.toIntOrNull() ,
+                residuo = campos[3],
+                distrito = campos[4],
+                nombreDistrito = campos[5],
+                toneladas = campos[6]
+                    //.replace(",",".",true).toDoubleOrNull()
+            )
+        }
+        return null
     }
 
+    private fun campoEsMesCorrecto(s: String): Boolean {
+        if (s.equals("ENERO",true)||
+            s.equals("FEBRERO",true)||
+            s.equals("MARZO",true)||
+            s.equals("ABRIL",true)||
+            s.equals("MAYO",true)||
+            s.equals("JUNIO",true)||
+            s.equals("JULIO",true)||
+            s.equals("AGOSTO",true)||
+            s.equals("SEPTIEMBRE",true)||
+            s.equals("OCTUBRE",true)||
+            s.equals("NOVIEMBRE",true)||
+            s.equals("DICIEMBRE",true)
+                ){
+            return true
+        }
+        return false
 
+    }
 
-    //----------------------enumn que no se usan porque son para pojo y no dto
 
     private fun getMes(s: String): Meses? {
         logger.info(" entrado en get mes")

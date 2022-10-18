@@ -19,7 +19,7 @@ class MapperContenedoresVarios {
             barrio = pojo.barrio,
             tipoVia = pojo.tipoVia,
             nombre = pojo.nombre,
-            numero = pojo.numero,
+            numero = pojo.numero?.toIntOrNull(),
             coordenadaX = pojo.coordenadaX,
             coordenadaY = pojo.coordenadaY,
             TAG = pojo.TAG
@@ -41,7 +41,7 @@ class MapperContenedoresVarios {
             barrio = dto.barrio,
             tipoVia = dto.tipoVia,
             nombre = dto.nombre,
-            numero = dto.numero,
+            numero = dto.numero.toString(),
             coordenadaX = dto.coordenadaX,
             coordenadaY = dto.coordenadaY,
             TAG = dto.TAG

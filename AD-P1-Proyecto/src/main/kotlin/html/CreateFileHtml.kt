@@ -1,6 +1,7 @@
 package html
 
-import dto.logger
+
+import logger
 import java.io.BufferedWriter
 import java.io.File
 import java.io.FileWriter
