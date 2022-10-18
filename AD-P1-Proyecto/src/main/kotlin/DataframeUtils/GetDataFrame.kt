@@ -2,13 +2,11 @@ package DataframeUtils
 
 import dto.ContenedoresVariosDTO
 import dto.ModeloResiduoDTO
+import interchange.Csv
 import logger
 import models.ModeloResiduo
 import org.jetbrains.kotlinx.dataframe.DataFrame
-import org.jetbrains.kotlinx.dataframe.api.cast
-import org.jetbrains.kotlinx.dataframe.api.count
-import org.jetbrains.kotlinx.dataframe.api.filter
-import org.jetbrains.kotlinx.dataframe.api.getValue
+import org.jetbrains.kotlinx.dataframe.api.*
 import org.jetbrains.kotlinx.dataframe.io.read
 import org.jetbrains.kotlinx.dataframe.io.readCSV
 import org.jetbrains.kotlinx.dataframe.io.readJson
@@ -45,8 +43,8 @@ class GetDataFrame {
             if (pathCV.toString().endsWith(".csv")) {
 
                 logger.info("buscando distrito en el fichero Contenedores varios csv")
-                return DataFrame.readCSV(pathCV.toFile(), ';')
-                    .filter { x -> x.getValue<String>("Distrito").equals(district, true) }
+                var df = DataFrame.readCSV(pathCV.toFile(), ';')
+                return df.filter { x -> x.getValue<String>(df.columnNames().get(6)).equals(district, true) }
 
 
             } else if (pathCV.toString().endsWith(".json")) {
@@ -76,7 +74,7 @@ class GetDataFrame {
             println("casteado "+casteo.columnNames())
             return casteo
 
-            } else if (pathMR.toString().endsWith(".json")) {
+        } else if(pathMR.toString().endsWith(".json")) {
             logger.info("buscando fichero Modelo Residio json ")
             var dF = DataFrame.readJson(pathMR.toFile())
             var casteo= dF.cast<ModeloResiduoDTO>()
@@ -98,9 +96,12 @@ class GetDataFrame {
     fun dataframeContenedoresVariosTotal(pathCV: Path) : DataFrame<Any?>?{
         println("contnedores varios de : " +pathCV)
 
+
         if (pathCV.toString().endsWith(".csv")) {
+            var lista = Csv().csvToContenedoresVarios(pathCV)
+
             logger.info("buscando  Contenedores varios csv")
-            var dF =DataFrame.readCSV(pathCV.toFile(), ';')
+            var dF =lista.toDataFrame()
             var casteo = dF.cast<ContenedoresVariosDTO>()
             println(casteo.columnNames())
             return casteo

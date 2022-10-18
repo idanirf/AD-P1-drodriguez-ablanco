@@ -54,3 +54,27 @@
   <exito>true</exito>
   <tiempoDeEjecucion>3916</tiempoDeEjecucion>
 </DataofUse>
+
+<DataofUse>
+  <id>f718cd16-c4cd-4d08-826f-03bdbf62602b</id>
+  <instanteFormatoISO>2022-10-18T21:43:34.149531258</instanteFormatoISO>
+  <tipoOpcion>resumen district</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>4469</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>266aa6a3-1d1b-4e12-aca2-3cad6b8100ac</id>
+  <instanteFormatoISO>2022-10-18T22:29:08.436487641</instanteFormatoISO>
+  <tipoOpcion>resumen district</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>4144</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>01626560-eb8b-46fd-8980-de4529becbf7</id>
+  <instanteFormatoISO>2022-10-18T23:05:16.331798483</instanteFormatoISO>
+  <tipoOpcion>resumen</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>5590</tiempoDeEjecucion>
+</DataofUse>

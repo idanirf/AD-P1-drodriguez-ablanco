@@ -13,7 +13,7 @@ data class ContenedoresVariosDTO(
     val barrio: String?,
     val tipoVia: String?,
     val nombre: String?,
-    val numero: String?,
+    val numero: Int?,
     val coordenadaX: String?,
     val coordenadaY: String?,
     val TAG: String?

@@ -190,7 +190,7 @@ class Csv {
             barrio = campos[7],
             tipoVia = campos[8],
             nombre = campos[9],
-            numero = campos[10],
+            numero = campos[10].toIntOrNull(),
             coordenadaX = campos[11],
             coordenadaY = campos[12],
             TAG = campos[13]
