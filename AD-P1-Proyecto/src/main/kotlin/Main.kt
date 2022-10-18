@@ -27,11 +27,11 @@ val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator +
         "data"
 
 //para probar el parser
-private val strings = arrayOf("parser", path, path+File.separator + "copia")
+//private val strings = arrayOf("parser", path, path+File.separator + "copia")
 
 //para probar el resume
 
-//private val strings = arrayOf("resumen", path, path+File.separator + "copia")
+private val strings = arrayOf("resumen", path, path+File.separator + "copia")
 
 //para probar el resume district
 //private val strings = arrayOf("resumen","CARABANCHEL", path, path+File.separator + "copia")
@@ -63,9 +63,6 @@ fun main(args: Array<String>) {
 
 }
 
-fun beginingSumary(args: Array<String>, stringOfData: String) {
-
-}
 
 fun opcionIncorrecta(stringOfData: String) {
     //para ver el tiempo que tarda
@@ -187,7 +184,7 @@ private fun getContenedoresVariosCSV(args: Array<String>): ArrayList<Contenedore
 
     if (pathCorrecta!=null){
         if (pathCorrecta.toString().endsWith(".csv")){
-            return  Csv().csvToMoeloResiduo(pathCorrecta)
+            return  Csv().csvToContenedoresVarios(pathCorrecta)
         }
     }
     return null
@@ -317,15 +314,15 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
 
         var html : String = ""
 
-        if (distrito.equals("")){
+        if (s.equals("")){
             tipoOpcion="resume all"
-            logger.info("entramos a la opcion resume all  porque no hay distrito $distrito")
-            html = ResumenDataFrame().resumenFrame(pathDeModeloResiduo, pathOfContenedoresVarios,directoriodeResumen)
+            logger.info("entramos a la opcion resume all  porque no hay distrito $s")
+            html = ResumenDataFrame().resumenFrame(pathModeloResiduo, pathContenedoresVarios,directoriodeResumen)
 
         }else{
             tipoOpcion="resume District"
-            logger.info("entramos a la opcion resume distrito porque el distrito es  $distrito")
-            html = ResumenDataFrame().resumeDistrictFrame(pathDeModeloResiduo, pathOfContenedoresVarios, distrito,directoriodeResumen)
+            logger.info("entramos a la opcion resume distrito porque el distrito es  $s")
+            html = ResumenDataFrame().resumeDistrictFrame(pathModeloResiduo, pathContenedoresVarios,s,directoriodeResumen)
         }
 
         logger.info("fin de tarea ")
