@@ -63,6 +63,10 @@ fun main(args: Array<String>) {
 
 }
 
+fun beginingSumary(args: Array<String>, stringOfData: String) {
+
+}
+
 fun opcionIncorrecta(stringOfData: String) {
     //para ver el tiempo que tarda
     var tInit = System.currentTimeMillis();
@@ -93,8 +97,8 @@ fun beginingParser(args: Array<String>, stringOfData : String) {
 
 
         var areCorrectDataInFiles = true
-        var arrayListOfModeloResiduo = getModeloResiduotoCSV(args)
-        var arrayListOfContenedoreVarios = getContenedoresVariosCSV(args)
+        var arrayListOfModeloResiduo : ArrayList<ModeloResiduoDTO>? = getModeloResiduotoCSV(args)
+        var arrayListOfContenedoreVarios: ArrayList<ContenedoresVariosDTO>? = getContenedoresVariosCSV(args)
 
         logger.info(" leidos los dos ficheros ")
 
@@ -129,6 +133,8 @@ fun beginingParser(args: Array<String>, stringOfData : String) {
 
 }
 
+
+
 private fun createFilesContenedoreVarios(
     arrayListOfContenedoreVarios: ArrayList<ContenedoresVariosDTO>,
     args: Array<String>) {
@@ -159,22 +165,25 @@ private fun createFilesModeloresiduo(
         Path.of(args[2] + File.separator + "modelo_residuos.xml")
     )
 }
-
-private fun getContenedoresVariosCSV(args: Array<String>): ArrayList<ContenedoresVariosDTO>? {
-    logger.info(" cogiendo datos de contenedores Varios")
-
+fun getModeloResiduotoCSV(args: Array<String>): ArrayList<ModeloResiduoDTO>? {
     logger.info(" cogiendo datos de archivo Modelo residuo ")
-    var pathCorrecta = CheckData().encontrarFicherosCorrectosEnELDirectoriodeContenedoresVarios(Path.of(args[1]))
+    var pathCorrecta = CheckData().encontrarFicherosCorrectosEnELDirectoriodeModeloResiduo(Path.of(args[1]))
 
     if (pathCorrecta!=null){
-        return  Csv().csvToContenedoresVarios(pathCorrecta)
+        try {
+            return  Csv().csvToMoeloResiduo(pathCorrecta)
+        }catch (e : Exception){
+            logger.info("el fichero no se ha podido leer porque no es el formato correcto")
+        }
+
     }
     return null
 }
 
-private fun getModeloResiduotoCSV(args: Array<String>): ArrayList<ModeloResiduoDTO>? {
-    logger.info(" cogiendo datos de archivo Modelo residuo ")
-    var pathCorrecta = CheckData().encontrarFicherosCorrectosEnELDirectoriodeModeloResiduo(Path.of(args[1]))
+private fun getContenedoresVariosCSV(args: Array<String>): ArrayList<ContenedoresVariosDTO>? {
+    logger.info(" cogiendo datos de contenedores Varios")
+ 
+    var pathCorrecta = CheckData().encontrarFicherosCorrectosEnELDirectoriodeContenedoresVarios(Path.of(args[1]))
 
     if (pathCorrecta!=null){
         if (pathCorrecta.toString().endsWith(".csv")){
@@ -184,7 +193,35 @@ private fun getModeloResiduotoCSV(args: Array<String>): ArrayList<ModeloResiduoD
     return null
 }
 
-/**
+    fun doResumen(s: String, pathContenedoresVarios: Path, pathModeloResiduo: Path, stringOfData: String, directoriodeResumen: Path): String {
+        
+
+    logger.info("los datos de la path son correctos")
+
+    var tipoOpcion = ""
+    var exito = false
+
+    var html : String = ""
+
+    if (s.equals("")){
+        tipoOpcion="resume all"
+        logger.info("entramos a la opcion resume all  porque no hay distrito $s")
+        html = ResumenDataFrame().resumenFrame(pathModeloResiduo, pathContenedoresVarios,directoriodeResumen)
+
+    }else{
+        tipoOpcion="resume District"
+        logger.info("entramos a la opcion resume distrito porque el distrito es  $s")
+        html = ResumenDataFrame().resumeDistrictFrame(pathModeloResiduo, pathContenedoresVarios, s,directoriodeResumen)
+    }
+
+    logger.info("fin de tarea ")
+
+    return html
+        
+        
+    }
+
+    /**
  *
 resumen path parh
 puede leer de csv json o xml, pero tiene que tener todos los datos
@@ -272,46 +309,30 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
     Xmlc().writeData( Path.of(stringOfData),data)
     logger.info("escrito datos")
 }
+    fun doResume(s: String, pathContenedoresVarios: Path, pathModeloResiduo: Path, stringOfData: String, directoriodeResumen: Path): String {
+        logger.info("los datos de la path son correctos")
 
+        var tipoOpcion = ""
+        var exito = false
 
+        var html : String = ""
 
+        if (distrito.equals("")){
+            tipoOpcion="resume all"
+            logger.info("entramos a la opcion resume all  porque no hay distrito $distrito")
+            html = ResumenDataFrame().resumenFrame(pathDeModeloResiduo, pathOfContenedoresVarios,directoriodeResumen)
 
+        }else{
+            tipoOpcion="resume District"
+            logger.info("entramos a la opcion resume distrito porque el distrito es  $distrito")
+            html = ResumenDataFrame().resumeDistrictFrame(pathDeModeloResiduo, pathOfContenedoresVarios, distrito,directoriodeResumen)
+        }
 
+        logger.info("fin de tarea ")
 
-
-
-
-
-fun doResumen(
-    distrito: String,
-    pathOfContenedoresVarios: Path,
-    pathDeModeloResiduo: Path,
-    stringOfData: String,
-    directoriodeResumen: Path
-) : String{
-    logger.info("los datos de la path son correctos")
-
-    var tipoOpcion = ""
-    var exito = false
-
-    var html : String = ""
-
-    if (distrito.equals("")){
-        tipoOpcion="resume all"
-        logger.info("entramos a la opcion resume all  porque no hay distrito $distrito")
-        html = ResumenDataFrame().resumenFrame(pathDeModeloResiduo, pathOfContenedoresVarios,directoriodeResumen)
-
-    }else{
-        tipoOpcion="resume District"
-        logger.info("entramos a la opcion resume distrito porque el distrito es  $distrito")
-        html = ResumenDataFrame().resumeDistrictFrame(pathDeModeloResiduo, pathOfContenedoresVarios, distrito,directoriodeResumen)
+        return html
     }
 
-    logger.info("fin de tarea ")
-
-return html
-
-}
 
 private fun getModeloResiduoDtoToFile(
     pathOfContenedoresVarios: Path,
