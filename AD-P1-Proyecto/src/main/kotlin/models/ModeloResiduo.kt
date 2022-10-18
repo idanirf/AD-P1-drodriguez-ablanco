@@ -5,16 +5,26 @@ import enums.TipoResiduo
 import java.io.Serializable
 import java.time.LocalDate
 
+<<<<<<< HEAD
  class ModeloResiduo (año:Int?, mes: Meses?, lote: Int?, residuo: TipoResiduo?, distrito : String?
                      , nombreDistrito: String?, toneladas: Int?): Serializable {
     val año : Int?=año
+=======
+ class ModeloResiduo (año:String?, mes: String?, lote: String?, residuo: String?, distrito : String?
+                     , nombreDistrito: String?, toneladas: Float?): Serializable {
+    val año : String?=año
+>>>>>>> ecf7ffb... funciona parse ok y todos los sumarys con csv y json
      //todo no esta pasando bien a meses al dto
     val mes : Meses? = mes
     val lote : Int? = lote
     var residuo : TipoResiduo? = residuo
     val distrito : String? = distrito
     val nombreDistrito : String? = nombreDistrito
+<<<<<<< HEAD
     val toneladas : Int? = toneladas
+=======
+    val toneladas :  Float? = toneladas
+>>>>>>> ecf7ffb... funciona parse ok y todos los sumarys con csv y json
 
      /**
       * devuelve una strig de este objeto en csv
