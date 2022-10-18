@@ -241,37 +241,34 @@ class CheckData {
 
     }
     fun searchCorrectFileInCsvFilesContenedoresVarios(ficherosCsv: MutableList<Path>): Path? {
-        var encontrado1 = false
-        while (ficherosCsv.size != 0 && encontrado1 != true) {
-            var ficheroCorrecto: ArrayList<ContenedoresVariosDTO> = ArrayList()
-            try {
-                var pathEncontrada = ficherosCsv.get(0)
-                ficheroCorrecto = Csv().csvToContenedoresVarios(ficherosCsv.removeAt(0))
-                encontrado1 = true
-                return pathEncontrada
-                logger.info("fichero tiene las columnas correctas y en el orden correcto")
 
-            } catch (e: Exception) {
-                logger.info("fichero no tiene las columnas correctas en el orden correcto")
-            }
+        if (ficherosCsv.size==0){return null}
+        var paths = ficherosCsv
+        for(i in 0..ficherosCsv.size){
+            var ficheroCorrecto: ArrayList<ContenedoresVariosDTO> = ArrayList()
+
+                var pathEncontrada = paths.get(i)
+                ficheroCorrecto = Csv().csvToContenedoresVarios(ficherosCsv.get(i))
+                if (ficheroCorrecto.size!=0){
+                    return pathEncontrada
+                    logger.info("fichero tiene las columnas correctas y en el orden correcto")
+                }
         }
         return null
 
     }
 
     fun searchCorrectFileInxmlFilesContenedoresVarios(ficherosXml: MutableList<Path>): Path? {
-        var encontrado1 = false
-        while (ficherosXml.size != 0 && encontrado1 != true) {
+        if (ficherosXml.size==0){return null}
+        var paths = ficherosXml
+        for(i in 0..ficherosXml.size){
             var ficheroCorrecto: ArrayList<ContenedoresVariosDTO> = ArrayList()
-            try {
-                var pathEncontrada = ficherosXml.get(0)
-                ficheroCorrecto = Csv().csvToContenedoresVarios(ficherosXml.removeAt(0))
-                encontrado1 = true
+
+            var pathEncontrada = paths.get(i)
+            ficheroCorrecto = Csv().csvToContenedoresVarios(ficherosXml.get(i))
+            if (ficheroCorrecto.size!=0){
                 return pathEncontrada
                 logger.info("fichero tiene las columnas correctas y en el orden correcto")
-
-            } catch (e: Exception) {
-                logger.info("fichero no tiene las columnas correctas en el orden correcto")
             }
         }
         return null
@@ -279,18 +276,16 @@ class CheckData {
     }
 
     fun searchCorrectFileInJsonFilesContenedoresVarios(ficherosJson: MutableList<Path>): Path? {
-        var encontrado1 = false
-        while (ficherosJson.size != 0 && encontrado1 != true) {
+        if (ficherosJson.size==0){return null}
+        var paths = ficherosJson
+        for(i in 0..ficherosJson.size){
             var ficheroCorrecto: ArrayList<ContenedoresVariosDTO> = ArrayList()
-            try {
-                var pathEncontrada = ficherosJson.get(0)
-                ficheroCorrecto = Csv().csvToContenedoresVarios(ficherosJson.removeAt(0))
-                encontrado1 = true
+
+            var pathEncontrada = paths.get(i)
+            ficheroCorrecto = Csv().csvToContenedoresVarios(ficherosJson.get(i))
+            if (ficheroCorrecto.size!=0){
                 return pathEncontrada
                 logger.info("fichero tiene las columnas correctas y en el orden correcto")
-
-            } catch (e: Exception) {
-                logger.info("fichero no tiene las columnas correctas en el orden correcto")
             }
         }
         return null
@@ -298,18 +293,16 @@ class CheckData {
 
     fun searchCorrectFileInCsvFilesModeloResiduo(ficherosCsv: MutableList<Path>): Path?{
 
-        var encontrado1 = false
-        while (ficherosCsv.size != 0 && encontrado1 != true) {
+        if (ficherosCsv.size==0){return null}
+        var paths = ficherosCsv
+        for(i in 0..ficherosCsv.size){
             var ficheroCorrecto: ArrayList<ModeloResiduoDTO> = ArrayList()
-            try {
-                var pathEncontrada = ficherosCsv.get(0)
-                ficheroCorrecto = Csv().csvToMoeloResiduo(ficherosCsv.removeAt(0))
-                encontrado1 = true
+
+            var pathEncontrada = paths.get(i)
+            ficheroCorrecto = Csv().csvToMoeloResiduo(ficherosCsv.get(i))
+            if (ficheroCorrecto.size!=0){
                 return pathEncontrada
                 logger.info("fichero tiene las columnas correctas y en el orden correcto")
-
-            } catch (e: Exception) {
-                logger.info("fichero no tiene las columnas correctas en el orden correcto")
             }
         }
         return null
@@ -317,40 +310,32 @@ class CheckData {
     }
 
     fun searchCorrectFileInxmlFilesModeloResiduo(ficherosXml: MutableList<Path>): Path? {
-
-        var encontrado1 = false
-        while (ficherosXml.size != 0 && encontrado1 != true) {
+        if (ficherosXml.size==0){return null}
+        var paths = ficherosXml
+        for(i in 0..ficherosXml.size){
             var ficheroCorrecto: ArrayList<ModeloResiduoDTO> = ArrayList()
-            try {
-                var pathEncontrada = ficherosXml.get(0)
-                ficheroCorrecto = Xmlc().xmlToModeloresiduoDto(ficherosXml.removeAt(0))
-                encontrado1 = true
+
+            var pathEncontrada = paths.get(i)
+            ficheroCorrecto = Csv().csvToMoeloResiduo(ficherosXml.get(i))
+            if (ficheroCorrecto.size!=0){
                 return pathEncontrada
                 logger.info("fichero tiene las columnas correctas y en el orden correcto")
-
-            } catch (e: Exception) {
-                logger.info("fichero no tiene las columnas correctas en el orden correcto")
             }
         }
         return null
     }
 
     private fun searchCorrectFileInJsonFilesModeloResiduo(ficherosJson: MutableList<Path>): Path? {
-        var encontrado1 = false
-        while ((ficherosJson.size!= 0) && (encontrado1!= true)) {
-
-
-            logger.info("json sice es ${ficherosJson.size}  y encontraso es $encontrado1")
+       if (ficherosJson.size==0){return null}
+        var paths = ficherosJson
+        for(i in 0..ficherosJson.size){
             var ficheroCorrecto: ArrayList<ModeloResiduoDTO> = ArrayList()
-            try {
-                var pathEncontrada = ficherosJson.get(0)
-                ficheroCorrecto = Jsonc().readJsontoModeloresiduoDto(ficherosJson.removeAt(0))
-                encontrado1 = true
+
+            var pathEncontrada = paths.get(i)
+            ficheroCorrecto = Csv().csvToMoeloResiduo(ficherosJson.get(i))
+            if (ficheroCorrecto.size!=0){
                 return pathEncontrada
                 logger.info("fichero tiene las columnas correctas y en el orden correcto")
-
-            } catch (e: Exception) {
-                logger.info("fichero no tiene las columnas correctas en el orden correcto")
             }
         }
         return null

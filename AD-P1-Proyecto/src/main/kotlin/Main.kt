@@ -177,7 +177,9 @@ private fun getModeloResiduotoCSV(args: Array<String>): ArrayList<ModeloResiduoD
     var pathCorrecta = CheckData().encontrarFicherosCorrectosEnELDirectoriodeModeloResiduo(Path.of(args[1]))
 
     if (pathCorrecta!=null){
-        return  Csv().csvToMoeloResiduo(pathCorrecta)
+        if (pathCorrecta.toString().endsWith(".csv")){
+            return  Csv().csvToMoeloResiduo(pathCorrecta)
+        }
     }
     return null
 }

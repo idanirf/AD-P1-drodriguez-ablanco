@@ -62,7 +62,7 @@ class Csv {
     public fun ModeloRosiduoToCsv(a : ArrayList<ModeloResiduoDTO>, p : Path): File {
         logger.info(" entrado en Modelo residuo ToCsv")
 
-        var listaString = StringBuilder().append("Año;Mes;Lote;Residuo;Distrito;Nombre Distrito;Toneladas")
+        var listaString = StringBuilder().append("Año;Mes;Lote;Residuo;Distrito;Nombre Distrito;Toneladas\n")
         a.forEach { m -> listaString.append(getStringToModeloResiduoCSV(m)) }
 
 
@@ -85,13 +85,14 @@ class Csv {
                 val br = BufferedReader(FileReader(p.toFile()))
                 try {
 
-                    var line = br.readLine()
+                    var line = br.readText()
                     var contenedoresVariosCollection = Files.lines(p)
                         .skip(1)
                         .map(this::getContenedoresVariosDto)
                         .collect(Collectors.toList())
                     contenedoresVariosCollection.forEach { m -> lista.add(m)}
                 }catch (e : Exception){
+                    e.printStackTrace()
 
                 }finally {
                     br.close()
@@ -109,8 +110,8 @@ class Csv {
         logger.info(" entrado en contenedores varios ToCsv")
 
 
-        var listaString = StringBuilder().append("codigoInternoSituado; tipoContenedor;modelo;descripcionModelo" +
-                ";cantidad;lote;distrito;barrio;tipoVia;nombre;numero;coordenadaX;coordenadaY;TAG")
+        var listaString = StringBuilder().append("codigoInternoSituado;tipoContenedor;modelo;descripcionModelo" +
+                ";cantidad;lote;distrito;barrio;tipoVia;nombre;numero;coordenadaX;coordenadaY;TAG\n")
         a.forEach { m -> listaString.append(getStringToMContenedoresVarios(m)) }
 
 
@@ -162,18 +163,16 @@ class Csv {
 
     private fun getStringToModeloResiduoCSV(m : ModeloResiduoDTO): String {
         return "${m.año};${m.mes};${m.lote};${m.residuo};${m.distrito};" +
-                    "${m.nombreDistrito};${m.toneladas}"
+                    "${m.nombreDistrito};${m.toneladas}\n"
     }
     private fun getStringToMContenedoresVarios(m: ContenedoresVariosDTO): String? {
-        return "\n${m.codigoInternoSituado};${m.tipoContenedor};${m.modelo};${m.descripcionModelo};" +
+        return "${m.codigoInternoSituado};${m.tipoContenedor};${m.modelo};${m.descripcionModelo};" +
                 "${m.cantidad};${m.lote};${m.distrito};${m.barrio};${m.tipoVia};${m.nombre};"+
-                "${m.numero};${m.coordenadaX};${m.coordenadaY};${m.TAG}"
+                "${m.numero};${m.coordenadaX};${m.coordenadaY};${m.TAG}\n"
     }
 
     private fun getContenedoresVariosDto(line: String): ContenedoresVariosDTO {
         val campos = line.split(";")
-        logger.info("pasando de string a contenedor varios dto")
-
         return ContenedoresVariosDTO(
             codigoInternoSituado = campos[0],
             tipoContenedor = campos[1],
@@ -197,9 +196,9 @@ class Csv {
      * funcion que pasandole una linea de un scv te debuelve un ModeloResiduo
      */
     private fun getModelRediduoDTO(linea : String): ModeloResiduoDTO {
-        logger.info(" entra a  getModel resituo")
 
         val campos  = linea.split(";")
+        println(campos.toString())
 
         return ModeloResiduoDTO(
             año = campos[0].toIntOrNull(),
@@ -208,13 +207,10 @@ class Csv {
             residuo = campos[3],
             distrito = campos[4],
             nombreDistrito = campos[5],
-            toneladas = campos[6].toIntOrNull()
+            toneladas = campos[6].replace(",",".",true).toDoubleOrNull()
         )
     }
 
-
-
-    //----------------------enumn que no se usan porque son para pojo y no dto
 
     private fun getMes(s: String): Meses? {
         logger.info(" entrado en get mes")

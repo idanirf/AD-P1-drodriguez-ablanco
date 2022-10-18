@@ -26,7 +26,7 @@ class MaperModeloResiduo {
             dto.año,
             getMes(dto.mes),
             dto.lote,
-            getTipoResiduo(dto.residuo),
+            dto.residuo,
             dto.distrito,
             dto.nombreDistrito,
             dto.toneladas
