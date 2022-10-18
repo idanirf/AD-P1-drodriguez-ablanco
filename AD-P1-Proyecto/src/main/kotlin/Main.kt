@@ -260,12 +260,15 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
 
             var pathModeloResiduo = CheckData().encontrarFicherosCorrectosEnELDirectoriodeModeloResiduo(directorioDeorigen)
 
+            println("(begin sumary)la path de modelo residuo es: " + pathModeloResiduo)
             if (pathModeloResiduo==null){
                 logger.info("no hay ningun archivo en la path que contenga los datos necesarios ")
             }else{
                 logger.info("exixte un fichero con los datos necesarios para modelo residuo, buscamos para contenedores varios")
 
                 var pathContenedoresVarios = CheckData().encontrarFicherosCorrectosEnELDirectoriodeContenedoresVarios(directorioDeorigen)
+                println("(begin sumary)la path de contenedores varios es: " + pathContenedoresVarios)
+
                 if (pathContenedoresVarios==null){
                     logger.info("no exixte ningun fichero que contenga las columnas y en el orden necesarios para crear Contenedores vartios")
 
@@ -308,6 +311,8 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
 }
     fun doResume(s: String, pathContenedoresVarios: Path, pathModeloResiduo: Path, stringOfData: String, directoriodeResumen: Path): String {
         logger.info("los datos de la path son correctos")
+        println("path de contenedores varios en do resumen es : " + pathContenedoresVarios)
+        println("path de Modelo residuo en do resumen es : " + pathModeloResiduo)
 
         var tipoOpcion = ""
         var exito = false

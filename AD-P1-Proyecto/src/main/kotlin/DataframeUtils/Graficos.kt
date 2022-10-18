@@ -111,8 +111,8 @@ class Graficos {
             fill = Color.ORANGE
 
         ) {
-            x = "Distrito" ; y = "Numero de contenedores"
-        } + xlab("Distrito") + ylab("Contenedores")+ ggtitle("Grafica de contenedores")
+            x = "distrito" ; y = "Numero de contenedores"
+        } + xlab("distrito") + ylab("contenedores")+ ggtitle("Grafica de contenedores")
 
         var nombrePlot = UUID.randomUUID().toString()+".png"
         ggsave(plot,nombrePlot,1,null,directoriodeResumen.toString())

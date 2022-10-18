@@ -1,25 +1,20 @@
 package dto
 
-import enums.Meses
-import enums.TipoResiduo
-import models.ModeloResiduo
+
 import java.util.logging.Logger
 
 
-@JvmField
-var logger: Logger = Logger.getLogger("Azahara y Dani Log")
-
 //para pasar a json y a xml
 @kotlinx.serialization.Serializable
-class ModeloResiduoDTO(
+data class ModeloResiduoDTO(
 
-    var año: Int? ,
-    var mes: String? ,
-    var lote: Int? ,
-    var residuo: String? ,
-    var distrito: String?,
-    var nombreDistrito: String? ,
-    var toneladas: Double? ,
+    val año: String? ,
+    val mes: String? ,
+    val lote: String? ,
+    val residuo: String? ,
+    val distrito: String?,
+    val nombreDistrito: String? ,
+    val toneladas: String? ,
 ){
     override fun toString(): String {
         return "ModeloResiduoDTO(año=$año, mes=$mes, lote=$lote, residuo=$residuo, distrito=$distrito, nombreDistrito=$nombreDistrito, toneladas=$toneladas)"

@@ -165,7 +165,7 @@ class ResumenDataFrame {
                 //var filasMr : DataFrame<Any?>? = filasMrsinCast?.cast<ModeloResiduo>()
                 println(filasMr?.columnNames())
                 logger.info("cojemos datos e cv")
-                var filasCv: DataFrame<Any?>? = GetDataFrame().dataFrameModeloResiduoTotal(pathCV)
+                var filasCv: DataFrame<Any?>? = GetDataFrame().dataframeContenedoresVariosTotal(pathCV)
                // var filasCv: DataFrame<Any?>? = filasCvsinCast?.cast<ContenedoresVarios>()
                 println(filasCv?.columnNames())
 
@@ -199,28 +199,33 @@ class ResumenDataFrame {
                     //ok gracias a jeremy que me lo ha esplicado
                     mediaDeContenedoresDeCadaTipo = Consultas().getmediaDeContenedoresDeCadaTipo(filasCv)
                     //println(mediaDeContenedoresDeCadaTipo)
+//ok
 
                     //ok
                     garficoDecontenedoresPorDistrito = Graficos().doGraficoDeMedia(numeroContenedoresPorDistrito, directoriodeResumen)
                     //println(garficoDeMediaDeCadaTipo)
+
+
+
                 }
                 if (filasMr?.count() == 0) {
                     logger.info("no existe datos Modelo Resifduo")
                 } else if (filasMr != null) {
 
                     logger.info("existe datos en Modelo Resifduo")
+                    mediaToneladasMensuales = Consultas().getMediaToneladasMensuales(filasMr)
+                    //println(mediaToneladasMensuales)
+
+                    //ok
+                    graficoMediaToneladasMensuales = Graficos().getgraficoMediaToneladasMensuales(mediaToneladasMensuales, directoriodeResumen)
+                    //println(graficoMediaToneladasMensuales)
+
+
 
                     //ok
                      mediaToneladasAnuales = Consultas().getmediaToneladasAnuales(filasMr)
                    //  println(mediaToneladasAnuales)
 
-                    //ok
-                    mediaToneladasMensuales = Consultas().getMediaToneladasMensuales(filasMr)
-                    //println(mediaToneladasMensuales)
-
-                    //ok
-                     graficoMediaToneladasMensuales = Graficos().getgraficoMediaToneladasMensuales(mediaToneladasMensuales, directoriodeResumen)
-                    //println(graficoMediaToneladasMensuales)
 
                     //ok
                     maxToneladasPorDistrito = Consultas().getmaxToneladasPorDistrito(filasMr)

@@ -10,36 +10,36 @@ import javax.management.Query.div
 class Consultas {
     fun getToneladasPorResiduo(filasMr: DataFrame<Any?>): DataFrame<Any?> {
         logger.info("Suma de toneladas")
-        return filasMr.groupBy("Residuo")
-            .aggregate { sum("Toneladas") into "Suma" }
+        return filasMr.groupBy("residuo")
+            .aggregate { sum("toneladas") into "Suma" }
     }
 
     fun getMaximo(filasMr: DataFrame<Any?>): DataFrame<Any?>{
         logger.info("maximo de toneladas")
-        return filasMr.groupBy("Residuo")
-            .aggregate { max("Toneladas") into "Maximo de Toneladas" }
+        return filasMr.groupBy("residuo")
+            .aggregate { max("toneladas") into "Maximo de Toneladas" }
     }
     fun getMinimo(filasMr: DataFrame<Any?>): DataFrame<Any?>{
         logger.info("minimo de toneladas")
-        return filasMr.groupBy("Residuo")
-            .aggregate { min("Toneladas") into "Minimo de Toneladas" }
+        return filasMr.groupBy("residuo")
+            .aggregate { min("toneladas") into "Minimo de Toneladas" }
     }
     fun getMedia(filasMr: DataFrame<Any?>): DataFrame<Any?> {
         logger.info("Media de toneladas")
-        return filasMr.groupBy("Residuo")
-            .aggregate { mean("Toneladas") into "Media de Toneladas" }
+        return filasMr.groupBy("residuo")
+            .aggregate { mean("toneladas") into "Media de Toneladas" }
     }
 
     fun getContenedoresDeCadaTipo(filasCv: DataFrame<Any?>): DataFrame<Any?>{
         logger.info("Número de contenedores de cada tipo que hay en este distrito")
-        return  filasCv.groupBy("Tipo Contenedor")
+        return  filasCv.groupBy("tipoContenedor")
             .aggregate { count() into  "Numero de contenedores de ese tipo" }
     }
 
     fun getNumeroContenedoresPorDistrito(filasCv: DataFrame<Any?>): DataFrame<Any?> {
         //Esta bien
         logger.info("nuemro de contenedores por dstrito")
-        return filasCv.groupBy("Distrito").aggregate { count() into "Numero de contenedores" }
+        return filasCv.groupBy("distrito").aggregate { count() into "Numero de contenedores" }
     }
 
     fun getmediaDeContenedoresDeCadaTipo(filasCv: DataFrame<Any?>):  DataFrame<Any?> {
@@ -47,8 +47,8 @@ class Consultas {
 
         logger.info("Media de contenedores de cada tipo que hay en cada distrito")
 
-        return filasCv.groupBy("Distrito", "Tipo Contenedor")
-            .aggregate { mean("Número") into "Media" }
+        return filasCv.groupBy("distrito", "tipoContenedor")
+            .aggregate { mean("numero") into "Media" }
 
     }
 
@@ -61,8 +61,8 @@ class Consultas {
                     " cada tipo de basura agrupadas por distrito"
         )
 
-         return filasMr.groupBy(columnaAño, "Nombre Distrito", "Residuo").sortBy("Nombre Distrito")
-            .aggregate { mean("Toneladas") into "Media de toneladas" }
+         return filasMr.groupBy(columnaAño, "distrito", "tipoContenedor").sortBy("distrito")
+            .aggregate { mean("cantidad") into "Media de toneladas" }
 
 
 
@@ -78,8 +78,8 @@ class Consultas {
         //println(filasMr.columnNames())
 
         var año = filasMr.columnNames().get(0)
-        var f = filasMr.groupBy(año, "Nombre Distrito", "Residuo")
-            .aggregate { max("Toneladas") into "maximo"}.sortBy("Nombre Distrito")
+        var f = filasMr.groupBy(año, "distrito", "tipoContenedor")
+            .aggregate { max("cantidad") into "maximo"}.sortBy("distrito")
 
         return f
 
@@ -93,8 +93,8 @@ class Consultas {
         )
 
         var año = filasCv.columnNames().get(0)
-        var f = filasCv.groupBy(año, "Nombre Distrito", "Residuo")
-            .aggregate { min("Toneladas") into "minimo"}.sortBy("Nombre Distrito")
+        var f = filasCv.groupBy(año, "distrito", "tipoContenedor")
+            .aggregate { min("cantidad") into "minimo"}.sortBy("distrito")
 
         return f
     }
@@ -106,8 +106,8 @@ class Consultas {
                     "                    \"    de basura agrupadas por distrito. "
         )
         var año = filasCv.columnNames().get(0)
-        var f = filasCv.groupBy(año, "Nombre Distrito", "Residuo")
-            .aggregate { mean("Toneladas") into "media"}.sortBy("Nombre Distrito")
+        var f = filasCv.groupBy(año, "distrito", "tipoContenedor")
+            .aggregate { mean("cantidad") into "media"}.sortBy("distrito")
 
         return f
     }
@@ -116,28 +116,28 @@ class Consultas {
         logger.info(
             " suma de todas las toneladas. "
         )
-        return filasCv.groupBy("Nombre Distrito")
-            .aggregate {  sum("Toneladas") into "Toneladas Toales"}
+        return filasCv.groupBy("distrito")
+            .aggregate {  sum("cantidad") into "Toneladas Toales"}
     }
 
     fun sumToneladasPorDistritoPorTipo(filasCv: DataFrame<Any?>):  DataFrame<Any?> {
         logger.info("Por cada distrito obtener para cada tipo de residuo la cantidad recogida.")
-        return filasCv.groupBy("Nombre Distrito","Residuo")
-            .aggregate { sum("Toneladas") into "Suma por distrito y tipo"}.sortBy("Nombre Distrito")
+        return filasCv.groupBy("distrito","tipoContenedor")
+            .aggregate { sum("cantidad") into "Suma por distrito y tipo"}.sortBy("distrito")
     }
 
     fun getMediaToneladasMensuales(filasMr: DataFrame<Any?>):  DataFrame<Any?> {
         logger.info( "media de toneladas mensuales de recogida de basura por distrito")
 
-        return  filasMr.groupBy("Mes", "Nombre Distrito", "Residuo").sortBy("Nombre Distrito")
-            .aggregate { mean("Toneladas") into "Media de toneladas" }
+        return  filasMr.groupBy("mes", "distrito", "tipoContenedor").sortBy("distrito")
+            .aggregate { mean("cantidad") into "Media de toneladas" }
     }
 
     fun getDesToneladasPorDistrito(filasMr: DataFrame<Any?>): DataFrame<Any?> {
         logger.info("desviación de toneladas anuales de recogidas por cada tipo de basura agrupadas por distrito.")
         var año = filasMr.columnNames().get(0)
-        var f = filasMr.groupBy(año, "Nombre Distrito", "Residuo")
-            .aggregate { std("Toneladas") into "Desviacion"}.sortBy("Nombre Distrito")
+        var f = filasMr.groupBy(año, "distrito", "tipoContenedor")
+            .aggregate { std("cantidad") into "desviacion"}.sortBy("distrito")
 
         return f
     }
@@ -154,8 +154,8 @@ class Consultas {
     companion object {
         fun getDesviacion(filasMr: DataFrame<Any?>):  DataFrame<Any?> {
             logger.info("Desviacion de toneladas")
-            return filasMr.groupBy("Residuo")
-                .aggregate { max("Toneladas") into "Desciacion de Toneladas" }
+            return filasMr.groupBy("tipoContenedor")
+                .aggregate { max("cantidad") into "Desciacion de Toneladas" }
         }
 
         fun joinEstadisticas(estadisticasPorResiduoMax: DataFrame<Any?>,
@@ -165,9 +165,9 @@ class Consultas {
                              directoriodeResumen: Path
         ): DataFrame<Any?>? {
 
-            var datosDesvYMed = estadisticasPorResiduoDesv.join(estadisticasPorResiduoMed,"Residuo")
-            var datosDesvYMedYMin = datosDesvYMed.join(estadisticasPorResiduoMin,"Residuo")
-            var datosUnion = datosDesvYMedYMin.join(estadisticasPorResiduoMax,"Residuo")
+            var datosDesvYMed = estadisticasPorResiduoDesv.join(estadisticasPorResiduoMed,"tipoContenedor")
+            var datosDesvYMedYMin = datosDesvYMed.join(estadisticasPorResiduoMin,"tipoContenedor")
+            var datosUnion = datosDesvYMedYMin.join(estadisticasPorResiduoMax,"tipoContenedor")
             return datosUnion
         }
     }

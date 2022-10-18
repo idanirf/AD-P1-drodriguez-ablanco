@@ -40,7 +40,13 @@ class Csv {
                         .map(this::getModelRediduoDTO)
                         .collect(Collectors.toList());
 
-                    modelosResiduosCollection.forEach { m -> lista.add(m) }
+                    if (modelosResiduosCollection.get(0)!=null){
+                        modelosResiduosCollection.forEach { m ->
+                            if (m != null) {
+                                lista.add(m)
+                            }
+                        }
+                    }
 
                 }catch (e : Exception){
 
@@ -195,20 +201,43 @@ class Csv {
     /**
      * funcion que pasandole una linea de un scv te debuelve un ModeloResiduo
      */
-    private fun getModelRediduoDTO(linea : String): ModeloResiduoDTO {
+    private fun getModelRediduoDTO(linea : String): ModeloResiduoDTO? {
 
         val campos  = linea.split(";")
-        println(campos.toString())
+            //comprobamos si el campo mes es un meso, si no lo es salir sin hacerlo
+        if(campoEsMesCorrecto(campos[1])){
+            return ModeloResiduoDTO(
+                año = campos[0],//.toIntOrNull(),
+                mes = campos[1],
+                lote = campos[2],//.toIntOrNull() ,
+                residuo = campos[3],
+                distrito = campos[4],
+                nombreDistrito = campos[5],
+                toneladas = campos[6]
+                    //.replace(",",".",true).toDoubleOrNull()
+            )
+        }
+        return null
+    }
 
-        return ModeloResiduoDTO(
-            año = campos[0].toIntOrNull(),
-            mes = campos[1],
-            lote = campos[2].toIntOrNull() ,
-            residuo = campos[3],
-            distrito = campos[4],
-            nombreDistrito = campos[5],
-            toneladas = campos[6].replace(",",".",true).toDoubleOrNull()
-        )
+    private fun campoEsMesCorrecto(s: String): Boolean {
+        if (s.equals("ENERO",true)||
+            s.equals("FEBRERO",true)||
+            s.equals("MARZO",true)||
+            s.equals("ABRIL",true)||
+            s.equals("MAYO",true)||
+            s.equals("JUNIO",true)||
+            s.equals("JULIO",true)||
+            s.equals("AGOSTO",true)||
+            s.equals("SEPTIEMBRE",true)||
+            s.equals("OCTUBRE",true)||
+            s.equals("NOVIEMBRE",true)||
+            s.equals("DICIEMBRE",true)
+                ){
+            return true
+        }
+        return false
+
     }
 
 

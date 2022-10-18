@@ -1,7 +1,7 @@
 package dto
-import kotlinx.serialization.Serializable
 
-@Serializable //para poder paar a json y a xml
+
+@kotlinx.serialization.Serializable
 data class ContenedoresVariosDTO(
     val codigoInternoSituado: String?,
     val tipoContenedor: String?,

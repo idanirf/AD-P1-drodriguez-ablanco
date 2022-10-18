@@ -1,7 +1,11 @@
 package DataframeUtils
 
+import dto.ContenedoresVariosDTO
+import dto.ModeloResiduoDTO
 import logger
+import models.ModeloResiduo
 import org.jetbrains.kotlinx.dataframe.DataFrame
+import org.jetbrains.kotlinx.dataframe.api.cast
 import org.jetbrains.kotlinx.dataframe.api.count
 import org.jetbrains.kotlinx.dataframe.api.filter
 import org.jetbrains.kotlinx.dataframe.api.getValue
@@ -64,37 +68,57 @@ class GetDataFrame {
     }
 
     fun dataFrameModeloResiduoTotal(pathMR: Path): DataFrame<Any?>? {
+        println("modelo residuo de : "+pathMR)
         if (pathMR.toString().endsWith(".csv")) {
-            logger.info("buscando  Contenedores varios csv")
-            return DataFrame.readCSV(pathMR.toFile(), ';')
+            logger.info("buscando  MOdelo residuo csv")
+            var dF =DataFrame.readCSV(pathMR.toFile(), ';')
+            var casteo = dF.cast<ModeloResiduoDTO>()
+            println("casteado "+casteo.columnNames())
+            return casteo
 
-        } else if (pathMR.toString().endsWith(".json")) {
+            } else if (pathMR.toString().endsWith(".json")) {
             logger.info("buscando fichero Modelo Residio json ")
-            return DataFrame.readJson(pathMR.toFile())
+            var dF = DataFrame.readJson(pathMR.toFile())
+            var casteo= dF.cast<ModeloResiduoDTO>()
+            println("casteado" +casteo.columnNames())
+            return casteo
+
         } else if (pathMR.toString().endsWith(".xml")){
             //Todo no se si funcionará con xml
             logger.info("buscando fichero Modelo Residio xml ")
-            return  DataFrame.read(pathMR.toFile())
+            var dF =  DataFrame.read(pathMR.toFile())
+            var casteo= dF.cast<ModeloResiduo>()
+            println(casteo.columnNames())
+            return casteo
         }
         logger.info("error devolvemos null")
         return null
     }
 
     fun dataframeContenedoresVariosTotal(pathCV: Path) : DataFrame<Any?>?{
-
+        println("contnedores varios de : " +pathCV)
 
         if (pathCV.toString().endsWith(".csv")) {
             logger.info("buscando  Contenedores varios csv")
-            return DataFrame.readCSV(pathCV.toFile(), ';')
+            var dF =DataFrame.readCSV(pathCV.toFile(), ';')
+            var casteo = dF.cast<ContenedoresVariosDTO>()
+            println(casteo.columnNames())
+            return casteo
 
         } else if (pathCV.toString().endsWith(".json")) {
             logger.info("buscando  Contenedores varios json")
-            return DataFrame.readJson(pathCV.toFile())
+            var dF = DataFrame.readJson(pathCV.toFile())
+            var casteo = dF.cast<ContenedoresVariosDTO>()
+            println(casteo.columnNames())
+            return casteo
 
         } else  if (pathCV.toString().endsWith(".xml")){
 
             logger.info("buscando Contenedores varios xml")
-            return DataFrame.read(pathCV.toFile())
+            var dF = DataFrame.read(pathCV.toFile())
+            var casteo = dF.cast<ContenedoresVariosDTO>()
+            println(casteo.columnNames())
+            return casteo
 
         }
         logger.info("error devolvemos null")
