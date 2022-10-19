@@ -73,14 +73,12 @@ class Consultas {
     }
 
     fun getmaxToneladasPorDistrito(filasMr: DataFrame<Any?>, nombreCol: List<String>):  DataFrame<Any?> {
-        //sale ok
+
         var  nombreCol = filasMr.columnNames()
         logger.info(
             "Máximo de toneladas anuales de recogidas por cada tipo\n" +
                     "    de basura agrupadas por distrito."
         )
-
-
 
             var f = filasMr.groupBy(nombreCol.get(0), nombreCol.get(4), nombreCol.get(3))
             .aggregate { max(nombreCol.get(6)) into "maximo"}.sortBy(nombreCol.get(4))
@@ -90,7 +88,7 @@ class Consultas {
     }
 
     fun getminToneladasPorDistrito(filasCv: DataFrame<Any?>, nombreCol: List<String>):  DataFrame<Any?> {
-        //sale ok
+
         var  nombreCol = filasCv.columnNames()
         logger.info(
             " mínimo de toneladas anuales de recogidas por cada tipo\\n\" +\n" +

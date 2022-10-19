@@ -390,27 +390,34 @@ class CheckData {
         //listar todos los archivos dentro de un directorio y que sean leibles
         var ficherosReadble : List<Path>  = Files.list(directorioDeorigen).filter { p -> Files.isReadable(p) }.toList()
 
+
+
         // quedarnos con los de formato correcto
         logger.info("buscamos si hay xml")
         var ficherosXml = ficherosReadble.map { x -> x.toString() }.filter{x-> x.endsWith(".xml")}
             .map { x-> Path.of(x) }.toMutableList()
         logger.info("encontramos ${ficherosXml.size}")
 
+
         logger.info("buscamos si hay csv")
         var ficherosCsv = ficherosReadble.map { x -> x.toString() }.filter{x-> x.endsWith(".csv")}
             .map { x-> Path.of(x) }.toMutableList()
         logger.info("encontramos ${ficherosCsv.size}")
+
 
         logger.info("buscamos si hay json")
         var ficherosJson = ficherosReadble.map { x -> x.toString() }.filter{x-> x.endsWith(".json")}
             .map { x-> Path.of(x) }.toMutableList()
         logger.info("encontramos ${ficherosJson.size}")
 
+
         var ficherosJson2 = ficherosReadble.map { x -> x.toString() }.filter{x-> x.endsWith(".Json")}
             .map { x-> Path.of(x) }.toMutableList()
 
+
         ficherosJson.addAll(ficherosJson2)
-        println("encontramos " + ficherosJson.toString())
+
+
 
         //con cada uno porbamos si se pueden leer y son de los que queremos, quitaremos con excepciones
         var pathModeloResiduo : Path? = null
@@ -430,7 +437,7 @@ class CheckData {
                                                    ficherosXml: MutableList<Path>,
                                                    ficherosCsv: MutableList<Path>): Path ?{
 
-        println(ficherosJson.size)
+
         var pathContenedoresVarios1 = pathContenedoresVarios
         pathContenedoresVarios1 = searchCorrectFileInJsonFilesContenedoresVarios(ficherosJson)
 
@@ -438,6 +445,7 @@ class CheckData {
         if (pathContenedoresVarios1 == null) {
             pathContenedoresVarios1 = searchCorrectFileInxmlFilesContenedoresVarios(ficherosXml)
         }
+
         if (pathContenedoresVarios1 == null) {
             pathContenedoresVarios1 = searchCorrectFileInCsvFilesContenedoresVarios(ficherosCsv)
         }

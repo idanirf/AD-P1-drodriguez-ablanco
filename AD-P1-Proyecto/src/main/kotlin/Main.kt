@@ -235,7 +235,7 @@ private fun getContenedoresVariosCSV(args: Array<String>): ArrayList<Contenedore
         html = ResumenDataFrame().resumeDistrictFrame(pathModeloResiduo, pathContenedoresVarios, s,directoriodeResumen)
     }
 
-        //todo, si no consegimos hacer las consultas hay que decir que no está bien
+
     logger.info("fin de tarea ")
 
     return html
@@ -285,12 +285,14 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
 
             var pathModeloResiduo = CheckData().encontrarFicherosCorrectosEnELDirectoriodeModeloResiduo(directorioDeorigen)
 
+
             if (pathModeloResiduo==null){
                 logger.info("no hay ningun archivo en la path que contenga los datos necesarios ")
             }else{
                 logger.info("exixte un fichero con los datos necesarios para modelo residuo, buscamos para contenedores varios")
 
                 var pathContenedoresVarios = CheckData().encontrarFicherosCorrectosEnELDirectoriodeContenedoresVarios(directorioDeorigen)
+
 
                 if (pathContenedoresVarios==null){
                     logger.info("no exixte ningun fichero que contenga las columnas y en el orden necesarios para crear Contenedores vartios")
@@ -301,6 +303,7 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
 
                     logger.info("exixten los dos archivos necesarios para hacer el resumen")
                     if(tipoOpcion == "resumen district"){
+
 
                         html = doResumen(args[1],pathContenedoresVarios,pathModeloResiduo, stringOfData,directoriodeResumen)
                     }else{
