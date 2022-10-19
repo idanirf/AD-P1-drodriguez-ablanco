@@ -142,7 +142,6 @@ class GetDataFrame {
     }
 
     fun dataframeContenedoresVariosTotal(pathCV: Path) : DataFrame<Any?>?{
-        println("contnedores varios de : " +pathCV)
 
 
         if (pathCV.toString().endsWith(".csv")) {
@@ -151,7 +150,7 @@ class GetDataFrame {
             logger.info("buscando  Contenedores varios csv")
             var dF =lista.toDataFrame()
             var casteo = dF.cast<ContenedoresVariosDTO>()
-            println(casteo.columnNames())
+
             return casteo
 
         } else if (pathCV.toString().endsWith(".json")) {

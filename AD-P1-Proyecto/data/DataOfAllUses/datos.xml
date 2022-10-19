@@ -534,3 +534,19 @@
   <exito>true</exito>
   <tiempoDeEjecucion>6384</tiempoDeEjecucion>
 </DataofUse>
+
+<DataofUse>
+  <id>088e10d5-b649-48eb-979b-a91a7bae30e2</id>
+  <instanteFormatoISO>2022-10-19T21:21:21.976593322</instanteFormatoISO>
+  <tipoOpcion>resumen</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>7819</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>2e300c6c-b9f2-4332-9733-c034126c35e0</id>
+  <instanteFormatoISO>2022-10-19T21:21:59.568493483</instanteFormatoISO>
+  <tipoOpcion>resumen</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>8374</tiempoDeEjecucion>
+</DataofUse>
