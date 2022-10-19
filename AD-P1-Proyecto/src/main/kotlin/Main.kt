@@ -473,6 +473,7 @@ por la persona que ha pasado los parametros
 1- parser
  */
 fun getElection(args: Array<String>):Int{
+    if (args.size==0){return 4}
     logger.info(" Entrado en get Elecion ")
 
     if(args.size == 4){
