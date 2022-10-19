@@ -5,6 +5,7 @@ import dto.ModeloResiduoDTO
 import enums.Meses
 import enums.TipoContenedor
 import enums.TipoResiduo
+import logger
 import mappers.MaperModeloResiduo
 import java.io.*
 import java.nio.file.Files
@@ -14,15 +15,12 @@ import java.util.stream.Collectors
 
 class Csv {
 
-    private val logger: Logger = Logger.getLogger("Azahara y Dani Log")
 
     //---------------------------Modelo residuo---------------------------------------
     /**
-    entra una path y extrae un alista de ModeloResiduo
+    Función que pasndole una path y extrae un fichero con los datos de Modelo residio de la lista
      */
     public fun csvToMoeloResiduo(p : Path): ArrayList<ModeloResiduoDTO>{
-        logger.info(" entrado ")
-
 
         var lista = ArrayList<ModeloResiduoDTO>()
 
@@ -63,7 +61,7 @@ class Csv {
     }
 
     /**
-     * funcion que combiente una lista de ModelResituo en lista de strings tipo csv
+     * Función que combiente una lista de ModelResituo un fichero con los datos tipo csv
      */
     public fun ModeloRosiduoToCsv(a : ArrayList<ModeloResiduoDTO>, p : Path): File {
         logger.info(" entrado en Modelo residuo ToCsv")
@@ -78,9 +76,11 @@ class Csv {
     }
 
     //-------------------------------------Contenedores varios ------------------------
-
-
+    /**
+    Función que pasndole una path y extrae un fichero con los datos de Cv de la lista
+     */
     public fun csvToContenedoresVarios(p: Path): ArrayList<ContenedoresVariosDTO> {
+        logger.info("Pasando la path a Mr")
         logger.info("iniciando")
 
         var lista = ArrayList<ContenedoresVariosDTO>()
@@ -120,6 +120,9 @@ class Csv {
     }
 
 
+    /**
+     * Función que combiente una lista de Cv un fichero con los datos tipo csv
+     */
     public fun ContenedoresVariosToCsv(a : ArrayList<ContenedoresVariosDTO>, p : Path): File {
         logger.info(" entrado en contenedores varios ToCsv")
 
@@ -135,6 +138,9 @@ class Csv {
     }
     //    -------------otros extras--------------------------------------------------
 
+    /**
+     * Función que crea y escrive el fichero csv
+     */
     fun writeInFile(pathDeDirectorio: Path, pathDeFichero: Path, listaString: java.lang.StringBuilder): File {
 
         //ver si el directorio exixte, si no crearlo
@@ -175,16 +181,26 @@ class Csv {
     }
 
 
+    /**
+     * pasa de Mr A strig csv
+     */
     private fun getStringToModeloResiduoCSV(m : ModeloResiduoDTO): String {
         return "${m.año};${m.mes};${m.lote};${m.residuo};${m.distrito};" +
                     "${m.nombreDistrito};${m.toneladas}\n"
     }
+
+    /**
+     * pasa de Cv A strig csv
+     */
     private fun getStringToMContenedoresVarios(m: ContenedoresVariosDTO): String? {
         return "${m.codigoInternoSituado};${m.tipoContenedor};${m.modelo};${m.descripcionModelo};" +
                 "${m.cantidad};${m.lote};${m.distrito};${m.barrio};${m.tipoVia};${m.nombre};"+
                 "${m.numero};${m.coordenadaX};${m.coordenadaY};${m.TAG}\n"
     }
 
+    /**
+     * funcion que pasandole una linea de un scv te debuelve un Cv
+     */
     private fun getContenedoresVariosDto(line: String): ContenedoresVariosDTO {
         val campos = line.split(";")
         return ContenedoresVariosDTO(
@@ -205,24 +221,22 @@ class Csv {
         )
     }
 
-
     /**
      * funcion que pasandole una linea de un scv te debuelve un ModeloResiduo
      */
     private fun getModelRediduoDTO(linea : String): ModeloResiduoDTO? {
 
         val campos  = linea.split(";")
-            //comprobamos si el campo mes es un meso, si no lo es salir sin hacerlo
         if(campoEsMesCorrecto(campos[1])){
             return ModeloResiduoDTO(
-                año = campos[0],//.toIntOrNull(),
+                año = campos[0],
                 mes = campos[1],
-                lote = campos[2],//.toIntOrNull() ,
+                lote = campos[2],
                 residuo = campos[3],
                 distrito = campos[4],
                 nombreDistrito = campos[5],
                 toneladas = campos[6]
-                    //.replace(",",".",true).toDoubleOrNull()
+
             )
         }
         return null
@@ -248,7 +262,7 @@ class Csv {
 
     }
 
-
+    //futuras funcionalidades de mejora
     private fun getMes(s: String): Meses? {
         logger.info(" entrado en get mes")
         when(s){
@@ -269,6 +283,7 @@ class Csv {
         return null
     }
 
+    //futuras funcionalidades de mejora
     private fun getTipoResiduo(s: String): TipoResiduo {
         logger.info(" entrado en get tipo residuo")
 
@@ -290,6 +305,7 @@ class Csv {
         return TipoResiduo.DESCONOCIDO
     }
 
+    //futuras funcionalidades de mejora
     fun getEnumTipoContenedor(s: String): TipoContenedor {
         when (s) {
             "Envases" -> return TipoContenedor.ENVASES

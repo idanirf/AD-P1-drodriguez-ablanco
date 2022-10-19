@@ -3,20 +3,21 @@ package models
 import enums.TipoContenedor
 import java.io.File
 
- class ContenedoresVarios(codigoInternoSituado: String?,
-                          tipoContenedor: String?,
-                          modelo: String?,
-                          descripcionModelo: String?,
-                          cantidad: String?,
-                          lote: String?,
-                          distrito: String?,
-                          barrio: String?,
-                          tipoVia: String?,
-                          nombre: String?,
-                          numero: String?,
-                          coordenadaX: String?,
-                          coordenadaY: String?,
-                          TAG: String?
+ class ContenedoresVarios(
+     codigoInternoSituado: String?,
+     tipoContenedor: String?,
+     modelo: String?,
+     descripcionModelo: String?,
+     cantidad: String?,
+     lote: String?,
+     distrito: String?,
+     barrio: String?,
+     tipoVia: String?,
+     nombre: String?,
+     numero: Int?,
+     coordenadaX: String?,
+     coordenadaY: String?,
+     TAG: String?
 
 )  {
      val codigoInternoSituado: String?= codigoInternoSituado
@@ -29,17 +30,10 @@ import java.io.File
      val barrio: String? = barrio
      val tipoVia: String?= tipoVia
      val nombre: String?= nombre
-     val numero: String?= numero
+     val numero: Int?= numero
      val coordenadaX: String?= coordenadaX
      val coordenadaY: String?=coordenadaY
      val TAG: String? = TAG
-
-     fun getStringCSV(): String {
-        return "${this.codigoInternoSituado};${this.tipoContenedor.toString()};${this.modelo};${this.descripcionModelo};" +
-                "${this.cantidad};${this.lote};${this.distrito};${this.barrio};${this.tipoVia};${this.nombre};${this.numero};" +
-                "${this.coordenadaX};${this.coordenadaY};${this.TAG}"
-    }
-
 
      override fun equals(other: Any?): Boolean {
          if (this === other) return true
@@ -64,7 +58,6 @@ import java.io.File
 
          return true
      }
-
      override fun hashCode(): Int {
          var result = codigoInternoSituado?.hashCode() ?: 0
          result = 31 * result + (tipoContenedor?.hashCode() ?: 0)
@@ -82,41 +75,13 @@ import java.io.File
          result = 31 * result + (TAG?.hashCode() ?: 0)
          return result
      }
-
      override fun toString(): String {
          return "ContenedoresVarios(codigoInternoSituado=$codigoInternoSituado, tipoContenedor=$tipoContenedor, modelo=$modelo, descripcionModelo=$descripcionModelo, cantidad=$cantidad, lote=$lote, distrito=$distrito, barrio=$barrio, tipoVia=$tipoVia, nombre=$nombre, numero=$numero, coordenadaX=$coordenadaX, coordenadaY=$coordenadaY, TAG=$TAG)"
      }
 
 
  }
-
-fun loadContenedoresVariosCSV(csvFile: File): List<ContenedoresVarios>{
-    val contenedoresVarios: List<ContenedoresVarios> = csvFile.readLines()
-        .drop(1)
-        .map { it.split(";") }
-        .map{
-            it.map { campo -> campo.trim() }
-            ContenedoresVarios(
-                codigoInternoSituado = it[0],
-                //tipoContenedor = getEnumTipoContenedor(it[1]),
-                tipoContenedor = it[1],
-                modelo = it[2],
-                descripcionModelo = it[3],
-                cantidad = it[4],
-                lote = it[5],
-                distrito = it[6],
-                barrio = it[7],
-                tipoVia = it[8],
-                nombre = it[9],
-                numero = it[10],
-                coordenadaX = it[11],
-                coordenadaY = it[12],
-                TAG = it[13]
-            )
-        }
-    return contenedoresVarios
-}
-
+//para mejorar el programa más adelante
 fun getEnumTipoContenedor(s: String): TipoContenedor {
     when (s) {
         "Envases" -> return TipoContenedor.ENVASES
