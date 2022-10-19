@@ -278,8 +278,6 @@ class CheckData {
                 arayDelFichero = Xmlc().xmlToContenedoresVariosDto(ficherosXml.get(i))
                 if (arayDelFichero.size!=0){
                     logger.info("fichero tiene las columnas correctas y en el orden correcto")
-                    println("encontrados ${arayDelFichero.size} objetosde Cv")
-                    println("ej ${arayDelFichero.get(1).toString()} ")
                     return pathEncontrada
                 }
             }catch (e : Exception){
@@ -346,8 +344,6 @@ class CheckData {
                 arayDelFichero = Xmlc().xmlToModeloresiduoDto(ficherosXml.get(i))
                 if (arayDelFichero.size!=0){
                     logger.info("fichero tiene las columnas correctas y en el orden correcto")
-                    println("encontrados ${arayDelFichero.size} objetos de Mr")
-                    println("ej ${arayDelFichero.get(1).toString()} ")
                     return pathEncontrada
 
                 }
@@ -367,12 +363,12 @@ class CheckData {
      */
     private fun searchCorrectFileInJsonFilesModeloResiduo(ficherosJson: MutableList<Path>): Path? {
        if (ficherosJson.size==0){return null}
-        println(ficherosJson.size)
+
         var paths = ficherosJson
         for(i in 0..ficherosJson.size){
             var ficheroCorrecto: ArrayList<ModeloResiduoDTO> = ArrayList()
             try {
-                println(ficherosJson.get(i).toString())
+
                 var pathEncontrada = paths.get(i)
                 ficheroCorrecto = Jsonc().readJsontoModeloresiduoDto(ficherosJson.get(i))
                 if (ficheroCorrecto.size!=0){

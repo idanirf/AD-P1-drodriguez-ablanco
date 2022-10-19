@@ -131,7 +131,12 @@ fun beginingParser(args: Array<String>, stringOfData : String) {
     Xmlc().writeData( Path.of(stringOfData),data)
     logger.info("escrito datos")
 
-    println("Realizado el Parser con exito.")
+    if (areCorrectDataInFiles){
+        println("Realizado el Parser con exito.")
+    }else{
+        println("No realizado con exito: Los datos facilitados no son correctos.")
+    }
+
 
 }
 
@@ -212,10 +217,8 @@ private fun getContenedoresVariosCSV(args: Array<String>): ArrayList<Contenedore
 }
 
     fun doResumen(s: String, pathContenedoresVarios: Path, pathModeloResiduo: Path, stringOfData: String, directoriodeResumen: Path): String {
-        
 
     logger.info("los datos de la path son correctos")
-
 
     var exito = false
 
@@ -282,14 +285,12 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
 
             var pathModeloResiduo = CheckData().encontrarFicherosCorrectosEnELDirectoriodeModeloResiduo(directorioDeorigen)
 
-            println("(begin sumary)la path de modelo residuo es: " + pathModeloResiduo)
             if (pathModeloResiduo==null){
                 logger.info("no hay ningun archivo en la path que contenga los datos necesarios ")
             }else{
                 logger.info("exixte un fichero con los datos necesarios para modelo residuo, buscamos para contenedores varios")
 
                 var pathContenedoresVarios = CheckData().encontrarFicherosCorrectosEnELDirectoriodeContenedoresVarios(directorioDeorigen)
-                println("(begin sumary)la path de contenedores varios es: " + pathContenedoresVarios)
 
                 if (pathContenedoresVarios==null){
                     logger.info("no exixte ningun fichero que contenga las columnas y en el orden necesarios para crear Contenedores vartios")
@@ -309,6 +310,7 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
 
                     if (html.equals("")){
                         logger.info("no se ha podido hacer el html")
+                        exito=false
                     }else{
                         logger.info("convirtiendo a html")
 
@@ -330,6 +332,13 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
     logger.info(data.toString())
     Xmlc().writeData( Path.of(stringOfData),data)
     logger.info("escrito datos")
+
+        if (exito){
+            println("Realizado el Resumen con exito.")
+        }else{
+            println("No realizado Resumen con exito: Los datos facilitados no son correctos.")
+        }
+
 }
     fun doResume(s: String, pathContenedoresVarios: Path, pathModeloResiduo: Path, stringOfData: String, directoriodeResumen: Path): String {
         logger.info("los datos de la path son correctos")

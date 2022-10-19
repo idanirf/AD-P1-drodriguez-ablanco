@@ -63,7 +63,6 @@ class Graficos {
             Files.createDirectory(directoriodeResumen)
         }
 
-        println(estadisticastotales.toString())
         logger.info("Gráfico con el total de toneladas por residuo en ese distrito.")
         var plot = letsPlot(data = estadisticastotales?.toMap()) + geomBar(
             stat = Stat.identity,

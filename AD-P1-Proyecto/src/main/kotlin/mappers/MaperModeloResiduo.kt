@@ -31,7 +31,6 @@ class MaperModeloResiduo {
      * te devuelve un objeto Modeo residuo
      */
     fun tdoToModrloResiduo(dto: ModeloResiduoDTO): ModeloResiduo {
-        println("pasndo a modelo r")
         return ModeloResiduo(
             dto.año,
             dto.mes,

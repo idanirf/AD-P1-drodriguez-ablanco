@@ -60,7 +60,6 @@ class Consultas {
 
         var  nombresCv = filasMr.columnNames()
         var columnaAño = filasMr.columnNames().get(0)
-        println(filasMr.columnNames())
         logger.info(
             "Media de toneladas anuales de recogidas por" +
                     " cada tipo de basura agrupadas por distrito"
@@ -98,7 +97,6 @@ class Consultas {
                     "                    \"    de basura agrupadas por distrito. "
         )
 
-        println(nombreCol)
 
         var año = filasCv.columnNames().get(0)
         var f = filasCv.groupBy(año, nombreCol.get(5), nombreCol.get(3))
@@ -108,7 +106,7 @@ class Consultas {
     }
 
     fun getMedToneladasPorDistrito(filasCv: DataFrame<Any?>, nombreCol: List<String>):  DataFrame<Any?> {
-        //sale ok
+
         var  nombresCv = filasCv.columnNames()
         logger.info(
             " media de toneladas anuales de recogidas por cada tipo\\n\" +\n" +
@@ -166,7 +164,6 @@ class Consultas {
 
         var f = maxToneladasPorDistrito.join(minToneladasPorDistrito)
             .join(medToneladasPorDistrito).join(desvToneladasPorDistrito)
-        println(f)
         return f
 
     }
