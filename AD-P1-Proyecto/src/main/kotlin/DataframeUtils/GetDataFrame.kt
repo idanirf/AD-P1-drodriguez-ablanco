@@ -4,8 +4,11 @@ import dto.ContenedoresVariosDTO
 import dto.ModeloResiduoDTO
 import interchange.Csv
 import interchange.Jsonc
+import interchange.Xmlc
 import logger
 import mappers.MaperModeloResiduo
+import mappers.MapperContenedoresVarios
+import models.ContenedoresVarios
 import models.ModeloResiduo
 import org.jetbrains.kotlinx.dataframe.DataFrame
 import org.jetbrains.kotlinx.dataframe.api.*
@@ -34,7 +37,6 @@ class GetDataFrame {
             //pasmoa a objeto cara castear Toneladas
             var ob = ArrayList<ModeloResiduo>()
             dto.stream().forEach{x -> ob.add(MaperModeloResiduo().tdoToModrloResiduo(x))}
-            println("ejemplo de ob: "+ ob.get(1).toString())
             //pasamos de nuevo a dataframe
             var dF = ob.toDataFrame()
 
@@ -42,10 +44,20 @@ class GetDataFrame {
                 .filter{  x -> x.getValue<String>(dF.columnNames().get(5)).equals(district, true) }
 
         } else if (pathMR.toString().endsWith(".xml")){
-            //Todo no se si funcionará con xml
-            logger.info("buscando distrito \$district en el fichero Modelo Residio xml ")
-            return  DataFrame.read(pathMR.toFile())
-                .filter{ x -> x.getValue<String>("Nombre Distrito").equals(district, true) }
+
+            logger.info("buscando los datos del fichero contenedores varios xml ")
+
+            //descargamos datos a dto
+            var dto = Xmlc().xmlToModeloresiduoDto(pathMR)
+
+            //descargamos datos a pojo
+            var ob =  ArrayList<ModeloResiduo>()
+            dto.stream().forEach{x -> ob.add(MaperModeloResiduo().tdoToModrloResiduo(x))}
+
+            var dataFrame = ob.toDataFrame()
+            var columnas = dataFrame.columnNames()
+
+            return dataFrame.filter { x -> x.getValue<String>(columnas.get(5)).equals(district, true) }
 
         }
         logger.info("error devolvemos null")
@@ -68,11 +80,24 @@ class GetDataFrame {
                     return df.filter { x -> x.getValue<String>(df.columnNames().get(6)).equals(district, true) }
 
             } else if (pathCV.toString().endsWith(".xml")){
+                logger.info("buscando los datos del fichero contenedores varios xml ")
 
-                //Todo no se si funcionará con xml
-                logger.info("buscando distrito en el fichero Contenedores varios xml")
-                return DataFrame.read(pathCV.toFile())
-                    .filter { x -> x.getValue<String>("Distrito").equals(district, true) }
+                //descargamos datos a dto
+                var dto = Xmlc().xmlToContenedoresVariosDto(pathCV)
+
+                //descargamos datos a pojo
+                var ob =  ArrayList<ContenedoresVarios>()
+                dto.stream().forEach{x -> ob.add(MapperContenedoresVarios().tdoToContenedoresVarios(x))}
+
+                var dataFrame = ob.toDataFrame()
+                var columnas = dataFrame.columnNames()
+
+                return dataFrame.filter { x -> x.getValue<String>(columnas.get(6)).equals(district, true) }
+
+
+
+
+
 
             }
         logger.info("error devolvemos null")
@@ -80,12 +105,11 @@ class GetDataFrame {
     }
 
     fun dataFrameModeloResiduoTotal(pathMR: Path): DataFrame<Any?>? {
-        println("modelo residuo de : "+pathMR)
+
         if (pathMR.toString().endsWith(".csv")) {
             logger.info("buscando  MOdelo residuo csv")
             var dF =DataFrame.readCSV(pathMR.toFile(), ';')
             var casteo = dF.cast<ModeloResiduoDTO>()
-            println("casteado "+casteo.columnNames())
             return casteo
 
         } else if(pathMR.toString().endsWith(".json")||pathMR.toString().endsWith(".Json")) {
@@ -93,24 +117,25 @@ class GetDataFrame {
 
             //pasamos a objetodto
             var dto = Jsonc().readJsontoModeloresiduoDto(pathMR)
-            println("ejemplo de dto: "+ dto.get(1).toString())
             //pasmoa a objeto cara castear Toneladas
             var ob = ArrayList<ModeloResiduo>()
             dto.stream().forEach{x -> ob.add(MaperModeloResiduo().tdoToModrloResiduo(x))}
-            println("ejemplo de ob: "+ ob.get(1).toString())
             //pasamos de nuevo a dataframe
             var dF = ob.toDataFrame()
             var casteo= dF.cast<ModeloResiduoDTO>()
-            println("casteado" +casteo.columnNames())
             return casteo
 
         } else if (pathMR.toString().endsWith(".xml")){
-            //Todo no se si funcionará con xml
-            logger.info("buscando fichero Modelo Residio xml ")
-            var dF =  DataFrame.read(pathMR.toFile())
-            var casteo= dF.cast<ModeloResiduo>()
-            println(casteo.columnNames())
-            return casteo
+            logger.info("buscando los datos del fichero Modelo Residio xml ")
+
+            //descargamos datos a dto
+            var dto = Xmlc().xmlToModeloresiduoDto(pathMR)
+
+            //descargamos datos a pojo
+            var ob =  ArrayList<ModeloResiduo>()
+            dto.stream().forEach{x -> ob.add(MaperModeloResiduo().tdoToModrloResiduo(x))}
+
+            return ob.toDataFrame()
         }
         logger.info("error devolvemos null")
         return null
@@ -138,11 +163,16 @@ class GetDataFrame {
 
         } else  if (pathCV.toString().endsWith(".xml")){
 
-            logger.info("buscando Contenedores varios xml")
-            var dF = DataFrame.read(pathCV.toFile())
-            var casteo = dF.cast<ContenedoresVariosDTO>()
-            println(casteo.columnNames())
-            return casteo
+            logger.info("buscando los datos del fichero contenedores varios xml ")
+
+            //descargamos datos a dto
+            var dto = Xmlc().xmlToContenedoresVariosDto(pathCV)
+
+            //descargamos datos a pojo
+            var ob =  ArrayList<ContenedoresVarios>()
+            dto.stream().forEach{x -> ob.add(MapperContenedoresVarios().tdoToContenedoresVarios(x))}
+
+            return ob.toDataFrame()
 
         }
         logger.info("error devolvemos null")

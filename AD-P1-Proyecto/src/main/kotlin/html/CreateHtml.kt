@@ -8,6 +8,7 @@ import java.time.LocalDate
 class CreateHtml {
 
 
+
     fun htmlResumeDistrict(
         toneladasPorResiduo: DataFrame<Any?>?,
         graficoDeTotalToneladas: Any?,

@@ -25,7 +25,7 @@ class Graficos {
         directoriodeResumen: Path,
         columnasMr: List<String>
     ): Any? {
-        println(toneladasPorResiduo.columnNames())
+
         //creamos directorio para las imagenes si no esta ya
         if (directoriodeResumen.exists()&& directoriodeResumen.isDirectory()){
             logger.info("el directrio e imagenes ya existe")
@@ -63,7 +63,6 @@ class Graficos {
             Files.createDirectory(directoriodeResumen)
         }
 
-        println(estadisticastotales.toString())
         logger.info("Gráfico con el total de toneladas por residuo en ese distrito.")
         var plot = letsPlot(data = estadisticastotales?.toMap()) + geomBar(
             stat = Stat.identity,
