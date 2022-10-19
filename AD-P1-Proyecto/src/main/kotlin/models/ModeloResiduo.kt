@@ -5,16 +5,16 @@ import enums.TipoResiduo
 import java.io.Serializable
 import java.time.LocalDate
 
- class ModeloResiduo (año:Int?, mes: Meses?, lote: Int?, residuo: TipoResiduo?, distrito : String?
-                     , nombreDistrito: String?, toneladas: Int?): Serializable {
-    val año : Int?=año
+ class ModeloResiduo (año:String?, mes: String?, lote: String?, residuo: String?, distrito : String?
+                     , nombreDistrito: String?, toneladas: Float?): Serializable {
+    val año : String?=año
      //todo no esta pasando bien a meses al dto
-    val mes : Meses? = mes
-    val lote : Int? = lote
-    var residuo : TipoResiduo? = residuo
+    val mes : String? = mes
+    val lote : String? = lote
+    var residuo : String? = residuo
     val distrito : String? = distrito
     val nombreDistrito : String? = nombreDistrito
-    val toneladas : Int? = toneladas
+    val toneladas :  Float? = toneladas
 
      /**
       * devuelve una strig de este objeto en csv
@@ -38,24 +38,13 @@ import java.time.LocalDate
         return true
     }
 
-    override fun hashCode(): Int {
-        var result = año ?: 0
-        result = 31 * result + (mes?.hashCode() ?: 0)
-        result = 31 * result + (lote ?: 0)
-        result = 31 * result + (residuo?.hashCode() ?: 0)
-        result = 31 * result + (distrito?.hashCode() ?: 0)
-        result = 31 * result + (nombreDistrito?.hashCode() ?: 0)
-        result = 31 * result + (toneladas ?: 0)
-        return result
-    }
 
-     fun getStringScv(): String {
-         return "$año";"$mes";"$lote";"$residuo";"$distrito";"$nombreDistrito";"$toneladas"
-     }
 
      override fun toString(): String {
          return "ModeloResiduo(año=$año, mes=$mes, lote=$lote, residuo=$residuo, distrito=$distrito, nombreDistrito=$nombreDistrito, toneladas=$toneladas)"
      }
+
+
 
 
  }
