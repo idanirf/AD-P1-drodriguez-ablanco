@@ -94,18 +94,12 @@ class GetDataFrame {
 
                 return dataFrame.filter { x -> x.getValue<String>(columnas.get(6)).equals(district, true) }
 
-
-
-
-
-
             }
         logger.info("error devolvemos null")
         return null
     }
 
     fun dataFrameModeloResiduoTotal(pathMR: Path): DataFrame<Any?>? {
-
         if (pathMR.toString().endsWith(".csv")) {
             logger.info("buscando  MOdelo residuo csv")
             var dF =DataFrame.readCSV(pathMR.toFile(), ';')
@@ -151,14 +145,12 @@ class GetDataFrame {
             logger.info("buscando  Contenedores varios csv")
             var dF =lista.toDataFrame()
             var casteo = dF.cast<ContenedoresVariosDTO>()
-            println(casteo.columnNames())
             return casteo
 
         } else if (pathCV.toString().endsWith(".json")) {
             logger.info("buscando  Contenedores varios json")
             var dF = DataFrame.readJson(pathCV.toFile())
             var casteo = dF.cast<ContenedoresVariosDTO>()
-            println(casteo.columnNames())
             return casteo
 
         } else  if (pathCV.toString().endsWith(".xml")){
@@ -171,9 +163,7 @@ class GetDataFrame {
             //descargamos datos a pojo
             var ob =  ArrayList<ContenedoresVarios>()
             dto.stream().forEach{x -> ob.add(MapperContenedoresVarios().tdoToContenedoresVarios(x))}
-
             return ob.toDataFrame()
-
         }
         logger.info("error devolvemos null")
         return null
