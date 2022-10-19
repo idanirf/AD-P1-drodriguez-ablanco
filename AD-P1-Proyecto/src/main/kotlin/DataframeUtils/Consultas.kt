@@ -105,6 +105,7 @@ class Consultas {
 
     fun getMedToneladasPorDistrito(filasCv: DataFrame<Any?>, nombreCol: List<String>):  DataFrame<Any?> {
 
+
         var  nombresCv = filasCv.columnNames()
         logger.info(
             " media de toneladas anuales de recogidas por cada tipo\\n\" +\n" +

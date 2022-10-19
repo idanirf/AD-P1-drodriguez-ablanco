@@ -226,10 +226,12 @@ private fun getContenedoresVariosCSV(args: Array<String>): ArrayList<Contenedore
 
     if (s.equals("")){
 
+
         logger.info("entramos a la opcion resume all  porque no hay distrito $s")
         html = ResumenDataFrame().resumenFrame(pathModeloResiduo, pathContenedoresVarios,directoriodeResumen)
 
     }else{
+
 
         logger.info("entramos a la opcion resume distrito porque el distrito es  $s")
         html = ResumenDataFrame().resumeDistrictFrame(pathModeloResiduo, pathContenedoresVarios, s,directoriodeResumen)
@@ -281,6 +283,7 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
 
         }else{
             logger.info("el path de los archivos exixte y es un directorio")
+
 
             var pathModeloResiduo : Path? = null
             try {

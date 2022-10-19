@@ -131,7 +131,7 @@ class ResumenDataFrame {
             - Gráfico de media de toneladas mensuales de recogida de basura por distrito.
             - Máximo, mínimo , media y desviación de toneladas anuales de recogidas por cada tipo
             de basura agrupadas por distrito.
-            - Suma de todo lo recogido en un año por distrito.
+            - Suma de lo recogido en un año por distrito.
             - Por cada distrito obtener para cada tipo de residuo la cantidad recogida.
             - Tiempo de generación del mismo en milisegundos.
              */

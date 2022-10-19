@@ -21,6 +21,7 @@ class GetDataFrame {
 
     fun dataFrameModeloResiduo(pathMR: Path, district: String): DataFrame<Any?>? {
 
+
         if (pathMR.toString().endsWith(".csv")) {
             logger.info("buscando distrito en el fichero Contenedores varios csv")
             return DataFrame.readCSV(pathMR.toFile(), ';')
@@ -31,9 +32,9 @@ class GetDataFrame {
             logger.info("buscando distrito \$district en el fichero Modelo Residio json ")
             logger.info("buscando fichero Modelo Residio json ")
 
+
             //pasamos a objetodto
             var dto = Jsonc().readJsontoModeloresiduoDto(pathMR)
-            println("ejemplo de dto: "+ dto.get(1).toString())
             //pasmoa a objeto cara castear Toneladas
             var ob = ArrayList<ModeloResiduo>()
             dto.stream().forEach{x -> ob.add(MaperModeloResiduo().tdoToModrloResiduo(x))}
