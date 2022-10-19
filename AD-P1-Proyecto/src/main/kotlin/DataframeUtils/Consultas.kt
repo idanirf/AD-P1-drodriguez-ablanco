@@ -183,14 +183,10 @@ class Consultas {
             directoriodeResumen: Path,
             columnasMr: List<String>
         ): DataFrame<Any?>? {
-
-
             var datosDesvYMed = estadisticasPorResiduoDesv.join(estadisticasPorResiduoMed,columnasMr.get(3).toString())
             var datosDesvYMedYMin = datosDesvYMed.join(estadisticasPorResiduoMin,columnasMr.get(3).toString())
             var datosUnion = datosDesvYMedYMin.join(estadisticasPorResiduoMax,columnasMr.get(3).toString())
             return datosUnion
         }
     }
-
-
 }

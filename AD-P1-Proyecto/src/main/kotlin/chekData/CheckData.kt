@@ -12,18 +12,11 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.util.logging.Logger
 
-
-
 //Clase finalizada para comprobar
-
 
 private val logger: Logger = Logger.getLogger("Azahara y Dani Log")
 
-
 class CheckData {
-
-
-
 
     private fun areFileCsv(args: Array<String>): Boolean {
         return (isFileCsvContenedoresVarios(args) && isFileCsvModeloResiduo(args))
@@ -84,7 +77,6 @@ class CheckData {
     }
 
     private fun isFileCsvContenedoresVarios(args: Array<String>): Boolean {
-
         logger.info("comenzando el check en " +args[1] + File.separator + "contenedores_varios.csv")
         try {
                 if (Files.exists(Path.of(args[1] + File.separator + "contenedores_varios.csv"))) {
@@ -159,9 +151,7 @@ class CheckData {
             }else{
                 logger.info("los parametros no son correctos")
             }
-
             return false
-
     }
 
     /**
@@ -191,7 +181,6 @@ class CheckData {
      * y te devuelve si existe la path con los datos correctos
      */
     fun encontrarFicherosCorrectosEnELDirectoriodeModeloResiduo(directorioDeorigen: Path): Path? {
-
             //listar todos los archivos dentro de un directorio y que sean leíbles
             var ficherosReadble : List<Path>  = Files.list(directorioDeorigen).filter { p -> Files.isReadable(p) }.toList()
 
@@ -222,9 +211,6 @@ class CheckData {
 
             logger.info("buscamos entre todos los ficheros encontrados el correcto de Modelo residuo")
             return getPactCorrectOfModeloResiduo(pathModeloResiduo, ficherosJson, ficherosXml, ficherosCsv)
-
-
-
 
     }
 
@@ -297,7 +283,6 @@ class CheckData {
         for(i in 0..ficherosJson.size){
             var ficheroCorrecto: ArrayList<ContenedoresVariosDTO> = ArrayList()
             try {
-                println(ficherosJson.get(i).toString())
                 var pathEncontrada = paths.get(i)
                 var ficheroCorrecto2 = Jsonc().readJsontoContenedoresvariosDto(ficherosJson.get(i))
                 ficheroCorrecto.addAll(ficheroCorrecto2)
@@ -390,8 +375,6 @@ class CheckData {
         //listar todos los archivos dentro de un directorio y que sean leibles
         var ficherosReadble : List<Path>  = Files.list(directorioDeorigen).filter { p -> Files.isReadable(p) }.toList()
 
-
-
         // quedarnos con los de formato correcto
         logger.info("buscamos si hay xml")
         var ficherosXml = ficherosReadble.map { x -> x.toString() }.filter{x-> x.endsWith(".xml")}
@@ -451,10 +434,6 @@ class CheckData {
         }
         return pathContenedoresVarios1
 
-
     }
-
-
-
 
 }

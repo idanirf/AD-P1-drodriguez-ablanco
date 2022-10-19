@@ -229,6 +229,5 @@ class ResumenDataFrame {
                 logger.info("Html Sting creado")
                 return html
             }
-
     }
 
