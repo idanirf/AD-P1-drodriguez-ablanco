@@ -1,3 +1,4 @@
+
 import Resume.ResumenDataFrame
 import chekData.CheckData
 import com.sun.source.tree.TryTree
@@ -24,15 +25,14 @@ val logger: Logger = Logger.getLogger("Azahara y Dani Log")
 
 
 //con esto lo probamos
-val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator +
-        "data"
+//val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator + "data"
 
 //para probar el parser
 //private val strings = arrayOf("parser", path, path+File.separator + "copia")
 
 //para probar el resume
 
-private val strings = arrayOf("resumen", path, path+File.separator + "copia")
+//private val strings = arrayOf("resumen", path, path+File.separator + "copia")
 
 //para probar el resume district
 //private val strings = arrayOf("resumen","CARABANCHEL", path, path+File.separator + "copia")
@@ -43,7 +43,7 @@ fun main(args: Array<String>) {
     logger.info(" Iniciando Programa")
 
     //eliminar
-    val args : Array<String> = strings
+    //val args : Array<String> = strings
 
     //donde vamos a guardar los datos
     val stringOfData =Paths.get("").toAbsolutePath().toString()+ File.separator +
