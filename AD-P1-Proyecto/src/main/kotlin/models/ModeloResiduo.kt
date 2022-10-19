@@ -14,7 +14,7 @@ import java.time.LocalDate
     var residuo : String? = residuo
     val distrito : String? = distrito
     val nombreDistrito : String? = nombreDistrito
-    val toneladas : Int? = toneladas
+    val toneladas :  Float? = toneladas
 
      /**
       * devuelve una strig de este objeto en csv
