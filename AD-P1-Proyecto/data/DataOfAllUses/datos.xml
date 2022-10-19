@@ -446,3 +446,43 @@
   <exito>true</exito>
   <tiempoDeEjecucion>6534</tiempoDeEjecucion>
 </DataofUse>
+
+<DataofUse>
+  <id>6d4d8993-9ea1-4ae9-b9b9-089f62773bd2</id>
+  <instanteFormatoISO>2022-10-19T20:27:48.649882388</instanteFormatoISO>
+  <tipoOpcion>resumen district</tipoOpcion>
+  <exito>false</exito>
+  <tiempoDeEjecucion>1171</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>ef62fdd1-a03e-4d56-a367-617fcd13c06b</id>
+  <instanteFormatoISO>2022-10-19T20:29:06.711557347</instanteFormatoISO>
+  <tipoOpcion>resumen district</tipoOpcion>
+  <exito>false</exito>
+  <tiempoDeEjecucion>1521</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>579eeee5-6119-4d62-a525-c838dc219d73</id>
+  <instanteFormatoISO>2022-10-19T20:30:56.77554345</instanteFormatoISO>
+  <tipoOpcion>resumen district</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>7885</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>77520d43-ebeb-460a-b893-76dfd6528bc0</id>
+  <instanteFormatoISO>2022-10-19T20:34:36.387139735</instanteFormatoISO>
+  <tipoOpcion>resumen district</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>7248</tiempoDeEjecucion>
+</DataofUse>
+
+<DataofUse>
+  <id>a423f01d-16c2-492e-b8ef-83fada4b7371</id>
+  <instanteFormatoISO>2022-10-19T20:35:22.302833883</instanteFormatoISO>
+  <tipoOpcion>resumen district</tipoOpcion>
+  <exito>true</exito>
+  <tiempoDeEjecucion>7379</tiempoDeEjecucion>
+</DataofUse>

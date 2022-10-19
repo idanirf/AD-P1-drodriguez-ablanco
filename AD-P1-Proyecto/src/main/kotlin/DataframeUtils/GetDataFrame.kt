@@ -37,7 +37,6 @@ class GetDataFrame {
             //pasmoa a objeto cara castear Toneladas
             var ob = ArrayList<ModeloResiduo>()
             dto.stream().forEach{x -> ob.add(MaperModeloResiduo().tdoToModrloResiduo(x))}
-            println("ejemplo de ob: "+ ob.get(1).toString())
             //pasamos de nuevo a dataframe
             var dF = ob.toDataFrame()
 
@@ -106,12 +105,11 @@ class GetDataFrame {
     }
 
     fun dataFrameModeloResiduoTotal(pathMR: Path): DataFrame<Any?>? {
-        println("modelo residuo de : "+pathMR)
+
         if (pathMR.toString().endsWith(".csv")) {
             logger.info("buscando  MOdelo residuo csv")
             var dF =DataFrame.readCSV(pathMR.toFile(), ';')
             var casteo = dF.cast<ModeloResiduoDTO>()
-            println("casteado "+casteo.columnNames())
             return casteo
 
         } else if(pathMR.toString().endsWith(".json")||pathMR.toString().endsWith(".Json")) {
@@ -119,14 +117,12 @@ class GetDataFrame {
 
             //pasamos a objetodto
             var dto = Jsonc().readJsontoModeloresiduoDto(pathMR)
-            println("ejemplo de dto: "+ dto.get(1).toString())
             //pasmoa a objeto cara castear Toneladas
             var ob = ArrayList<ModeloResiduo>()
             dto.stream().forEach{x -> ob.add(MaperModeloResiduo().tdoToModrloResiduo(x))}
             //pasamos de nuevo a dataframe
             var dF = ob.toDataFrame()
             var casteo= dF.cast<ModeloResiduoDTO>()
-            println("casteado" +casteo.columnNames())
             return casteo
 
         } else if (pathMR.toString().endsWith(".xml")){

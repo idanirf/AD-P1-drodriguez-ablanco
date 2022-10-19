@@ -282,8 +282,13 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
         }else{
             logger.info("el path de los archivos exixte y es un directorio")
 
+            var pathModeloResiduo : Path? = null
+            try {
+                pathModeloResiduo = CheckData().encontrarFicherosCorrectosEnELDirectoriodeModeloResiduo(directorioDeorigen)
 
-            var pathModeloResiduo = CheckData().encontrarFicherosCorrectosEnELDirectoriodeModeloResiduo(directorioDeorigen)
+            }catch (e: Exception){
+                exito= false
+            }
 
 
             if (pathModeloResiduo==null){
@@ -291,7 +296,13 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
             }else{
                 logger.info("exixte un fichero con los datos necesarios para modelo residuo, buscamos para contenedores varios")
 
-                var pathContenedoresVarios = CheckData().encontrarFicherosCorrectosEnELDirectoriodeContenedoresVarios(directorioDeorigen)
+                var pathContenedoresVarios : Path? = null
+                try {
+                    pathContenedoresVarios = CheckData().encontrarFicherosCorrectosEnELDirectoriodeContenedoresVarios(directorioDeorigen)
+                }catch (e: Exception){
+                    exito= false
+                }
+
 
 
                 if (pathContenedoresVarios==null){
