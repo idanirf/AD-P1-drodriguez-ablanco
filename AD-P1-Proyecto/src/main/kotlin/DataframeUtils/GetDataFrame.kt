@@ -33,11 +33,9 @@ class GetDataFrame {
 
             //pasamos a objetodto
             var dto = Jsonc().readJsontoModeloresiduoDto(pathMR)
-            println("ejemplo de dto: "+ dto.get(1).toString())
             //pasmoa a objeto cara castear Toneladas
             var ob = ArrayList<ModeloResiduo>()
             dto.stream().forEach{x -> ob.add(MaperModeloResiduo().tdoToModrloResiduo(x))}
-            //pasamos de nuevo a dataframe
             var dF = ob.toDataFrame()
 
             return dF
@@ -157,7 +155,7 @@ class GetDataFrame {
             logger.info("buscando  Contenedores varios json")
             var dF = DataFrame.readJson(pathCV.toFile())
             var casteo = dF.cast<ContenedoresVariosDTO>()
-            println(casteo.columnNames())
+
             return casteo
 
         } else  if (pathCV.toString().endsWith(".xml")){
