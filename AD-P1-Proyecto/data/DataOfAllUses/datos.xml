@@ -62,3 +62,11 @@
   <exito>true</exito>
   <tiempoDeEjecucion>10166</tiempoDeEjecucion>
 </DataofUse>
+
+<DataofUse>
+  <id>8a7b5f80-53f5-4f75-9b02-9885c95018e5</id>
+  <instanteFormatoISO>2022-10-19T22:09:00.380341614</instanteFormatoISO>
+  <tipoOpcion>Error</tipoOpcion>
+  <exito>false</exito>
+  <tiempoDeEjecucion>4</tiempoDeEjecucion>
+</DataofUse>

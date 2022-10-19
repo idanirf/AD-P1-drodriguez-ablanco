@@ -9,9 +9,12 @@ import kotlinx.serialization.encodeToString
 import logger
 import nl.adaptivity.xmlutil.serialization.XML
 import java.io.BufferedWriter
+import java.io.File
 import java.io.FileWriter
 import java.io.IOException
+import java.nio.file.Files
 import java.nio.file.Path
+import java.nio.file.Paths
 import java.util.logging.Logger
 
 class Xmlc {
@@ -66,20 +69,34 @@ class Xmlc {
      */
     fun writeData(p: Path, data : DataofUse) {
 
-        var fichero = p.toFile()
-        var mapper = XmlMapper();
-        var bw = BufferedWriter(FileWriter(fichero,true))
+        var p = Paths.get("").toAbsolutePath().toString()+ File.separator +
+                "DataOfUse"
+
         try {
+            if (Files.notExists(Path.of(p))){
+                Files.createDirectories(Path.of(p))
+            }
+            var p2 = p + File.separator + "datos.xml"
+            if (Files.notExists(Path.of(p2))){
+                Files.createFile(Path.of(p))
+            }
+
+
+            var fichero =File( p2)
+            var mapper = XmlMapper();
+            var bw = BufferedWriter(FileWriter(fichero,true))
+
+
+
             logger.info("escribiendo en el fichero")
             mapper.enable(SerializationFeature.INDENT_OUTPUT);
             var xmlString: String = mapper.writeValueAsString(data)
             bw.newLine()
             bw.write(xmlString)
+            bw.close()
 
         } catch (e : IOException) {
             logger.info("error al crear Xml")
-        }finally {
-            bw.close()
         }
         logger.info("se ha creado el  Xml")
     }

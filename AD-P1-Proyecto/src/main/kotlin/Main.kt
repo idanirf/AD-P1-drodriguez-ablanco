@@ -50,6 +50,8 @@ fun main(args: Array<String>) {
             "data"+File.separator +"DataOfAllUses"+File.separator +"datos.xml"
 
 
+
+
     val election : Int  = getElection(args)
 
 
@@ -473,7 +475,7 @@ por la persona que ha pasado los parametros
 1- parser
  */
 fun getElection(args: Array<String>):Int{
-    if (args.size==0){return 4}
+    if (args.size<3){return 4}
     logger.info(" Entrado en get Elecion ")
 
     if(args.size == 4){
