@@ -9,6 +9,10 @@ import models.ModeloResiduo
 
 class MaperModeloResiduo {
 
+    /**
+     * Funcion que pasandole un objeto Modeo residuo
+     * te devuelve un objeto Modeo residuo dto
+     */
     fun modeloResituoToDto(pojo: ModeloResiduo): ModeloResiduoDTO {
 
         return ModeloResiduoDTO(
@@ -22,6 +26,10 @@ class MaperModeloResiduo {
         )
     }
 
+    /**
+     * Funcion que pasandole un objeto Modeo dto residuo
+     * te devuelve un objeto Modeo residuo
+     */
     fun tdoToModrloResiduo(dto: ModeloResiduoDTO): ModeloResiduo {
         println("pasndo a modelo r")
         return ModeloResiduo(
@@ -36,15 +44,16 @@ class MaperModeloResiduo {
 
     }
 
+    /**
+     * funcion que pasndole una string la pasa a float
+     * y si no es posible devuelve mull
+     */
     private fun pasarAFloat(toneladas: String?): Float? {
-        println(toneladas)
         var to = toneladas?.replace(",",".")
-        println("pasamos a " + to)
-        var flo = to?.toFloatOrNull()
-        println("pasamos a  float" + toneladas)
-        return flo
+        return to?.toFloatOrNull()
     }
 
+    //funcionalidades futuras de mejora
     private fun getMes(s: String?): Meses? {
         logger.info(" entrado en get mes")
         if (s == null) return null
@@ -78,6 +87,7 @@ class MaperModeloResiduo {
         return null
     }
 
+    //funcionalidades futuras de mejora
     private fun getTipoResiduo(s: String?): TipoResiduo? {
         logger.info(" entrado en get tipo residuo")
         if (s == null) return null

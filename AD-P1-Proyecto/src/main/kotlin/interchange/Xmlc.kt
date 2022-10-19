@@ -6,6 +6,7 @@ import dataOfUse.DataofUse
 import dto.ContenedoresVariosDTO
 import dto.ModeloResiduoDTO
 import kotlinx.serialization.encodeToString
+import logger
 import nl.adaptivity.xmlutil.serialization.XML
 import java.io.BufferedWriter
 import java.io.FileWriter
@@ -15,13 +16,13 @@ import java.util.logging.Logger
 
 class Xmlc {
 
-    private var logger: Logger = Logger.getLogger("Azahara y Dani Log")
-
-
+    /**
+     * Función que pasndole una path te devuelve un
+     * aarray list de Modelo Residuo dto si contiene los datos
+     * necesarios
+     */
     fun xmlToModeloresiduoDto(p : Path): ArrayList<ModeloResiduoDTO>{
-        logger.info(" entrado en funcion  xml to object")
-
-
+        logger.info("Pasando la path a Mr")
         try {
 
             val file = p.toFile()
@@ -37,10 +38,13 @@ class Xmlc {
         return  ArrayList<ModeloResiduoDTO>()
     }
 
+    /**
+     * Función que pasndole una path te devuelve un
+     * aarray list de Contenedores varios dto si contiene los datos
+     * necesarios
+     */
     fun xmlToContenedoresVariosDto(p : Path): ArrayList<ContenedoresVariosDTO>{
-        logger.info(" entrado en funcion  xml to object")
-
-
+        logger.info("Pasando la path a Cv")
         try {
 
             val file = p.toFile()
@@ -57,12 +61,10 @@ class Xmlc {
     }
 
 
+    /**
+     * funcion que pasndole una clase data of use y una pat te añade los datos en el fichero
+     */
     fun writeData(p: Path, data : DataofUse) {
-
-        logger.info(" entrado en funcion  write xml data")
-
-
-
 
         var fichero = p.toFile()
         var mapper = XmlMapper();
@@ -82,14 +84,22 @@ class Xmlc {
         logger.info("se ha creado el  Xml")
     }
 
+    /**
+     * Función que pasndole una arru list de Cotenedores varios dto
+     * y una path te crea en ella un archivo con los datos formato xml
+     */
     fun contenedoresVariosDtoToXml(array: ArrayList<ContenedoresVariosDTO>, p :Path) {
-        logger.info("empezando")
+        logger.info("Creando file xml de Cv")
         val file = p.toFile()
         val xml = XML { indent = 4 }
         file.writeText(xml.encodeToString(array))
     }
+    /**
+     * Función que pasndole una arru list de modelo residuo dto
+     * y una path te crea en ella un archivo con los datos formato xml
+     */
     fun modeloResiduoDtoToXml(array: ArrayList<ModeloResiduoDTO> , p : Path) {
-        logger.info("empezando")
+        logger.info("Creando file xml de Mr")
         val file = p.toFile()
         val xml = XML { indent = 4 }
         file.writeText(xml.encodeToString(array))

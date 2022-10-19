@@ -5,6 +5,10 @@ import models.ContenedoresVarios
 
 class MapperContenedoresVarios {
 
+    /**
+     * Funcion que pasandole un objeto contenedores Varios
+     * te devuelve un objeto contenedores varios dto
+     */
     fun contenedoresVariosToDto(pojo: ContenedoresVarios): ContenedoresVariosDTO {
 
         return ContenedoresVariosDTO(
@@ -19,17 +23,19 @@ class MapperContenedoresVarios {
             barrio = pojo.barrio,
             tipoVia = pojo.tipoVia,
             nombre = pojo.nombre,
-            numero = pojo.numero?.toIntOrNull(),
+            numero = pojo.numero,
             coordenadaX = pojo.coordenadaX,
             coordenadaY = pojo.coordenadaY,
             TAG = pojo.TAG
         )
     }
 
-
+    /**
+     * Funcion que paasndole un objeto contenedores Varios dto
+     * te devuelve un objeto contenedores varios
+     */
     fun tdoToContenedoresVarios(dto: ContenedoresVariosDTO): ContenedoresVarios {
 
-        //Todo creo que falla esto
         return ContenedoresVarios(
             codigoInternoSituado = dto.codigoInternoSituado,
             tipoContenedor = dto.tipoContenedor,
@@ -41,7 +47,7 @@ class MapperContenedoresVarios {
             barrio = dto.barrio,
             tipoVia = dto.tipoVia,
             nombre = dto.nombre,
-            numero = dto.numero.toString(),
+            numero = dto.numero,
             coordenadaX = dto.coordenadaX,
             coordenadaY = dto.coordenadaY,
             TAG = dto.TAG

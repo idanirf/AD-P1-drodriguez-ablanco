@@ -30,10 +30,10 @@ val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator +
 //private val strings = arrayOf("parser", path, path+File.separator + "copia")
 
 //para probar el resume
-
 //private val strings = arrayOf("resumen", path, path+File.separator + "copia")
 
 //para probar el resume district
+
 
 private val strings = arrayOf("resumen","CARABANCHEL", path, path+File.separator + "copia")
 
@@ -42,14 +42,12 @@ fun main(args: Array<String>) {
 
     logger.info(" Iniciando Programa")
 
-    //para falsear los datos ponemos aqui los comando
+    //eliminar
     val args : Array<String> = strings
 
     //donde vamos a guardar los datos
     val stringOfData =Paths.get("").toAbsolutePath().toString()+ File.separator +
             "data"+File.separator +"DataOfAllUses"+File.separator +"datos.xml"
-
-
 
 
     val election : Int  = getElection(args)
@@ -64,41 +62,44 @@ fun main(args: Array<String>) {
 
 }
 
-
+/**
+ * Función que se inicia cuando la opción escogida no es correcta:
+ * guarda datos en Data of use y Lanza Mensaje de error
+ */
 fun opcionIncorrecta(stringOfData: String) {
-    //para ver el tiempo que tarda
+
     var tInit = System.currentTimeMillis();
 
-    logger.info("la opcion selecionada no es correcta ")
+    logger.info("La opción selecionada no es correcta ")
 
-    //para ver cuanto tarda
     var tFinal = System.currentTimeMillis();
     var tDiference= tFinal - tInit;
 
     var data = DataofUse(tipoOpcion = "Error", exito = false , tiempoEjecucion = tDiference)
-    logger.info(data.toString())
+    logger.info(data.toString() + "escritos en DataOfUse")
     Xmlc().writeData( Path.of(stringOfData),data)
-    logger.info("escrito datos")
+
+    println("Realizado sin éxito : La opción no es correcta.")
+
 }
 
 /**
- Comprueva los args y si son ciertos debe tomar los ficheros csv
-del directorio origen y transformar en JSON y XML en el directorio destino. En dicho
-directorio destino deberán estar las tres versiones: CSV, JSON y XML.
+ Función tomar los ficheros csv
+del directorio origen y transformar en JSON y XML y CSV en el directorio destino.
  */
 fun beginingParser(args: Array<String>, stringOfData : String) {
 
-    //para ver el tiempo que tarda
     var tInit = System.currentTimeMillis();
+    var areCorrectDataInFiles = true
 
-    logger.info(" Entrado en begininParser ")
+    logger.info(" Seleccionando y leyendo los ficheros ")
 
 
-        var areCorrectDataInFiles = true
-        var arrayListOfModeloResiduo : ArrayList<ModeloResiduoDTO>? = getModeloResiduotoCSV(args)
-        var arrayListOfContenedoreVarios: ArrayList<ContenedoresVariosDTO>? = getContenedoresVariosCSV(args)
+    var arrayListOfModeloResiduo : ArrayList<ModeloResiduoDTO>? = getModeloResiduotoCSV(args)
+    var arrayListOfContenedoreVarios: ArrayList<ContenedoresVariosDTO>? = getContenedoresVariosCSV(args)
 
-        logger.info(" leidos los dos ficheros ")
+
+    logger.info(" leidos los dos ficheros ")
 
     if (arrayListOfModeloResiduo!=null){
         logger.info(" leidos correctamente el fichero de Modelo resudio")
@@ -164,16 +165,17 @@ private fun createFilesModeloresiduo(
     )
 }
 fun getModeloResiduotoCSV(args: Array<String>): ArrayList<ModeloResiduoDTO>? {
-    logger.info(" cogiendo datos de archivo Modelo residuo ")
+
+    logger.info(" Cogiendo datos de archivo Modelo residuo ")
+
     var pathCorrecta = CheckData().encontrarFicherosCorrectosEnELDirectoriodeModeloResiduo(Path.of(args[1]))
 
     if (pathCorrecta!=null){
         try {
             return  Csv().csvToMoeloResiduo(pathCorrecta)
         }catch (e : Exception){
-            logger.info("el fichero no se ha podido leer porque no es el formato correcto")
+            logger.info("el fichero en csv no se ha podido leer porque no es el formato correcto.")
         }
-
     }
     return null
 }
@@ -196,22 +198,23 @@ private fun getContenedoresVariosCSV(args: Array<String>): ArrayList<Contenedore
 
     logger.info("los datos de la path son correctos")
 
-    var tipoOpcion = ""
+
     var exito = false
 
     var html : String = ""
 
     if (s.equals("")){
-        tipoOpcion="resume all"
+
         logger.info("entramos a la opcion resume all  porque no hay distrito $s")
         html = ResumenDataFrame().resumenFrame(pathModeloResiduo, pathContenedoresVarios,directoriodeResumen)
 
     }else{
-        tipoOpcion="resume District"
+
         logger.info("entramos a la opcion resume distrito porque el distrito es  $s")
         html = ResumenDataFrame().resumeDistrictFrame(pathModeloResiduo, pathContenedoresVarios, s,directoriodeResumen)
     }
 
+        //todo, si no consegimos hacer las consultas hay que decir que no está bien
     logger.info("fin de tarea ")
 
     return html
@@ -236,7 +239,6 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
 
     //para ver si ha tenido exito o no
     var exito = false
-    var isCorrectData = false
     var tipoOpcion ="resumen"
     var directorioDeorigen = Path.of(args[1])
     var directoriodeResumen = Path.of(args[2])
@@ -252,6 +254,7 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
     }
 
         //1.sacar todos los ficheros del directorio
+
         if (Files.notExists(directorioDeorigen) && !Files.isDirectory(directorioDeorigen)){
             logger.info("el path de los archivos No exixte o NO es un directorio")
 

@@ -186,11 +186,13 @@ class CheckData {
         return false
     }
 
+    /**
+     * Función que pasándole una path Busca todos los ficheros leíbles dentro
+     * y te devuelve si existe la path con los datos correctos
+     */
     fun encontrarFicherosCorrectosEnELDirectoriodeModeloResiduo(directorioDeorigen: Path): Path? {
 
-
-
-            //listar todos los archivos dentro de un directorio y que sean leibles
+            //listar todos los archivos dentro de un directorio y que sean leíbles
             var ficherosReadble : List<Path>  = Files.list(directorioDeorigen).filter { p -> Files.isReadable(p) }.toList()
 
             // quedarnos con los de formato correcto
@@ -211,15 +213,14 @@ class CheckData {
            var ficherosJson2 = ficherosReadble.map { x -> x.toString() }.filter{x-> x.endsWith(".Json")}
             .map { x-> Path.of(x) }.toMutableList()
 
-                ficherosJson.addAll(ficherosJson2)
-            println("encontramos " + ficherosJson.toString())
+           ficherosJson.addAll(ficherosJson2)
+           logger.info("encontramos ${ficherosJson.size}")
+
 
             //con cada uno porbamos si se pueden leer y son de los que queremos, quitaremos con excepciones
             var pathModeloResiduo : Path? = null
-            var pathContenedoresVarios : Path? = null
 
-
-            logger.info("buscamos entre todas la correcta de Modeo residuo")
+            logger.info("buscamos entre todos los ficheros encontrados el correcto de Modelo residuo")
             return getPactCorrectOfModeloResiduo(pathModeloResiduo, ficherosJson, ficherosXml, ficherosCsv)
 
 
@@ -227,13 +228,16 @@ class CheckData {
 
     }
 
+    /**
+     * Funcion que devuelve la path del ficero con los datos correctos de Modelo Residuo
+     */
     private fun getPactCorrectOfModeloResiduo(pathModeloResiduo: Path?,
                                               ficherosJson: MutableList<Path>,
                                               ficherosXml: MutableList<Path>,
                                               ficherosCsv: MutableList<Path>): Path? {
+        logger.info("buscando la path correcta de Modelo Residuo")
 
-            var pathModeloResiduo1 = pathModeloResiduo
-            pathModeloResiduo1 = searchCorrectFileInJsonFilesModeloResiduo(ficherosJson)
+            var pathModeloResiduo1 = searchCorrectFileInJsonFilesModeloResiduo(ficherosJson)
 
             if (pathModeloResiduo1 == null) {
                 pathModeloResiduo1 = searchCorrectFileInxmlFilesModeloResiduo(ficherosXml)
@@ -266,16 +270,25 @@ class CheckData {
     fun searchCorrectFileInxmlFilesContenedoresVarios(ficherosXml: MutableList<Path>): Path? {
         if (ficherosXml.size==0){return null}
         var paths = ficherosXml
-        for(i in 0..ficherosXml.size){
-            var ficheroCorrecto: ArrayList<ContenedoresVariosDTO> = ArrayList()
+        for(i in 0..paths.size){
+            try {
+                var arayDelFichero: ArrayList<ContenedoresVariosDTO> = ArrayList()
 
-            var pathEncontrada = paths.get(i)
-            ficheroCorrecto = Csv().csvToContenedoresVarios(ficherosXml.get(i))
-            if (ficheroCorrecto.size!=0){
-                return pathEncontrada
-                logger.info("fichero tiene las columnas correctas y en el orden correcto")
+                var pathEncontrada = paths.get(i)
+                arayDelFichero = Xmlc().xmlToContenedoresVariosDto(ficherosXml.get(i))
+                if (arayDelFichero.size!=0){
+                    logger.info("fichero tiene las columnas correctas y en el orden correcto")
+                    println("encontrados ${arayDelFichero.size} objetosde Cv")
+                    println("ej ${arayDelFichero.get(1).toString()} ")
+                    return pathEncontrada
+                }
+            }catch (e : Exception){
+                e.printStackTrace()
+                logger.info("el path ${paths[i]} no tiene los datos necesarios")
             }
+
         }
+        logger.info("no ha sido posible encontrar fichero como xml")
         return null
 
     }
@@ -291,14 +304,16 @@ class CheckData {
                 var ficheroCorrecto2 = Jsonc().readJsontoContenedoresvariosDto(ficherosJson.get(i))
                 ficheroCorrecto.addAll(ficheroCorrecto2)
                 if (ficheroCorrecto.size!=0){
-                    return pathEncontrada
                     logger.info("fichero tiene las columnas correctas y en el orden correcto")
+                    return pathEncontrada
                 }
             }catch (e : Exception){
                 e.printStackTrace()
+                logger.info("el path ${paths[i]} no tiene los datos necesarios")
             }
 
         }
+        logger.info("no ha sido posible encontrar fichero como xml")
         return null
     }
 
@@ -323,36 +338,49 @@ class CheckData {
     fun searchCorrectFileInxmlFilesModeloResiduo(ficherosXml: MutableList<Path>): Path? {
         if (ficherosXml.size==0){return null}
         var paths = ficherosXml
-        for(i in 0..ficherosXml.size){
-            var ficheroCorrecto: ArrayList<ModeloResiduoDTO> = ArrayList()
+        for(i in 0..paths.size){
+            try {
+                var arayDelFichero: ArrayList<ModeloResiduoDTO> = ArrayList()
 
-            var pathEncontrada = paths.get(i)
-            ficheroCorrecto = Csv().csvToMoeloResiduo(ficherosXml.get(i))
-            if (ficheroCorrecto.size!=0){
-                return pathEncontrada
-                logger.info("fichero tiene las columnas correctas y en el orden correcto")
+                var pathEncontrada = paths.get(i)
+                arayDelFichero = Xmlc().xmlToModeloresiduoDto(ficherosXml.get(i))
+                if (arayDelFichero.size!=0){
+                    logger.info("fichero tiene las columnas correctas y en el orden correcto")
+                    println("encontrados ${arayDelFichero.size} objetos de Mr")
+                    println("ej ${arayDelFichero.get(1).toString()} ")
+                    return pathEncontrada
+
+                }
+            }catch (e : Exception){
+                e.printStackTrace()
+                logger.info("el path ${paths[i]} no tiene los datos necesarios")
             }
+
         }
+        logger.info("ningun fichero xml tiene las columnas correctas y en el orden correcto")
         return null
     }
 
+    /**
+     * Pasándole una path de formato json la lee y la devuelve en caso de que contenga Modelos residuo,
+     * si no devuelve null
+     */
     private fun searchCorrectFileInJsonFilesModeloResiduo(ficherosJson: MutableList<Path>): Path? {
        if (ficherosJson.size==0){return null}
         println(ficherosJson.size)
         var paths = ficherosJson
         for(i in 0..ficherosJson.size){
-            println("miramos si coincide modelo residuo con "+ ficherosJson.get(i))
             var ficheroCorrecto: ArrayList<ModeloResiduoDTO> = ArrayList()
             try {
                 println(ficherosJson.get(i).toString())
                 var pathEncontrada = paths.get(i)
                 ficheroCorrecto = Jsonc().readJsontoModeloresiduoDto(ficherosJson.get(i))
                 if (ficheroCorrecto.size!=0){
+                    logger.info("fichero ${ficherosJson.get(i)} tiene las columnas correctas y en el orden correcto")
                     return pathEncontrada
-                    logger.info("fichero tiene las columnas correctas y en el orden correcto")
                 }
             }catch (e : Exception){
-                e.printStackTrace()
+               logger.info("la path ${ficherosJson.get(i)} no contiene Modelos residuo")
             }
 
         }
@@ -398,6 +426,9 @@ class CheckData {
 
     }
 
+    /**
+     * Funcion que devuelve la path del ficero con los datos correctos de Contenedores varios
+     */
     private fun getCorrectPathOfContenedoresVarios(pathContenedoresVarios: Path?,
                                                    ficherosJson: MutableList<Path>,
                                                    ficherosXml: MutableList<Path>,
