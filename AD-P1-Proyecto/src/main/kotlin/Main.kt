@@ -27,7 +27,18 @@ val logger: Logger = Logger.getLogger("Azahara y Dani Log")
 val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator +
         "data"
 
+<<<<<<< HEAD
 private val strings = arrayOf("resumen", path, path+File.separator + "copia")
+=======
+//para probar el parser
+//private val strings = arrayOf("parser", path, path+File.separator + "copia")
+
+//para probar el resume
+private val strings = arrayOf("resumen", path, path+File.separator + "copia")
+
+//para probar el resume district
+// no falla na private val strings = arrayOf("resumen","CARABANCHEL", path, path+File.separator + "copia")
+>>>>>>> Azahara2
 
 
 fun main(args: Array<String>) {
