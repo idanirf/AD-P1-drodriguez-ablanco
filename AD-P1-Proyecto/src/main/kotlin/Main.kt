@@ -1,5 +1,6 @@
 import Resume.ResumenDataFrame
 import chekData.CheckData
+import com.sun.source.tree.TryTree
 import dataOfUse.DataofUse
 import dto.ContenedoresVariosDTO
 import dto.ModeloResiduoDTO
@@ -103,11 +104,11 @@ fun beginingParser(args: Array<String>, stringOfData : String) {
 
     if (arrayListOfModeloResiduo!=null){
         logger.info(" leidos correctamente el fichero de Modelo resudio")
-        createFilesModeloresiduo(arrayListOfModeloResiduo, args)
+        areCorrectDataInFiles = createFilesModeloresiduo(arrayListOfModeloResiduo, args)
 
         if (arrayListOfContenedoreVarios!=null){
             logger.info(" leidos correctamente el fichero de contenedores varios")
-            createFilesContenedoreVarios(arrayListOfContenedoreVarios, args)
+            areCorrectDataInFiles = createFilesContenedoreVarios(arrayListOfContenedoreVarios, args)
         }else{
             logger.info(" no se ha encontrado un fichero adecuado para la lectura de COntenedores varios")
             areCorrectDataInFiles = false
@@ -130,13 +131,17 @@ fun beginingParser(args: Array<String>, stringOfData : String) {
     Xmlc().writeData( Path.of(stringOfData),data)
     logger.info("escrito datos")
 
+    println("Realizado el Parser con exito.")
+
 }
 
 
 
 private fun createFilesContenedoreVarios(
     arrayListOfContenedoreVarios: ArrayList<ContenedoresVariosDTO>,
-    args: Array<String>) {
+    args: Array<String>): Boolean {
+    try{
+
     logger.info(" creamos ficheros contenedores varios ")
     logger.info(" csv ")
     Csv().ContenedoresVariosToCsv(arrayListOfContenedoreVarios, Path.of(args[2]))
@@ -147,22 +152,35 @@ private fun createFilesContenedoreVarios(
         arrayListOfContenedoreVarios,
         Path.of(args[2] + File.separator + "contenedores_varios.xml")
     )
+
+    }catch (e : Exception){
+    logger.info("No se han hecho los ficheros correctamente")
+        return false
+    }
+    return true
 }
 
 private fun createFilesModeloresiduo(
     arrayListOfModeloResiduo: ArrayList<ModeloResiduoDTO>,
     args: Array<String>
-) {
-    logger.info(" creamos ficheros Modelo residuo ")
-    logger.info(" csv ")
-    Csv().ModeloRosiduoToCsv(arrayListOfModeloResiduo, Path.of(args[2]))
-    logger.info(" json")
-    Jsonc().modeloResiduoDtoToAJson(Path.of(args[2]), arrayListOfModeloResiduo)
-    logger.info(" xml ")
-    Xmlc().modeloResiduoDtoToXml(
-        arrayListOfModeloResiduo,
-        Path.of(args[2] + File.separator + "modelo_residuos.xml")
-    )
+) : Boolean {
+    try {
+        logger.info(" creamos ficheros Modelo residuo ")
+        logger.info(" csv ")
+        Csv().ModeloRosiduoToCsv(arrayListOfModeloResiduo, Path.of(args[2]))
+        logger.info(" json")
+        Jsonc().modeloResiduoDtoToAJson(Path.of(args[2]), arrayListOfModeloResiduo)
+        logger.info(" xml ")
+        Xmlc().modeloResiduoDtoToXml(
+            arrayListOfModeloResiduo,
+            Path.of(args[2] + File.separator + "modelo_residuos.xml")
+        )
+    }catch (e : Exception){
+        logger.info("No se han hecho los ficheros correctamente")
+        return false
+    }
+    return true
+
 }
 fun getModeloResiduotoCSV(args: Array<String>): ArrayList<ModeloResiduoDTO>? {
 
