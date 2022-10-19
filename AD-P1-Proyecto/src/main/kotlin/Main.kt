@@ -1,3 +1,4 @@
+
 import Resume.ResumenDataFrame
 import chekData.CheckData
 import com.sun.source.tree.TryTree
@@ -24,21 +25,17 @@ val logger: Logger = Logger.getLogger("Azahara y Dani Log")
 
 
 //con esto lo probamos
-val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator +
-        "data"
+//val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator + "data"
 
-<<<<<<< HEAD
-private val strings = arrayOf("resumen", path, path+File.separator + "copia")
-=======
 //para probar el parser
 //private val strings = arrayOf("parser", path, path+File.separator + "copia")
 
 //para probar el resume
-private val strings = arrayOf("resumen", path, path+File.separator + "copia")
+
+//private val strings = arrayOf("resumen", path, path+File.separator + "copia")
 
 //para probar el resume district
-// no falla na private val strings = arrayOf("resumen","CARABANCHEL", path, path+File.separator + "copia")
->>>>>>> Azahara2
+//private val strings = arrayOf("resumen","CARABANCHEL", path, path+File.separator + "copia")
 
 
 fun main(args: Array<String>) {
@@ -46,13 +43,15 @@ fun main(args: Array<String>) {
     logger.info(" Iniciando Programa")
 
     //eliminar
-    val args : Array<String> = strings
+    //val args : Array<String> = strings
 
     //donde vamos a guardar los datos
     val stringOfData =Paths.get("").toAbsolutePath().toString()+ File.separator +
             "data"+File.separator +"DataOfAllUses"+File.separator +"datos.xml"
 
+
     val election : Int  = getElection(args)
+
 
     when (election){
         1 -> beginingParser(args,stringOfData)
@@ -60,6 +59,7 @@ fun main(args: Array<String>) {
         3-> beginingSumary(args,stringOfData)
         4 -> opcionIncorrecta(stringOfData)
     }
+
 }
 
 /**
@@ -225,12 +225,10 @@ private fun getContenedoresVariosCSV(args: Array<String>): ArrayList<Contenedore
 
     if (s.equals("")){
 
-
         logger.info("entramos a la opcion resume all  porque no hay distrito $s")
         html = ResumenDataFrame().resumenFrame(pathModeloResiduo, pathContenedoresVarios,directoriodeResumen)
 
     }else{
-
 
         logger.info("entramos a la opcion resume distrito porque el distrito es  $s")
         html = ResumenDataFrame().resumeDistrictFrame(pathModeloResiduo, pathContenedoresVarios, s,directoriodeResumen)
@@ -282,7 +280,6 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
 
         }else{
             logger.info("el path de los archivos exixte y es un directorio")
-
 
             var pathModeloResiduo : Path? = null
             try {

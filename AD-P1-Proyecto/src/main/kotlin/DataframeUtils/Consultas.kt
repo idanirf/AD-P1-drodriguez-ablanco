@@ -105,7 +105,6 @@ class Consultas {
 
     fun getMedToneladasPorDistrito(filasCv: DataFrame<Any?>, nombreCol: List<String>):  DataFrame<Any?> {
 
-
         var  nombresCv = filasCv.columnNames()
         logger.info(
             " media de toneladas anuales de recogidas por cada tipo\\n\" +\n" +
@@ -183,10 +182,14 @@ class Consultas {
             directoriodeResumen: Path,
             columnasMr: List<String>
         ): DataFrame<Any?>? {
+
+
             var datosDesvYMed = estadisticasPorResiduoDesv.join(estadisticasPorResiduoMed,columnasMr.get(3).toString())
             var datosDesvYMedYMin = datosDesvYMed.join(estadisticasPorResiduoMin,columnasMr.get(3).toString())
             var datosUnion = datosDesvYMedYMin.join(estadisticasPorResiduoMax,columnasMr.get(3).toString())
             return datosUnion
         }
     }
+
+
 }
