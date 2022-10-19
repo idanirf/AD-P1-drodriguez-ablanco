@@ -1,5 +1,7 @@
+
 import Resume.ResumenDataFrame
 import chekData.CheckData
+import com.sun.source.tree.TryTree
 import dataOfUse.DataofUse
 import dto.ContenedoresVariosDTO
 import dto.ModeloResiduoDTO
@@ -23,8 +25,7 @@ val logger: Logger = Logger.getLogger("Azahara y Dani Log")
 
 
 //con esto lo probamos
-val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator +
-        "data"
+//val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator + "data"
 
 //para probar el parser
 //private val strings = arrayOf("parser", path, path+File.separator + "copia")
@@ -34,16 +35,15 @@ val path : String= Paths.get("").toAbsolutePath().toString()+ File.separator +
 //private val strings = arrayOf("resumen", path, path+File.separator + "copia")
 
 //para probar el resume district
-
-private val strings = arrayOf("resumen","CARABANCHEL", path, path+File.separator + "copia")
+//private val strings = arrayOf("resumen","CARABANCHEL", path, path+File.separator + "copia")
 
 
 fun main(args: Array<String>) {
 
     logger.info(" Iniciando Programa")
 
-    //para falsear los datos ponemos aqui los comando
-    val args : Array<String> = strings
+    //eliminar
+    //val args : Array<String> = strings
 
     //donde vamos a guardar los datos
     val stringOfData =Paths.get("").toAbsolutePath().toString()+ File.separator +
@@ -64,49 +64,52 @@ fun main(args: Array<String>) {
 
 }
 
-
+/**
+ * Función que se inicia cuando la opción escogida no es correcta:
+ * guarda datos en Data of use y Lanza Mensaje de error
+ */
 fun opcionIncorrecta(stringOfData: String) {
-    //para ver el tiempo que tarda
+
     var tInit = System.currentTimeMillis();
 
-    logger.info("la opcion selecionada no es correcta ")
+    logger.info("La opción selecionada no es correcta ")
 
-    //para ver cuanto tarda
     var tFinal = System.currentTimeMillis();
     var tDiference= tFinal - tInit;
 
     var data = DataofUse(tipoOpcion = "Error", exito = false , tiempoEjecucion = tDiference)
-    logger.info(data.toString())
+    logger.info(data.toString() + "escritos en DataOfUse")
     Xmlc().writeData( Path.of(stringOfData),data)
-    logger.info("escrito datos")
+
+    println("Realizado sin éxito : La opción no es correcta.")
+
 }
 
 /**
- Comprueva los args y si son ciertos debe tomar los ficheros csv
-del directorio origen y transformar en JSON y XML en el directorio destino. En dicho
-directorio destino deberán estar las tres versiones: CSV, JSON y XML.
+ Función tomar los ficheros csv
+del directorio origen y transformar en JSON y XML y CSV en el directorio destino.
  */
 fun beginingParser(args: Array<String>, stringOfData : String) {
 
-    //para ver el tiempo que tarda
     var tInit = System.currentTimeMillis();
+    var areCorrectDataInFiles = true
 
-    logger.info(" Entrado en begininParser ")
+    logger.info(" Seleccionando y leyendo los ficheros ")
 
 
-        var areCorrectDataInFiles = true
-        var arrayListOfModeloResiduo : ArrayList<ModeloResiduoDTO>? = getModeloResiduotoCSV(args)
-        var arrayListOfContenedoreVarios: ArrayList<ContenedoresVariosDTO>? = getContenedoresVariosCSV(args)
+    var arrayListOfModeloResiduo : ArrayList<ModeloResiduoDTO>? = getModeloResiduotoCSV(args)
+    var arrayListOfContenedoreVarios: ArrayList<ContenedoresVariosDTO>? = getContenedoresVariosCSV(args)
 
-        logger.info(" leidos los dos ficheros ")
+
+    logger.info(" leidos los dos ficheros ")
 
     if (arrayListOfModeloResiduo!=null){
         logger.info(" leidos correctamente el fichero de Modelo resudio")
-        createFilesModeloresiduo(arrayListOfModeloResiduo, args)
+        areCorrectDataInFiles = createFilesModeloresiduo(arrayListOfModeloResiduo, args)
 
         if (arrayListOfContenedoreVarios!=null){
             logger.info(" leidos correctamente el fichero de contenedores varios")
-            createFilesContenedoreVarios(arrayListOfContenedoreVarios, args)
+            areCorrectDataInFiles = createFilesContenedoreVarios(arrayListOfContenedoreVarios, args)
         }else{
             logger.info(" no se ha encontrado un fichero adecuado para la lectura de COntenedores varios")
             areCorrectDataInFiles = false
@@ -129,13 +132,22 @@ fun beginingParser(args: Array<String>, stringOfData : String) {
     Xmlc().writeData( Path.of(stringOfData),data)
     logger.info("escrito datos")
 
+    if (areCorrectDataInFiles){
+        println("Realizado el Parser con exito.")
+    }else{
+        println("No realizado con exito: Los datos facilitados no son correctos.")
+    }
+
+
 }
 
 
 
 private fun createFilesContenedoreVarios(
     arrayListOfContenedoreVarios: ArrayList<ContenedoresVariosDTO>,
-    args: Array<String>) {
+    args: Array<String>): Boolean {
+    try{
+
     logger.info(" creamos ficheros contenedores varios ")
     logger.info(" csv ")
     Csv().ContenedoresVariosToCsv(arrayListOfContenedoreVarios, Path.of(args[2]))
@@ -146,34 +158,48 @@ private fun createFilesContenedoreVarios(
         arrayListOfContenedoreVarios,
         Path.of(args[2] + File.separator + "contenedores_varios.xml")
     )
+
+    }catch (e : Exception){
+    logger.info("No se han hecho los ficheros correctamente")
+        return false
+    }
+    return true
 }
 
 private fun createFilesModeloresiduo(
     arrayListOfModeloResiduo: ArrayList<ModeloResiduoDTO>,
     args: Array<String>
-) {
-    logger.info(" creamos ficheros Modelo residuo ")
-    logger.info(" csv ")
-    Csv().ModeloRosiduoToCsv(arrayListOfModeloResiduo, Path.of(args[2]))
-    logger.info(" json")
-    Jsonc().modeloResiduoDtoToAJson(Path.of(args[2]), arrayListOfModeloResiduo)
-    logger.info(" xml ")
-    Xmlc().modeloResiduoDtoToXml(
-        arrayListOfModeloResiduo,
-        Path.of(args[2] + File.separator + "modelo_residuos.xml")
-    )
+) : Boolean {
+    try {
+        logger.info(" creamos ficheros Modelo residuo ")
+        logger.info(" csv ")
+        Csv().ModeloRosiduoToCsv(arrayListOfModeloResiduo, Path.of(args[2]))
+        logger.info(" json")
+        Jsonc().modeloResiduoDtoToAJson(Path.of(args[2]), arrayListOfModeloResiduo)
+        logger.info(" xml ")
+        Xmlc().modeloResiduoDtoToXml(
+            arrayListOfModeloResiduo,
+            Path.of(args[2] + File.separator + "modelo_residuos.xml")
+        )
+    }catch (e : Exception){
+        logger.info("No se han hecho los ficheros correctamente")
+        return false
+    }
+    return true
+
 }
 fun getModeloResiduotoCSV(args: Array<String>): ArrayList<ModeloResiduoDTO>? {
-    logger.info(" cogiendo datos de archivo Modelo residuo ")
+
+    logger.info(" Cogiendo datos de archivo Modelo residuo ")
+
     var pathCorrecta = CheckData().encontrarFicherosCorrectosEnELDirectoriodeModeloResiduo(Path.of(args[1]))
 
     if (pathCorrecta!=null){
         try {
             return  Csv().csvToMoeloResiduo(pathCorrecta)
         }catch (e : Exception){
-            logger.info("el fichero no se ha podido leer porque no es el formato correcto")
+            logger.info("el fichero en csv no se ha podido leer porque no es el formato correcto.")
         }
-
     }
     return null
 }
@@ -192,25 +218,24 @@ private fun getContenedoresVariosCSV(args: Array<String>): ArrayList<Contenedore
 }
 
     fun doResumen(s: String, pathContenedoresVarios: Path, pathModeloResiduo: Path, stringOfData: String, directoriodeResumen: Path): String {
-        
 
     logger.info("los datos de la path son correctos")
 
-    var tipoOpcion = ""
     var exito = false
 
     var html : String = ""
 
     if (s.equals("")){
-        tipoOpcion="resume all"
+
         logger.info("entramos a la opcion resume all  porque no hay distrito $s")
         html = ResumenDataFrame().resumenFrame(pathModeloResiduo, pathContenedoresVarios,directoriodeResumen)
 
     }else{
-        tipoOpcion="resume District"
+
         logger.info("entramos a la opcion resume distrito porque el distrito es  $s")
         html = ResumenDataFrame().resumeDistrictFrame(pathModeloResiduo, pathContenedoresVarios, s,directoriodeResumen)
     }
+
 
     logger.info("fin de tarea ")
 
@@ -236,7 +261,6 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
 
     //para ver si ha tenido exito o no
     var exito = false
-    var isCorrectData = false
     var tipoOpcion ="resumen"
     var directorioDeorigen = Path.of(args[1])
     var directoriodeResumen = Path.of(args[2])
@@ -252,23 +276,35 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
     }
 
         //1.sacar todos los ficheros del directorio
+
         if (Files.notExists(directorioDeorigen) && !Files.isDirectory(directorioDeorigen)){
             logger.info("el path de los archivos No exixte o NO es un directorio")
 
         }else{
             logger.info("el path de los archivos exixte y es un directorio")
 
+            var pathModeloResiduo : Path? = null
+            try {
+                pathModeloResiduo = CheckData().encontrarFicherosCorrectosEnELDirectoriodeModeloResiduo(directorioDeorigen)
 
-            var pathModeloResiduo = CheckData().encontrarFicherosCorrectosEnELDirectoriodeModeloResiduo(directorioDeorigen)
+            }catch (e: Exception){
+                exito= false
+            }
 
-            println("(begin sumary)la path de modelo residuo es: " + pathModeloResiduo)
+
             if (pathModeloResiduo==null){
                 logger.info("no hay ningun archivo en la path que contenga los datos necesarios ")
             }else{
                 logger.info("exixte un fichero con los datos necesarios para modelo residuo, buscamos para contenedores varios")
 
-                var pathContenedoresVarios = CheckData().encontrarFicherosCorrectosEnELDirectoriodeContenedoresVarios(directorioDeorigen)
-                println("(begin sumary)la path de contenedores varios es: " + pathContenedoresVarios)
+                var pathContenedoresVarios : Path? = null
+                try {
+                    pathContenedoresVarios = CheckData().encontrarFicherosCorrectosEnELDirectoriodeContenedoresVarios(directorioDeorigen)
+                }catch (e: Exception){
+                    exito= false
+                }
+
+
 
                 if (pathContenedoresVarios==null){
                     logger.info("no exixte ningun fichero que contenga las columnas y en el orden necesarios para crear Contenedores vartios")
@@ -280,6 +316,7 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
                     logger.info("exixten los dos archivos necesarios para hacer el resumen")
                     if(tipoOpcion == "resumen district"){
 
+
                         html = doResumen(args[1],pathContenedoresVarios,pathModeloResiduo, stringOfData,directoriodeResumen)
                     }else{
 
@@ -288,6 +325,7 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
 
                     if (html.equals("")){
                         logger.info("no se ha podido hacer el html")
+                        exito=false
                     }else{
                         logger.info("convirtiendo a html")
 
@@ -309,6 +347,13 @@ fun  beginingSumary(args: Array<String>, stringOfData: String) {
     logger.info(data.toString())
     Xmlc().writeData( Path.of(stringOfData),data)
     logger.info("escrito datos")
+
+        if (exito){
+            println("Realizado el Resumen con exito.")
+        }else{
+            println("No realizado Resumen con exito: Los datos facilitados no son correctos.")
+        }
+
 }
     fun doResume(s: String, pathContenedoresVarios: Path, pathModeloResiduo: Path, stringOfData: String, directoriodeResumen: Path): String {
         logger.info("los datos de la path son correctos")
@@ -430,6 +475,7 @@ por la persona que ha pasado los parametros
 1- parser
  */
 fun getElection(args: Array<String>):Int{
+    if (args.size<3){return 4}
     logger.info(" Entrado en get Elecion ")
 
     if(args.size == 4){

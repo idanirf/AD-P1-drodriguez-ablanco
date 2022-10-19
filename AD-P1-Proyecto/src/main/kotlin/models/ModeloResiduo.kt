@@ -8,7 +8,6 @@ import java.time.LocalDate
  class ModeloResiduo (año:String?, mes: String?, lote: String?, residuo: String?, distrito : String?
                      , nombreDistrito: String?, toneladas: Float?): Serializable {
     val año : String?=año
-     //todo no esta pasando bien a meses al dto
     val mes : String? = mes
     val lote : String? = lote
     var residuo : String? = residuo
@@ -16,12 +15,7 @@ import java.time.LocalDate
     val nombreDistrito : String? = nombreDistrito
     val toneladas :  Float? = toneladas
 
-     /**
-      * devuelve una strig de este objeto en csv
-      */
-
-
-    override fun equals(other: Any?): Boolean {
+     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
@@ -37,14 +31,9 @@ import java.time.LocalDate
 
         return true
     }
-
-
-
      override fun toString(): String {
          return "ModeloResiduo(año=$año, mes=$mes, lote=$lote, residuo=$residuo, distrito=$distrito, nombreDistrito=$nombreDistrito, toneladas=$toneladas)"
      }
-
-
 
 
  }
